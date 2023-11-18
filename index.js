@@ -34,35 +34,20 @@ async function run() {
       res.send(result);
     });
 
-    app.get("/customers/:id", async (req, res) => {
-      const id = req.params.id;
-      const query = { _id: new ObjectId(id) };
-      const result = await database.findOne(query);
-      res.send(result);
-    });
-    
-    app.get("/payment/:id", async (req, res) => {
-      const id = req.params.id;
-      const query = { _id: new ObjectId(id) };
+    app.get("/customers/:cardNo", async (req, res) => {
+      const noCard = req.params.cardNo;
+      const query = { cardno: noCard };
       const result = await database.findOne(query);
       res.send(result);
     });
 
-    app.put("/payment/:id", async (req, res) => {
-      const { installment_date, amount } = req.body;
-      const id = req.params.id;
-      const query = { _id: new ObjectId(id) };
+    app.put("/payment/:cardNo", async (req, res) => {
+      const inslattment = req.body;
+      const noCard = req.params.cardNo;
 
+      const query = { cardno: noCard };
       const updateDoc = {
-        $set: {
-          installment: {
-            date: "2023-11-18",
-            amount: "2000",
-            voucher: "11223",
-            receiver: "Borhan",
-            coments: "New Update",
-          },
-        },
+        $push: { installment: inslattment },
       };
 
       const result = await database.updateOne(query, updateDoc);
