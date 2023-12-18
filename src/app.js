@@ -1,0 +1,20 @@
+const express = require("express");
+require("dotenv").config();
+const app = express();
+const path = require("path");
+const globalErrorHandler = require("./utils/globalErrorHandler");
+const home = require("./utils/home");
+app.set("views", path.join(__dirname));
+app.set("view engine", "hbs");
+
+app.use(home);
+
+app.get("*", (req, res, next) => {
+  const error = new Error(`Can't find ${req.originalUrl} on the server.`);
+  error.status = 400;
+  next(error);
+});
+
+app.use(globalErrorHandler);
+
+module.exports = app;
