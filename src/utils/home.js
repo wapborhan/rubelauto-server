@@ -1,8 +1,5 @@
-const home = (req, res) => {
-  res.render("home/Home", {
-    array: ["One", "Two", "Three", "Four"],
-    message: "Server Running...",
-  });
-};
+const router = require("express").Router();
 
-module.exports = home;
+router.get("/", (req, res) => {});
+
+module.exports = router;
