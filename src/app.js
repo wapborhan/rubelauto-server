@@ -9,6 +9,7 @@ app.set("views", path.join(__dirname));
 app.set("view engine", "hbs");
 
 const customerRoutes = require("./routes/customer");
+const productRoutes = require("./routes/product");
 
 applyMiddleware(app);
 
@@ -21,6 +22,7 @@ app.get("/", (req, res) => {
 
 // All Routes
 app.use(customerRoutes);
+app.use(productRoutes);
 
 // handling all (get,post,update,delete.....) unhandled routes
 app.all("*", (req, res, next) => {
