@@ -8,6 +8,8 @@ const home = require("./utils/home");
 app.set("views", path.join(__dirname));
 app.set("view engine", "hbs");
 
+const customerRoutes = require("./routes/customer");
+
 applyMiddleware(app);
 
 // Homepage
@@ -18,7 +20,7 @@ app.get("/", (req, res) => {
 });
 
 // All Routes
-// app.use(addCustomer);
+app.use(customerRoutes);
 
 // handling all (get,post,update,delete.....) unhandled routes
 app.all("*", (req, res, next) => {
