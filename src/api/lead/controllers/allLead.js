@@ -1,8 +1,7 @@
-const viewLead = require("../../../lib/customer/viewLead");
+const viewLead = require("../../../lib/lead/viewLead");
 
 const allLead = async (req, res) => {
-  const query = req.query;
-  const result = await viewLead(query);
+  const result = await viewLead();
   res.send(result);
 };
 
