@@ -8,6 +8,7 @@ const home = require("./utils/home");
 app.set("views", path.join(__dirname));
 app.set("view engine", "hbs");
 
+const leadRoutes = require("./routes/lead");
 const customerRoutes = require("./routes/customer");
 const productRoutes = require("./routes/product");
 
@@ -21,6 +22,7 @@ app.get("/", (req, res) => {
 });
 
 // All Routes
+app.use(leadRoutes);
 app.use(customerRoutes);
 app.use(productRoutes);
 
