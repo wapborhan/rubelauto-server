@@ -2,7 +2,6 @@ const { model, Schema } = require("mongoose");
 
 const leadSchema = new Schema({
   status: { type: String },
-  showroom: { type: Object },
   name: { type: String },
   coname: { type: String },
   nid: { type: String },
