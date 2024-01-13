@@ -11,6 +11,7 @@ app.set("view engine", "hbs");
 const leadRoutes = require("./routes/lead");
 const customerRoutes = require("./routes/customer");
 const productRoutes = require("./routes/product");
+const stockRoutes = require("./routes/stock");
 
 applyMiddleware(app);
 
@@ -25,6 +26,7 @@ app.get("/", (req, res) => {
 app.use(leadRoutes);
 app.use(customerRoutes);
 app.use(productRoutes);
+app.use(stockRoutes);
 
 // handling all (get,post,update,delete.....) unhandled routes
 app.all("*", (req, res, next) => {
