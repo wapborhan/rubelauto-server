@@ -1,10 +1,13 @@
 const { model, Schema } = require("mongoose");
 
 const customerSchema = new Schema({
+  saleStatus: { type: String },
   saledate: { type: Date },
+  productCond: { type: String },
   cardno: { type: String },
-  showroom: { type: String },
-  status: { type: String },
+  showRoom: { type: String },
+  cardStatus: { type: String },
+
   customerInfo: {
     name: { type: String },
     coname: { type: String },
@@ -15,21 +18,23 @@ const customerSchema = new Schema({
     media: { type: String },
   },
   productInfo: {
-    productType: { type: String },
-    model: { type: String },
+    type: { type: String },
+    models: { type: String },
     engine: { type: String },
     chassis: { type: String },
+    color: { type: String },
   },
   accountInfo: {
-    saleprice: { type: String },
-    dpamount: { type: String },
-    term: { type: String },
-    percentage: { type: String },
-    insdate: { type: String },
-    hireprice: { type: String },
-    insamount: { type: String },
-    conddate: { type: String },
-    condamount: { type: String },
+    saleprice: { type: Number },
+    dpamount: { type: Number },
+    term: { type: Number },
+    percentage: { type: Number },
+    insdate: { type: Date },
+    hireprice: { type: Number },
+    insamount: { type: Number },
+    conddate: { type: Date },
+    condamount: { type: Number },
+    agrefee: { type: Number },
   },
   installment: { type: Array },
 });

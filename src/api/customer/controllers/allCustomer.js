@@ -3,7 +3,7 @@ const viewCustomer = require("../../../lib/customer/viewCustomer");
 
 const allCustomer = async (req, res) => {
   const cusData = req.params.status;
-  const cursor = { status: cusData };
+  const cursor = { cardStatus: cusData };
   const result = await viewCustomer(cursor);
 
   res.send(result);

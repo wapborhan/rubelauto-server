@@ -5,7 +5,8 @@ const createCustomer = (req, res) => {
 
   const result = addCustomer(cusData);
 
-  res.send(result);
+  // res.send(result);
+  res.status(200).send(result);
 };
 
 module.exports = createCustomer;

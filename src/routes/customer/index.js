@@ -1,8 +1,13 @@
-const { createCustomer, allCustomer } = require("../../api/customer");
+const {
+  createCustomer,
+  allCustomer,
+  cardCustomer,
+} = require("../../api/customer");
 
 const router = require("express").Router();
 
-router.get("/customer/:status", allCustomer);
+router.get("/customers/:status", allCustomer);
+router.get("/customer/:cardNo", cardCustomer);
 router.post("/customer", createCustomer);
 
 module.exports = router;
