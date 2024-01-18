@@ -4,9 +4,9 @@ const app = express();
 const applyMiddleware = require("./middlewares");
 const path = require("path");
 const globalErrorHandler = require("./utils/globalErrorHandler");
-const home = require("./utils/home");
-app.set("views", path.join(__dirname));
-app.set("view engine", "hbs");
+app.set("views", path.join(__dirname, "views"));
+// app.set("view engine", "hbs");
+app.set("view engine", "ejs");
 
 const leadRoutes = require("./routes/lead");
 const customerRoutes = require("./routes/customer");
@@ -16,12 +16,19 @@ const stockRoutes = require("./routes/stock");
 applyMiddleware(app);
 
 // Homepage
-app.get("/", (req, res) => {
-  res.render("home/Home", {
-    message: "Rubel Auto Server Running...",
-  });
-});
+// app.get("/", (req, res) => {
+//   res.render("Home", {
+//     message: "Rubel Auto Server Running...",
+//   });
+// });
 
+app.get("/", function (req, res) {
+  res.render("pages/index");
+});
+// about page
+app.get("/about", function (req, res) {
+  res.render("pages/about");
+});
 // All Routes
 app.use(leadRoutes);
 app.use(customerRoutes);

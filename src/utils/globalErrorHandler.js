@@ -5,10 +5,14 @@ const globalErrorHandler = (err, _req, res, _next) => {
   //   errors: err.errors,
   // });
 
-  res.render("home/Error", {
+  res.render("../views/pages/error", {
     errors: err.errors,
     message: err.message,
   });
+  // res.render("../views/Error", {
+  //   errors: err.errors,
+  //   message: err.message,
+  // });
 };
 
 module.exports = globalErrorHandler;
