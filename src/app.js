@@ -12,6 +12,7 @@ const leadRoutes = require("./routes/lead");
 const customerRoutes = require("./routes/customer");
 const productRoutes = require("./routes/product");
 const stockRoutes = require("./routes/stock");
+const paymentRoutes = require("./routes/payment");
 
 applyMiddleware(app);
 
@@ -32,6 +33,7 @@ app.get("/about", function (req, res) {
 // All Routes
 app.use(leadRoutes);
 app.use(customerRoutes);
+app.use(paymentRoutes);
 app.use(productRoutes);
 app.use(stockRoutes);
 
