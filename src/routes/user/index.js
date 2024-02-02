@@ -1,8 +1,8 @@
-const { createUser } = require("../../api/user");
+const { createUser, allUser } = require("../../api/user");
 
 const router = require("express").Router();
 
-// router.get("/user", allStock);
+router.get("/users", allUser);
 router.post("/user", createUser);
 
 module.exports = router;
