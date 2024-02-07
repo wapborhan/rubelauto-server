@@ -11,6 +11,7 @@ const stockSchema = new Schema({
   showroomName: { type: String },
   showroomCode: { type: String },
   categories: { type: String },
+  stock: { type: String },
 });
 
 const Stocks = model("stocks", stockSchema);
