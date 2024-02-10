@@ -9,6 +9,7 @@ const leadSchema = new Schema({
   number: { type: String },
   location: { type: String },
   media: { type: String },
+  guarantor: { type: Array },
 });
 
 const Leads = model("leads", leadSchema);
