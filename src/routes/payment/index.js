@@ -1,8 +1,9 @@
-const { createPayment } = require("../../api/payment");
+const { createPayment, showPayment } = require("../../api/payment");
 
 const router = require("express").Router();
 
-// router.get("/product", allProduct);
-router.put("/payment/:cardNo", createPayment);
+// router.post("/payment/:cardNo", createPayment);
+router.get("/installment/:id", showPayment);
+router.post("/installment/", createPayment);
 
 module.exports = router;

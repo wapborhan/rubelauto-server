@@ -1,6 +1,7 @@
 const { model, Schema } = require("mongoose");
 
 const stockSchema = new Schema({
+  stockStatus: { type: String },
   receivedDate: { type: Date },
   modelCode: { type: String },
   brandName: { type: String },

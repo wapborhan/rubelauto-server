@@ -1,5 +1,4 @@
+const showPayment = require("./showPayment");
 const createPayment = require("./createPayment");
 
-module.exports = {
-  createPayment,
-};
+module.exports = { showPayment, createPayment };

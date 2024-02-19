@@ -1,12 +1,15 @@
-const Customer = require("../../models/Customers");
+const Installment = require("../../models/Installment");
 
-const addPayment = async (noCard, inslattment) => {
-  const query = { cardno: noCard };
-  const updateDoc = {
-    $push: { installment: inslattment },
-  };
+const addPayment = async (inslattment) => {
+  // const query = { cardno: noCard };
+  // const updateDoc = {
+  // $push: { installment: inslattment },
+  // };
+  // const result = await Customer.updateOne(query, updateDoc);
 
-  const result = await Customer.updateOne(query, updateDoc);
+  const newInstallment = new Installment(inslattment);
+
+  const result = await newInstallment.save();
 
   return result;
 };
