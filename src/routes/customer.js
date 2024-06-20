@@ -2,7 +2,7 @@ const {
   createCustomer,
   allCustomer,
   cardCustomer,
-} = require("../../api/customer");
+} = require("../controllers/customer");
 
 const router = require("express").Router();
 
