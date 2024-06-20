@@ -6,8 +6,8 @@ const {
 
 const router = require("express").Router();
 
-router.get("/customers/:status", allCustomer);
-router.get("/customer/:cardNo", cardCustomer);
-router.post("/customer", createCustomer);
+router.route("/customers/:status").get(allCustomer);
+router.route("/customer/:cardNo").get(cardCustomer);
+router.route("/customer").post(createCustomer);
 
 module.exports = router;

@@ -7,8 +7,8 @@ const {
 
 const router = require("express").Router();
 
-router.get("/lead", allLead).post(createLead);
-router.get("/lead/:id", singleLead);
-router.put("/lead/addguarantor/:id", addGuarantor);
+router.route("/lead").get(allLead).post(createLead);
+router.route("/lead/:id").get(singleLead);
+router.route("/lead/addguarantor/:id").put(addGuarantor);
 
 module.exports = router;

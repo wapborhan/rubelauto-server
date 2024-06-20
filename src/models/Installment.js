@@ -1,15 +1,18 @@
 const { model, Schema } = require("mongoose");
 
-const installmentSchema = new Schema({
-  cardNo: { type: String },
-  showroom: { type: String },
-  date: { type: Date },
-  amount: { type: Number },
-  voucher: { type: String },
-  receiver: { type: String },
-  type: { type: String },
-  coments: { type: String },
-});
+const installmentSchema = new Schema(
+  {
+    cardNo: { type: String },
+    showroom: { type: String },
+    date: { type: Date },
+    amount: { type: Number },
+    voucher: { type: String },
+    receiver: { type: String },
+    type: { type: String },
+    coments: { type: String },
+  },
+  { versionKey: false }
+);
 
 const Installment = model("installment", installmentSchema);
 

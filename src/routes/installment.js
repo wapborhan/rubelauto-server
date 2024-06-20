@@ -5,7 +5,7 @@ const {
 
 const router = require("express").Router();
 
-router.get("/installment/:id", showInstallment);
-router.post("/installment/", createInstallment);
+router.route("/installment/:id").get(showInstallment);
+router.route("/installment/").post(createInstallment);
 
 module.exports = router;
