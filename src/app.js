@@ -13,6 +13,7 @@ const installmentRoutes = require("./routes/installment");
 const productRoutes = require("./routes/product");
 const stockRoutes = require("./routes/stock");
 const userRoutes = require("./routes/user");
+const suplierRoutes = require("./routes/suplier");
 
 applyMiddleware(app);
 
@@ -30,6 +31,7 @@ app.use(installmentRoutes);
 app.use(productRoutes);
 app.use(stockRoutes);
 app.use(userRoutes);
+app.use(suplierRoutes);
 
 // handling all (get,post,update,delete.....) unhandled routes
 app.all("*", (req, res, next) => {
