@@ -1,5 +1,6 @@
 //
 const Customer = require("../models/Customers");
+const Leads = require("../models/Leads");
 
 const allCustomer = async (req, res) => {
   const cusData = req.params.status;
@@ -28,12 +29,17 @@ const cardCustomer = async (req, res) => {
 
 const createCustomer = async (req, res) => {
   const cusData = req.body;
+  const { leadId } = req.query;
 
+  // const customer = await Leads.find({ _id: leadId });
+  // Delete from Leads
+  await Leads.findByIdAndDelete(leadId);
+
+  // Add customer
   const newCustomer = new Customer(cusData);
-
   const result = await newCustomer.save();
 
-  res.status(200).send(result);
+  res.status(200).send("result");
 };
 
 module.exports = { allCustomer, cardCustomer, createCustomer };

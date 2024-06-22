@@ -8,7 +8,6 @@ const customerSchema = new Schema(
     cardno: { type: String },
     showRoom: { type: String },
     cardStatus: { type: String },
-
     customerInfo: {
       name: { type: String },
       coname: { type: String },
@@ -17,6 +16,7 @@ const customerSchema = new Schema(
       number: { type: String },
       location: { type: String },
       media: { type: String },
+      guarantor: { type: Array },
     },
     productInfo: {
       type: { type: String },
