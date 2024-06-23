@@ -7,7 +7,7 @@ const customerSchema = new Schema(
     productCond: { type: String },
     cardno: { type: String },
     showRoom: { type: String },
-    cardStatus: { type: String },
+    cardStatus: { type: Object },
     customerInfo: {
       name: { type: String },
       coname: { type: String },
