@@ -8,7 +8,9 @@ const port = process.env.PORT || 3300;
 const main = async () => {
   await connectDB();
   server.listen(port, () => {
-    console.log(`Rubel Auto Server is running on port ${port}`);
+    console.log(
+      `Rubel Auto Server is running on port ${port} and link http://localhost:${port}`
+    );
   });
 };
 

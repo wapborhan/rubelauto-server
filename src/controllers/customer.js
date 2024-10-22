@@ -75,10 +75,10 @@ const seizedCustomer = async (req, res) => {
     const seizedData = req.body;
     const { cardNo } = req.params;
 
-    const { type, date, staff, seizedCost, comments } = seizedData;
-    if (!type || !date || !staff || !seizedCost || !comments) {
-      return res.status(400).send({ message: "All fields are required" });
-    }
+    const { type, date, staff, seizedCost, coments } = seizedData;
+    // if (!type || !date || !staff || !seizedCost || !comments) {
+    //   return res.status(400).send({ message: "All fields are required" });
+    // }
 
     console.log(seizedData);
 
@@ -91,7 +91,7 @@ const seizedCustomer = async (req, res) => {
           "cardStatus.date": date,
           "cardStatus.staff": staff,
           "cardStatus.seizedCost": seizedCost,
-          "cardStatus.comments": comments,
+          "cardStatus.coments": coments,
         },
       },
       { new: true }
