@@ -1,22 +1,29 @@
 {
-  "name": "rubelauto-server",
+  "name": "mern-server",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "client": "npm run dev --prefix client",
+    "server": "nodemon index.js",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "build": "npm run build --prefix client",
+    "start": "node index.js"
   },
   "keywords": [],
-  "author": "SR Dream Lab",
+  "author": "",
   "license": "ISC",
   "dependencies": {
-    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
-    "dotenv": "^16.3.1",
-    "ejs": "^3.1.6",
+    "dotenv": "^16.0.3",
     "express": "^4.18.2",
-    "mongoose": "^8.0.3"
+    "helmet": "^7.0.0",
+    "mongoose": "^6.11.6"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.1",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.20"
   }
 }
