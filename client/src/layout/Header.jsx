@@ -47,7 +47,13 @@ const Header = (props) => {
             to="/profile/view"
             className="w-full p-link flex align-items-center p-2 pl-4 text-color hover:surface-200 border-noround"
           >
-            <Avatar image={user?.photoURL} className="mr-2" shape="circle" />
+            <Avatar
+              image={user?.photoURL
+                ? user?.photoURL
+                : "https://png.pngtree.com/png-vector/20220709/ourmid/pngtree-businessman-user-avatar-wearing-suit-with-red-tie-png-image_5809521.png"}
+              className="mr-2"
+              shape="circle"
+            />
             <div className="flex flex-col align">
               <span className="font-bold">{user?.displayName}</span>
               <span className="text-sm">{user?.showRoom}</span>
@@ -105,24 +111,27 @@ const Header = (props) => {
         id="topbar"
         className="topbar navbar-expand navbar-light bg-white  mb-4 static-top shadow flex justify-between px-4 py-2 items-center"
       >
-        {broken ? (
-          <>
-            <button className="sb-button" onClick={() => setToggled(!toggled)}>
-              <i className="pi pi-align-left"></i>
-            </button>
-          </>
-        ) : (
-          <div
-            className="sidebars-button text-dark cursor-pointer"
-            onClick={() => setCollapsed(!collapsed)}
-          >
-            {collapsed ? (
-              <i className="pi pi-align-left"></i>
-            ) : (
-              <i className="pi pi-bars"></i>
-            )}
-          </div>
-        )}
+        {broken
+          ? (
+            <>
+              <button
+                className="sb-button"
+                onClick={() => setToggled(!toggled)}
+              >
+                <i className="pi pi-align-left"></i>
+              </button>
+            </>
+          )
+          : (
+            <div
+              className="sidebars-button text-dark cursor-pointer"
+              onClick={() => setCollapsed(!collapsed)}
+            >
+              {collapsed
+                ? <i className="pi pi-align-left"></i>
+                : <i className="pi pi-bars"></i>}
+            </div>
+          )}
 
         <h2 id="nameTitle" className="text-center text-dark font-bold">
           Rubel Auto
@@ -135,7 +144,7 @@ const Header = (props) => {
             aria-controls="popup_menu_right"
             aria-haspopup
           >
-            <img src={user?.photoURL} alt="" />
+            <img src={user?.photoURL} alt="P" />
           </Button>
 
           <Menu

@@ -52,6 +52,14 @@ export default function ViewLead() {
     return props.rowIndex + 1;
   };
 
+  const addressTemplate = ({ address }) => {
+    return (
+      <span>
+        {`${address?.village}, ${address?.union}, ${address?.upazila}, ${address?.district}.`}
+      </span>
+    );
+  };
+
   const verifiedBodyTemplate = (rowData) => {
     return (
       <div className="flex gap-4">
@@ -161,6 +169,7 @@ export default function ViewLead() {
           showFilterMenu={false}
           filterPlaceholder="Search"
           style={{ minWidth: "8rem" }}
+          body={addressTemplate}
         />
         <Column
           field="verified"

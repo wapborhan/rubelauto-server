@@ -57,12 +57,20 @@ const AddLead = () => {
       name,
       coname,
       nid,
-      address: `${village}, ${union?.name}, ${upazila?.name}, ${district?.name}.`,
+      address: {
+        village: village,
+        union: union?.name,
+        upazila: upazila?.name,
+        district: district?.name,
+        division: division?.name,
+      },
       number,
       location,
       media,
       guarantor: [],
     };
+
+    console.log(inputData);
 
     axiosPublic.post("/lead", inputData).then((res) => {
       if (res.status === 200) {
@@ -77,7 +85,7 @@ const AddLead = () => {
 
         form.reset();
       }
-    });
+    }).catch((err) => console.error(err));
   };
   return (
     <div className="addlead">
@@ -92,10 +100,10 @@ const AddLead = () => {
       <div className="back">{/* <BackToHomePage /> */}</div>
       <div className="sect  py-4 w-full mx-auto">
         <div className="content space-y-5">
-          <h2 className="text-center text-3xl mb-10"> Add Customer</h2>
+          <h2 className="text-center text-3xl mb-10">Add Customer</h2>
         </div>
         <fieldset className="mb-4">
-          <legend> Add Lead</legend>
+          <legend>Add Lead</legend>
           <form onSubmit={handleSubmit}>
             <div className="form space-y-5">
               <div className="frist flex gap-5 lg:flex-nowrap flex-wrap justify-between">

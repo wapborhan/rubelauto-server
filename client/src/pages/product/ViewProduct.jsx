@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useRef, useState } from "react";
 import { FilterMatchMode } from "primereact/api";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
@@ -85,8 +85,6 @@ export default function ViewProduct() {
         rows={10}
         dataKey="_id"
         filters={filters}
-        editMode="row"
-        // filterDisplay="row"
         loading={isLoading}
         globalFilterFields={["brandName", "modelName"]}
         header={header}

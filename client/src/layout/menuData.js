@@ -96,16 +96,7 @@ export const menuData = [
   {
     label: "Staff",
     icon: "pi-user-plus",
-    subMenu: [
-      {
-        label: "Add Staff",
-        path: "/staff/add",
-      },
-      {
-        label: "View Staff",
-        path: "/staff/view",
-      },
-    ],
+    path: "/staff/view",
   },
   {
     label: "Report",

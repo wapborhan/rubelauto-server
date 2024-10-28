@@ -1,4 +1,3 @@
-import { Dropdown } from "primereact/dropdown";
 import { useRef, useState } from "react";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import useDivision from "../../hooks/data/useDivision";
@@ -13,7 +12,6 @@ import useSingleLead from "../../hooks/useSingleLead";
 const EditLead = () => {
   const { id } = useParams();
   const [singleLead] = useSingleLead(id);
-
   // Hooks
   const toast = useRef(null);
   const navigate = useNavigate();
@@ -61,28 +59,43 @@ const EditLead = () => {
       name,
       coname,
       nid,
-      address: `${village}, ${union?.name}, ${upazila?.name}, ${district?.name}.`,
+      address: {
+        village: village,
+        union: union?.name === undefined
+          ? singleLead?.address?.union
+          : union?.name,
+        upazila: upazila?.name === undefined
+          ? singleLead?.address?.upazila
+          : upazila?.name,
+        district: district?.name === undefined
+          ? singleLead?.address?.district
+          : district?.name,
+        division: division?.name === undefined
+          ? singleLead?.address?.division
+          : division?.name,
+      },
       number,
       location,
       media,
       guarantor: [],
     };
 
-    // axiosPublic.post("/lead", inputData).then((res) => {
-    //   if (res.status === 200) {
-    //     // alert("Customer Added");
-    //     toast.current.show({
-    //       severity: "info",
-    //       summary: "Info",
-    //       detail: "Lead Added",
-    //     });
-    //     setTimeout(() => {
-    //       navigate("/lead/view");
-    //     }, 3000);
+    console.log(inputData);
 
-    //     form.reset();
-    //   }
-    // });
+    axiosPublic.patch(`/lead/${id}`, inputData).then((res) => {
+      if (res.status === 200) {
+        toast.current.show({
+          severity: "info",
+          summary: "Info",
+          detail: "Lead Updated",
+        });
+        setTimeout(() => {
+          navigate("/contact/lead/view");
+        }, 3000);
+
+        form.reset();
+      }
+    });
   };
   return (
     <div className="addlead">
@@ -97,27 +110,29 @@ const EditLead = () => {
       <div className="back">{/* <BackToHomePage /> */}</div>
       <div className="sect  py-4 w-full mx-auto">
         <div className="content space-y-5">
-          <h2 className="text-center text-3xl mb-10"> Update Customer</h2>
+          <h2 className="text-center text-3xl mb-10">Update Customer</h2>
         </div>
         <fieldset className="mb-4">
-          <legend> Update Lead</legend>
+          <legend>Update Lead</legend>
           <form onSubmit={handleSubmit}>
             <div className="form space-y-5">
               <div className="frist flex gap-5 lg:flex-nowrap flex-wrap justify-between">
-                {/* <div className="form-control  w-full">
-                  <label className="label">
-                    <span className="label-text font-bold">Lead Status</span>
-                  </label>
-                  <Dropdown
-                    value={status}
-                    onChange={(e) => setStatus(e.value)}
-                    options={stats}
-                    // optionLabel="name"
-                    placeholder="Status"
-                    className="w-full md:w-14rem border-2"
-                    required
-                  />
-                </div> */}
+                {
+                  /* <div className="form-control  w-full">
+                    <label className="label">
+                      <span className="label-text font-bold">Lead Status</span>
+                    </label>
+                    <Dropdown
+                      value={status}
+                      onChange={(e) => setStatus(e.value)}
+                      options={stats}
+                      // optionLabel="name"
+                      placeholder="Status"
+                      className="w-full md:w-14rem border-2"
+                      required
+                    />
+                  </div> */
+                }
 
                 <div className="form-control w-full">
                   <label className="label">
@@ -165,11 +180,19 @@ const EditLead = () => {
                   <label className="label">
                     <span className="label-text font-bold">Division</span>
                   </label>
+                  <input
+                    type="text"
+                    defaultValue={division?.name === undefined
+                      ? singleLead?.address?.division
+                      : division?.name}
+                    disabled
+                    className="rounded-md px-3 py-1 text-white !bg-slate-200"
+                  />
                   <SearchAbleDropDown
                     state={division}
                     setState={setDivision}
                     data={divisions}
-                    requir={true}
+                    requir={false}
                     config={{
                       optLabel: "name",
                       placeHolder: "Division",
@@ -181,11 +204,19 @@ const EditLead = () => {
                   <label className="label">
                     <span className="label-text font-bold">District</span>
                   </label>
+                  <input
+                    type="text"
+                    defaultValue={district?.name === undefined
+                      ? singleLead?.address?.district
+                      : district?.name}
+                    disabled
+                    className="rounded-md px-3 py-1 text-white !bg-slate-200"
+                  />
                   <SearchAbleDropDown
                     state={district}
                     setState={setDistrict}
                     data={filteredDistricts}
-                    requir={true}
+                    requir={false}
                     config={{
                       optLabel: "name",
                       placeHolder: "District",
@@ -199,11 +230,19 @@ const EditLead = () => {
                       Upozilla / Thena
                     </span>
                   </label>
+                  <input
+                    type="text"
+                    defaultValue={upazila?.name === undefined
+                      ? singleLead?.address?.upazila
+                      : upazila?.name}
+                    disabled
+                    className="rounded-md px-3 py-1 text-white !bg-slate-200"
+                  />
                   <SearchAbleDropDown
                     state={upazila}
                     setState={setUpazila}
                     data={filteredUpazila}
-                    requir={true}
+                    requir={false}
                     config={{
                       optLabel: "name",
                       placeHolder: "Upozilla",
@@ -215,11 +254,19 @@ const EditLead = () => {
                   <label className="label">
                     <span className="label-text font-bold">Unions</span>
                   </label>
+                  <input
+                    type="text"
+                    defaultValue={union?.name === undefined
+                      ? singleLead?.address?.union
+                      : union?.name}
+                    disabled
+                    className="rounded-md px-3 py-1 text-white !bg-slate-200"
+                  />
                   <SearchAbleDropDown
                     state={union}
                     setState={setUnion}
                     data={filteredUnions}
-                    requir={true}
+                    requir={false}
                     config={{
                       optLabel: "name",
                       placeHolder: "Unions",
@@ -234,6 +281,7 @@ const EditLead = () => {
                   <input
                     type="text"
                     name="village"
+                    defaultValue={singleLead?.address.village}
                     placeholder="Enter Customer Village"
                     className="input input-bordered w-full"
                     required

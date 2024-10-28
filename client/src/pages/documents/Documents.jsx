@@ -17,21 +17,10 @@ const Documents = () => {
   const tooltipRef = useRef(null);
   const dt = useRef(null);
 
-  const [customers, refetch, isLoading, isPending] = useCustomers("paid");
+  const [customers, refetch, isPending] = useCustomers("paid");
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   });
-  const [globalFilterValue, setGlobalFilterValue] = useState("");
-
-  const onGlobalFilterChange = (e) => {
-    const value = e.target.value;
-    let _filters = { ...filters };
-
-    _filters["global"].value = value;
-
-    setFilters(_filters);
-    setGlobalFilterValue(value);
-  };
 
   useEffect(() => {
     refetch();
@@ -44,7 +33,7 @@ const Documents = () => {
         <GlobalFilter setFilters={setFilters} filters={filters} />
 
         <div className="flex align-items-center  justify-between gap-2">
-          <ExportCSV dt={dt} />
+          <ExportCSV dt={dt} customers={customers} />
           <ExportExcel product={customers} />
           <ExportPDF product={customers} />
         </div>
@@ -53,10 +42,11 @@ const Documents = () => {
   };
 
   const saleDateTemplate = (rowData) => {
+    return <span>{moment(rowData.saledate).format("DD-MMM-YYYY")}</span>;
+  };
+  const statusDateTemplate = (rowData) => {
     return (
-      <>
-        <span>{moment(rowData.saledate).format("DD-MMM-YYYY")}</span>
-      </>
+      <span>{moment(rowData.cardStatus.docDate).format("DD-MMM-YYYY")}</span>
     );
   };
 
@@ -112,6 +102,9 @@ const Documents = () => {
   const footer = `In total there are ${
     customers ? customers.length : 0
   } Customers.`;
+
+  console.log(customers);
+
   return (
     <div className="card w-full mx-auto">
       <Tooltip ref={tooltipRef} target=".custom-tooltip" className="text-sm" />
@@ -123,7 +116,11 @@ const Documents = () => {
         footer={footer}
         loading={isPending}
         filters={filters}
-        globalFilterFields={["customerInfo.name"]}
+        globalFilterFields={[
+          "customerInfo.name",
+          "productInfo.models",
+          "productInfo.engine",
+        ]}
         stripedRows
         paginator
         rows={10}
@@ -148,11 +145,13 @@ const Documents = () => {
           header="Customer"
           style={{ minWidth: "10rem" }}
         />
-        <Column
+        {
+          /* <Column
           field="customerInfo.number"
           header="Number"
           // style={{ minWidth: "8rem" }}
-        />
+        /> */
+        }
         <Column
           field="productInfo.models"
           header="Model"
@@ -169,6 +168,12 @@ const Documents = () => {
           dataType="boolean"
           // style={{ minWidth: "6rem" }}
           body={statusTemplate}
+        />
+        <Column
+          header="Status Date"
+          dataType="boolean"
+          // style={{ minWidth: "6rem" }}
+          body={statusDateTemplate}
         />
         <Column
           header="Action"

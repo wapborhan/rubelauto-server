@@ -10,28 +10,16 @@ import ExportExcel from "../../components/shared/exportButton/ExportExcel";
 import ExportPDF from "../../components/shared/exportButton/ExportPDF";
 import useCustomers from "../../hooks/useCustomers";
 import GlobalFilter from "../../components/shared/GlobalFilter";
-import useAxiosPublic from "../../hooks/useAxiosPublic";
 import SeizedBack from "./seized/SeizedBack";
 
 export default function Customer() {
   const path = useParams();
   const tooltipRef = useRef(null);
   const dt = useRef(null);
-  const [customers, refetch, isLoading, isPending] = useCustomers(path.status);
+  const [customers, refetch, isPending] = useCustomers(path.status);
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   });
-  const [globalFilterValue, setGlobalFilterValue] = useState("");
-
-  const onGlobalFilterChange = (e) => {
-    const value = e.target.value;
-    let _filters = { ...filters };
-
-    _filters["global"].value = value;
-
-    setFilters(_filters);
-    setGlobalFilterValue(value);
-  };
 
   useEffect(() => {
     refetch();
@@ -53,63 +41,65 @@ export default function Customer() {
   };
 
   const saleDateTemplate = (rowData) => {
-    return (
-      <>
-        <span>{moment(rowData.saledate).format("DD-MMM-YYYY")}</span>
-      </>
-    );
+    return <span>{moment(rowData.saledate).format("DD-MMM-YYYY")}</span>;
   };
 
   const verifiedBodyTemplate = (rowData) => {
     return (
       <div className="flex gap-3 justify-center">
-        {path.status === "cash" ? (
-          ""
-        ) : (
-          <NavLink
-            to={`/customer/view/${rowData?.cardno}`}
-            className="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline custom-tooltip cursor-pointer"
-            data-pr-tooltip="Details"
-            data-pr-position="top"
-          >
-            <i className="pi pi-eye"></i>
-          </NavLink>
-        )}
-        {path.status === "running" ? (
-          <>
+        {path.status === "cash"
+          ? (
+            ""
+          )
+          : (
             <NavLink
-              to={`/customer/payment/${rowData?.cardno}`}
+              to={`/customer/view/${rowData?.cardno}`}
               className="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline custom-tooltip cursor-pointer"
-              data-pr-tooltip="Payment"
+              data-pr-tooltip="Details"
               data-pr-position="top"
             >
-              <i className="pi pi-money-bill"></i>
+              <i className="pi pi-eye"></i>
             </NavLink>
-            <NavLink
-              to={`/customer/seized/${rowData?.cardno}`}
-              className="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline custom-tooltip cursor-pointer"
-              data-pr-tooltip="Seized"
-              data-pr-position="top"
-            >
-              <i className="pi pi-lock"></i>
-            </NavLink>
-          </>
-        ) : (
-          ""
-        )}
+          )}
+        {path.status === "running"
+          ? (
+            <>
+              <NavLink
+                to={`/customer/payment/${rowData?.cardno}`}
+                className="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline custom-tooltip cursor-pointer"
+                data-pr-tooltip="Payment"
+                data-pr-position="top"
+              >
+                <i className="pi pi-money-bill"></i>
+              </NavLink>
+              <NavLink
+                to={`/customer/seized/${rowData?.cardno}`}
+                className="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline custom-tooltip cursor-pointer"
+                data-pr-tooltip="Seized"
+                data-pr-position="top"
+              >
+                <i className="pi pi-lock"></i>
+              </NavLink>
+            </>
+          )
+          : (
+            ""
+          )}
 
-        {path.status === "cash" || path.status === "running" ? (
-          <NavLink
-            to={`/customer/paid/${rowData?.cardno}`}
-            className="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline custom-tooltip cursor-pointer"
-            data-pr-tooltip="Paid"
-            data-pr-position="top"
-          >
-            <i className="pi pi-times-circle"></i>
-          </NavLink>
-        ) : (
-          ""
-        )}
+        {path.status === "cash" || path.status === "running"
+          ? (
+            <NavLink
+              to={`/customer/paid/${rowData?.cardno}`}
+              className="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline custom-tooltip cursor-pointer"
+              data-pr-tooltip="Paid"
+              data-pr-position="top"
+            >
+              <i className="pi pi-times-circle"></i>
+            </NavLink>
+          )
+          : (
+            ""
+          )}
         {path.status === "seized" ? <SeizedBack data={rowData} /> : ""}
       </div>
     );
@@ -154,11 +144,13 @@ export default function Customer() {
           header="Card No."
           style={{ minWidth: "7.5rem" }}
         />
-        {/* <Column
+        {
+          /* <Column
     field="productCond"
     header="Condition"
     // style={{ minWidth: "8rem" }}
-  /> */}
+  /> */
+        }
         <Column
           field="customerInfo.name"
           header="Customer"
