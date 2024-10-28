@@ -30,14 +30,13 @@ const Paid = () => {
   };
   const postData = (data) => {
     console.log(data);
-    showSuccess();
     axiosPublic
       .patch(`/customer/paid/${cardNo}`, data)
       .then(function (response) {
         showSuccess();
-        // setTimeout(() => {
-        //   navigate(`/documents`);
-        // }, 3000);
+        setTimeout(() => {
+          navigate(`/documents`);
+        }, 3000);
         console.log(response);
       })
       .catch(function (error) {

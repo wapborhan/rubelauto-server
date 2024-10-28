@@ -14,7 +14,6 @@ router
   .get("/all/:status", allCustomer)
   .get("/:cardNo", cardCustomer)
   .patch("/seized/:cardNo", seizedCustomer)
-  .patch("/paid/:cardNo", paidCustomer)
-  .patch("/documents/update/:cardNo", docUpdate);
+  .patch("/paid/:cardNo", paidCustomer);
 
 module.exports = router;

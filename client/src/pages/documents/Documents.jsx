@@ -10,14 +10,13 @@ import ExportExcel from "../../components/shared/exportButton/ExportExcel";
 import ExportPDF from "../../components/shared/exportButton/ExportPDF";
 import useCustomers from "../../hooks/useCustomers";
 import GlobalFilter from "../../components/shared/GlobalFilter";
-import useAxiosPublic from "../../hooks/useAxiosPublic";
-import Modal from "./Modal";
+import UpdateDocument from "./UpdateDocument";
 
 const Documents = () => {
   const path = useParams();
   const tooltipRef = useRef(null);
   const dt = useRef(null);
-  const [selectedCardNo, setSelectedCardNo] = useState(null);
+
   const [customers, refetch, isLoading, isPending] = useCustomers("paid");
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -64,10 +63,10 @@ const Documents = () => {
   const statusTemplate = (rowData) => {
     return (
       <div className="flex gap-3 justify-center">
-        {rowData.cardStatus.docStatus === "paid"
+        {rowData.cardStatus.docStatus === "delivared"
           ? (
-            <span className="bg-red-500 text-white py-1 px-3 rounded-md text-sm">
-              Pending
+            <span className="bg-blue-500 text-white py-1 px-3 rounded-md text-sm">
+              Delivared
             </span>
           )
           : rowData.cardStatus.docStatus === "complete"
@@ -77,8 +76,8 @@ const Documents = () => {
             </span>
           )
           : (
-            <span className="bg-blue-500 text-white py-1 px-3 rounded-md text-sm">
-              Delivared
+            <span className="bg-red-500 text-white py-1 px-3 rounded-md text-sm">
+              Pending
             </span>
           )}
       </div>
@@ -97,11 +96,9 @@ const Documents = () => {
           <i className="pi pi-eye"></i>
         </NavLink>
 
-        <Modal
-          rowData={rowData}
-          cardNo={rowData?.cardno}
-          setSelectedCardNo={setSelectedCardNo}
-          selectedCardNo={selectedCardNo}
+        <UpdateDocument
+          data={rowData}
+          refetch={refetch}
         />
       </div>
     );

@@ -5,6 +5,7 @@ const stockRouter = require("./stock");
 const userRouter = require("./user");
 const installmentRouter = require("./installment");
 const customerRouter = require("./customer");
+const documentRouter = require("./document");
 
 const routers = [
   {
@@ -30,6 +31,10 @@ const routers = [
   {
     path: "/api/installment",
     handler: installmentRouter,
+  },
+  {
+    path: "/api/document",
+    handler: documentRouter,
   },
   {
     path: "/api/user",
