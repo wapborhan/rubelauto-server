@@ -12,7 +12,7 @@ const useSingleSuplier = (id) => {
   } = useQuery({
     queryKey: ["singleCustomer", id],
     queryFn: async () => {
-      const res = await axiosPublic.get(`/suplier/${id}`);
+      const res = await axiosPublic.get(`/supplier/${id}`);
       return res.data.data;
     },
   });

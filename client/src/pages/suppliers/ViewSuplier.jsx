@@ -64,7 +64,7 @@ function ViewSuplier() {
           <i className="pi pi-eye"></i>
         </NavLink>
         <NavLink
-          to={`/contact/lead/edit/${rowData?._id}`}
+          to={`/contact/supplier/edit/${rowData?._id}`}
           className="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline custom-tooltip cursor-pointer"
           data-pr-tooltip="Edit"
           data-pr-position="top"

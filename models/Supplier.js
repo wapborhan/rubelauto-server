@@ -1,6 +1,6 @@
 const { model, Schema } = require("mongoose");
 
-const suplierSchema = new Schema(
+const supplierSchema = new Schema(
   {
     bssLogoUrl: { type: String },
     bssName: { type: String },
@@ -14,6 +14,6 @@ const suplierSchema = new Schema(
   { versionKey: false }
 );
 
-const Supliers = model("supliers", suplierSchema);
+const Suppliers = model("supliers", supplierSchema);
 
-module.exports = Supliers;
+module.exports = Suppliers;

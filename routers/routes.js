@@ -1,5 +1,5 @@
 const leadRouter = require("./lead");
-const suplierRouter = require("./suplier");
+const supplierRouter = require("./supplier");
 const productRouter = require("./product");
 const stockRouter = require("./stock");
 const userRouter = require("./user");
@@ -13,8 +13,8 @@ const routers = [
     handler: leadRouter,
   },
   {
-    path: "/api/suplier",
-    handler: suplierRouter,
+    path: "/api/supplier",
+    handler: supplierRouter,
   },
   {
     path: "/api/product",

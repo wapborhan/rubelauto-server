@@ -15,6 +15,7 @@ import EditLead from "./lead/EditLead";
 //
 import AddSuplier from "./suppliers/AddSuplier";
 import ViewSuplier from "./suppliers/ViewSuplier";
+import UpdateSuplier from "./suppliers/UpdateSuplier";
 import SuplierDetails from "./suppliers/SuplierDetails";
 //
 import AddProduct from "./product/AddProduct";
@@ -47,6 +48,7 @@ export {
   //
   AddSuplier,
   ViewSuplier,
+  UpdateSuplier,
   SuplierDetails,
   //
   LeadDetails,

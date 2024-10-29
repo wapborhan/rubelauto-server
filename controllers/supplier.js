@@ -1,7 +1,7 @@
-const Supliers = require("../models/Suplier");
+const Supliers = require("../models/Supplier");
 var ObjectId = require("mongoose").Types.ObjectId;
 
-exports.createSuplier = async (req, res, next) => {
+exports.createSupplier = async (req, res, next) => {
   try {
     const suplierData = req.body;
 
@@ -24,7 +24,7 @@ exports.createSuplier = async (req, res, next) => {
   }
 };
 
-exports.allSuplier = async (req, res, next) => {
+exports.allSupplier = async (req, res, next) => {
   try {
     const data = await Supliers.find({});
 
@@ -44,7 +44,7 @@ exports.allSuplier = async (req, res, next) => {
   }
 };
 
-exports.singleSuplier = async (req, res, next) => {
+exports.singleSupplier = async (req, res, next) => {
   try {
     const id = req.params.id;
     const filter = { _id: new ObjectId(id) };
@@ -56,6 +56,48 @@ exports.singleSuplier = async (req, res, next) => {
       status: 200,
       message: "Supplier Found",
       data: data,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      status: 500,
+      message: error.message,
+      data: {},
+    });
+  }
+};
+
+exports.updateSupplier = async (req, res, next) => {
+  try {
+    const suplierData = req.body;
+    const id = req.params.id;
+
+    const { bssLogoUrl, bssName, empName, email, mobile, address } =
+      suplierData;
+
+    const updatedLead = await Supliers.findOneAndUpdate(
+      { _id: new ObjectId(id) },
+      {
+        $set: {
+          bssLogoUrl: bssLogoUrl,
+          bssName: bssName,
+          empName: empName,
+          email: email,
+          mobile: mobile,
+          address: address,
+        },
+      },
+      { new: true }
+    );
+    if (!updatedLead) {
+      return res.status(404).send({ message: "Suplier not found" });
+    }
+
+    res.status(200).json({
+      success: true,
+      status: 200,
+      message: "Suplier Updated",
+      data: updatedLead,
     });
   } catch (error) {
     res.status(500).json({

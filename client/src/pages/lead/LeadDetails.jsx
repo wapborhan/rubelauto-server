@@ -18,35 +18,35 @@ const LeadDetails = () => {
             <h3 className="mb-5">Customer Details</h3>
             <ul className="w-full space-y-2">
               <li>
-                <span className="font-bold">Status: </span>
+                <span className="font-bold">Status:</span>
                 {singleLead?.status}
               </li>
               <li>
-                <span className="font-bold">Name: </span>
+                <span className="font-bold">Name:</span>
                 {singleLead?.name}
               </li>
               <li>
-                <span className="font-bold">Father Name: </span>
+                <span className="font-bold">Father Name:</span>
                 {singleLead?.coname}
               </li>
               <li>
-                <span className="font-bold">Mobile: </span>
+                <span className="font-bold">Mobile:</span>
                 {singleLead?.number}
               </li>
               <li>
-                <span className="font-bold">Address: </span>
-                {singleLead?.address}
+                <span className="font-bold">Address:</span>
+                {/* {singleLead?.address} */}
               </li>
               <li>
-                <span className="font-bold">NID: </span>
+                <span className="font-bold">NID:</span>
                 {singleLead?.nid}
               </li>
               <li>
-                <span className="font-bold">Location: </span>
+                <span className="font-bold">Location:</span>
                 {singleLead?.location}
               </li>
               <li>
-                <span className="font-bold">Media: </span>
+                <span className="font-bold">Media:</span>
                 {singleLead?.media}
               </li>
             </ul>
@@ -61,23 +61,23 @@ const LeadDetails = () => {
                   <div className="w-full space-y-2">
                     <ul className="list space-y-4">
                       <li>
-                        <span className="font-bold">Name: </span>
+                        <span className="font-bold">Name:</span>
                         {item?.guarantor1?.name}
                       </li>
                       <li>
-                        <span className="font-bold">Father Name: </span>
+                        <span className="font-bold">Father Name:</span>
                         {item?.guarantor1?.coname}
                       </li>
                       <li>
-                        <span className="font-bold">Mobile: </span>
+                        <span className="font-bold">Mobile:</span>
                         {item?.guarantor1?.mobile}
                       </li>
                       <li>
-                        <span className="font-bold">Address: </span>
+                        <span className="font-bold">Address:</span>
                         {item?.guarantor1?.address}
                       </li>
                       <li>
-                        <span className="font-bold">NID: </span>
+                        <span className="font-bold">NID:</span>
                         {item?.guarantor1?.nid}
                       </li>
                     </ul>
@@ -88,23 +88,23 @@ const LeadDetails = () => {
                   <div className="w-full space-y-2">
                     <ul className="list space-y-4">
                       <li>
-                        <span className="font-bold">Name: </span>
+                        <span className="font-bold">Name:</span>
                         {item?.guarantor2?.name}
                       </li>
                       <li>
-                        <span className="font-bold">Father Name: </span>
+                        <span className="font-bold">Father Name:</span>
                         {item?.guarantor2?.coname}
                       </li>
                       <li>
-                        <span className="font-bold">Mobile: </span>
+                        <span className="font-bold">Mobile:</span>
                         {item?.guarantor2?.mobile}
                       </li>
                       <li>
-                        <span className="font-bold">Address: </span>
+                        <span className="font-bold">Address:</span>
                         {item?.guarantor2?.address}
                       </li>
                       <li>
-                        <span className="font-bold">NID: </span>
+                        <span className="font-bold">NID:</span>
                         {item?.guarantor2?.nid}
                       </li>
                     </ul>

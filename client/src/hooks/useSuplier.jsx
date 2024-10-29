@@ -11,7 +11,7 @@ const useSuplier = () => {
   } = useQuery({
     queryKey: ["allSuplier"],
     queryFn: async () => {
-      const res = await axiosPublic.get(`/suplier`);
+      const res = await axiosPublic.get(`/supplier`);
       return res.data.data;
     },
   });

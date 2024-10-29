@@ -73,6 +73,10 @@ const routes = createBrowserRouter([
             path: "supplier/view/:id",
             element: <All.SuplierDetails />,
           },
+          {
+            path: "supplier/edit/:id",
+            element: <All.UpdateSuplier />,
+          },
         ],
       },
       // Product
