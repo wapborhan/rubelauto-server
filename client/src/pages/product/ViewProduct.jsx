@@ -8,17 +8,20 @@ import ExportPDF from "../../components/shared/exportButton/ExportPDF";
 import ExportExcel from "../../components/shared/exportButton/ExportExcel";
 import ExportCSV from "../../components/shared/exportButton/ExportCSV";
 import GlobalFilter from "../../components/shared/GlobalFilter";
+import ProductDelete from "./ProductDelete";
+import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
+import { Toast } from "primereact/toast";
 
 export default function ViewProduct() {
   const dt = useRef(null);
-  const [product, isLoading] = useProduct();
+  const toast = useRef(null);
+  const axiosPublic = useAxiosPublic();
+  const [product, refetch, isLoading] = useProduct();
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   });
-
-  const productDelete = () => {
-    alert("Function Cooming Soon.");
-  };
+  const [currentProductId, setCurrentProductId] = useState(null);
 
   const renderHeader = () => {
     return (
@@ -31,6 +34,50 @@ export default function ViewProduct() {
         </div>
       </div>
     );
+  };
+
+  // Delete handler to trigger confirmation dialog
+  const handleDelete = (id) => {
+    setCurrentProductId(id); // Set the product to delete
+    confirmDialog({
+      message: "Are you sure you want to proceed?",
+      header: "Seized Back Confirmation",
+      icon: "pi pi-exclamation-triangle",
+      acceptLabel: "Confirm",
+      rejectLabel: "Cancel",
+      accept: () => performDelete(id),
+      reject: () =>
+        toast.current.show({
+          severity: "warn",
+          summary: "Cancelled",
+          detail: "Delete action cancelled.",
+          life: 3000,
+        }),
+    });
+  };
+
+  const performDelete = (id) => {
+    axiosPublic
+      .delete(`/product/${id}`)
+      .then((res) => {
+        if (res.status === 200) {
+          refetch();
+          toast.current.show({
+            severity: "success",
+            summary: "Success",
+            detail: `Product ${id} deleted successfully.`,
+            life: 3000,
+          });
+        }
+      })
+      .catch((err) => {
+        toast.current.show({
+          severity: "error",
+          summary: "Error",
+          detail: `Failed to delete product ${id}.`,
+          life: 3000,
+        });
+      });
   };
 
   const brandImageTemplate = (rowData) => {
@@ -59,15 +106,10 @@ export default function ViewProduct() {
         >
           <i className="pi pi-pencil"></i>
         </NavLink>
-
-        <button
-          onClick={productDelete}
-          className="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline custom-tooltip cursor-pointer"
-          data-pr-tooltip="Delete"
-          data-pr-position="top"
-        >
-          <i className="pi pi-trash"></i>
-        </button>
+        <ProductDelete
+          id={rowData._id}
+          onDelete={() => handleDelete(rowData._id)}
+        />
       </div>
     );
   };
@@ -78,6 +120,8 @@ export default function ViewProduct() {
 
   return (
     <div className="card">
+      <Toast ref={toast} />
+      <ConfirmDialog />
       <DataTable
         ref={dt}
         value={product}

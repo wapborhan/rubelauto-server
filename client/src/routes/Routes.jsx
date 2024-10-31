@@ -33,7 +33,7 @@ const routes = createBrowserRouter([
         path: "/dashboard",
         element: <All.Dashboard />,
       },
-      // Lead
+      // Contact
       {
         path: "/contact",
         children: [
@@ -69,6 +69,7 @@ const routes = createBrowserRouter([
             path: "supplier/view",
             element: <All.ViewSuplier />,
           },
+
           {
             path: "supplier/view/:id",
             element: <All.SuplierDetails />,

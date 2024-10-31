@@ -12,7 +12,7 @@ const customerSchema = new Schema(
       name: { type: String },
       coname: { type: String },
       nid: { type: String },
-      address: { type: String },
+      address: { type: Object },
       number: { type: String },
       location: { type: String },
       media: { type: String },

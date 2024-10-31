@@ -1,12 +1,49 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import useProdType from "../../hooks/data/useProdType";
 import { Dropdown } from "primereact/dropdown";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
+import useSingleProduct from "../../hooks/usesingleProduct";
+import { useNavigate, useParams } from "react-router-dom";
+import Loading from "../../components/shared/Loading";
+import { Toast } from "primereact/toast";
 
 const EditProduct = () => {
+  const toast = useRef(null);
+  const navigate = useNavigate();
   const axiosPublic = useAxiosPublic();
+  const { id } = useParams();
+  const [singleProduct, refetch, isLoading, isPending] = useSingleProduct(id);
   const [proTypeList] = useProdType();
-  const [prodType, setProdType] = useState(null);
+  const [prodType, setProdType] = useState();
+
+  useEffect(() => {
+    refetch();
+  }, []);
+
+  const [brandImg, setBrandImg] = useState("");
+  const [brandName, setBrandName] = useState("");
+  const [sku, setSku] = useState("");
+  const [modelImg, setModelImg] = useState("");
+  const [modelName, setModelName] = useState("");
+  const [cashPrice, setCashPrice] = useState("");
+  const [creditPrice, setCreditPrice] = useState("");
+
+  useEffect(() => {
+    if (singleProduct) {
+      setBrandImg(singleProduct.brandImg || "");
+      setBrandName(singleProduct.brandName || "");
+      setSku(singleProduct.sku || "");
+      setModelImg(singleProduct.modelImg || "");
+      setModelName(singleProduct.modelName || "");
+      setCashPrice(singleProduct.cashPrice || "");
+      setCreditPrice(singleProduct.creditPrice || "");
+      setProdType(
+        proTypeList.find((type) => type.sku === singleProduct.typeCode),
+      );
+    }
+  }, [singleProduct]);
+
+  // console.log(singleProduct);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -18,7 +55,9 @@ const EditProduct = () => {
     const modelName = form.modelName.value;
     const cashPrice = form.cashPrice.value;
     const creditPrice = form.creditPrice.value;
-    const typeCode = prodType.sku;
+    const typeCode = prodType?.name === undefined
+      ? singleProduct?.typeCode
+      : prodType?.sku;
     const sku = form.sku.value;
 
     const inputData = {
@@ -33,22 +72,34 @@ const EditProduct = () => {
     };
     console.log(inputData);
 
-    // axiosPublic.post("/product", inputData).then((res) => {
-    //   if (res.status === 200) {
-    //     alert("Product Added.");
-    //     // reset();
-    //     // Swal.fire({
-    //     //   position: "top-end",
-    //     //   icon: "success",
-    //     //   title: "Meals Added Sucessfull.",
-    //     //   showConfirmButton: false,
-    //     //   timer: 1500,
-    //     // });
-    //   }
-    // });
+    axiosPublic.patch(`/product/${id}`, inputData).then((res) => {
+      if (res.status === 200) {
+        toast.current.show({
+          severity: "success",
+          summary: "Success",
+          detail: "Product Updated",
+        });
+        setTimeout(() => {
+          navigate("/products/view");
+        }, 3000);
+      }
+    });
   };
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
   return (
     <div className="addProduct">
+      <Toast
+        ref={toast}
+        pt={{
+          message: ({ index }) => ({
+            className: `bg-yellow-${((index > 5 && 5) || index || 1) * 100}`,
+          }),
+        }}
+      />
       <div className="back">{/* <BackToHomePage /> */}</div>
       <div className="sect  py-4 w-full mx-auto">
         <div className="content space-y-5">
@@ -69,6 +120,7 @@ const EditProduct = () => {
                   <input
                     type="text"
                     name="brandImg"
+                    defaultValue={brandImg}
                     placeholder="Enter Brand Image URL"
                     className="input input-bordered w-full"
                   />
@@ -80,14 +132,20 @@ const EditProduct = () => {
                   <input
                     type="text"
                     name="brandName"
+                    defaultValue={brandName}
                     placeholder="Enter Brand Name"
                     className="input input-bordered w-full"
                     // required
                   />
                 </div>
                 <div className="form-control w-full">
-                  <label className="label">
-                    <span className="label-text font-bold">Type Code</span>
+                  <label className="label flex justify-between">
+                    <span className="label-text font-bold">Type Code</span>{" "}
+                    <b className=" text-red-500">
+                      {prodType?.sku === undefined
+                        ? singleProduct?.typeCode
+                        : prodType?.name}
+                    </b>
                   </label>
                   <Dropdown
                     value={prodType}
@@ -106,6 +164,7 @@ const EditProduct = () => {
                   <input
                     type="text"
                     name="sku"
+                    defaultValue={sku}
                     placeholder="Enter Product SKU"
                     className="input input-bordered w-full"
                     // required
@@ -123,6 +182,7 @@ const EditProduct = () => {
                   <input
                     type="text"
                     name="modelImg"
+                    defaultValue={modelImg}
                     placeholder="Enter Customer Village"
                     className="input input-bordered w-full"
                   />
@@ -134,6 +194,7 @@ const EditProduct = () => {
                   <input
                     type="text"
                     name="modelName"
+                    defaultValue={modelName}
                     placeholder="Enter Product Name"
                     className="input input-bordered w-full"
                     // required
@@ -146,6 +207,7 @@ const EditProduct = () => {
                   <input
                     type="number"
                     name="cashPrice"
+                    defaultValue={cashPrice}
                     placeholder="Enter Product Price"
                     className="input input-bordered w-full"
                     // required
@@ -158,6 +220,7 @@ const EditProduct = () => {
                   <input
                     type="number"
                     name="creditPrice"
+                    defaultValue={creditPrice}
                     placeholder="Enter Product Price"
                     className="input input-bordered w-full"
                     // required

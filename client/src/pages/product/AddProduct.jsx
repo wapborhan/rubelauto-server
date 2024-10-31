@@ -78,7 +78,7 @@ const AddProduct = () => {
               <div className="frist flex gap-5 lg:flex-nowrap flex-wrap justify-between">
                 <div className="form-control w-full">
                   <label className="label">
-                    <span className="label-text font-bold">Product</span>
+                    <span className="label-text font-bold">Supplier</span>
                   </label>
                   <SearchAbleDropDown
                     state={suplier}
@@ -94,7 +94,7 @@ const AddProduct = () => {
                 </div>
                 <div className="form-control w-full">
                   <label className="label">
-                    <span className="label-text font-bold">Type Code</span>
+                    <span className="label-text font-bold">Product Type</span>
                   </label>
                   <Dropdown
                     value={prodType}
