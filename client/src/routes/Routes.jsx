@@ -167,6 +167,19 @@ const routes = createBrowserRouter([
           },
         ],
       },
+      {
+        path: "/showroom",
+        children: [
+          {
+            path: "add",
+            element: <All.AddShowroom />,
+          },
+          {
+            path: "view",
+            element: <All.ViewShowroom />,
+          },
+        ],
+      },
       // Staff
       {
         path: "/staff",

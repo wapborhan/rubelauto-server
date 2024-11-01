@@ -34,7 +34,7 @@ const ExportCSV = ({ dt, customers }) => {
       label="CSV"
       icon="pi pi-file"
       rounded
-      className="p-badge-danger border-2 !bg-[#ff4646] px-4 py-2 text-white"
+      className="p-badge-danger border-2 !bg-[#198754] px-4 py-2 text-white"
       // onClick={() => exportCSV(false)}
       onClick={exportCSV}
       data-pr-tooltip="CSV"

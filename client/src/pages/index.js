@@ -29,6 +29,9 @@ import AddSale from "./sale/AddSale";
 //
 import Documents from "./documents/Documents";
 //
+import AddShowroom from "./showroom/AddShowroom";
+import ViewShowroom from "./showroom/ViewShowroom";
+//
 import ViewStaff from "./staff/ViewStaff";
 import StaffDetails from "./staff/StaffDetails";
 //
@@ -65,4 +68,6 @@ export {
   Profile,
   Settings,
   Documents,
+  AddShowroom,
+  ViewShowroom,
 };

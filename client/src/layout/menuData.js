@@ -73,17 +73,18 @@ export const menuData = [
       },
     ],
   },
+
   {
     label: "Customers",
     icon: "pi-user",
     subMenu: [
       {
-        label: "Running Customers",
+        label: "Running",
         path: "/customer/running",
       },
 
       {
-        label: "Seized Customer",
+        label: "Seized",
         path: "/customer/seized",
       },
     ],
@@ -92,6 +93,35 @@ export const menuData = [
     label: "Documents",
     icon: "pi-chart-bar",
     path: "/documents",
+  },
+  {
+    label: "Acounts",
+    icon: "pi-user",
+    subMenu: [
+      {
+        label: "Income",
+        path: "/account/income",
+      },
+
+      {
+        label: "Cost",
+        path: "/account/cost",
+      },
+    ],
+  },
+  {
+    label: "Showroom",
+    icon: "pi-database",
+    subMenu: [
+      {
+        label: "Add Showroom",
+        path: "/showroom/add",
+      },
+      {
+        label: "Showroom List",
+        path: "/showroom/view",
+      },
+    ],
   },
   {
     label: "Staff",

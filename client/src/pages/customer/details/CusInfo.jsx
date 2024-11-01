@@ -35,18 +35,18 @@ const CusInfo = ({ singleCustomer }) => {
                 </tr>
                 <tr>
                   <td className="tdwd1">Address</td>
-                  <td className="tdwd">{customerInfo?.address}</td>
+                  {/* <td className="tdwd">{customerInfo?.address}</td> */}
                 </tr>
                 <tr>
-                  <td className="tdwd1">Location Mark </td>
+                  <td className="tdwd1">Location Mark</td>
                   <td className="tdwd">{customerInfo?.location}</td>
                 </tr>
                 <tr>
-                  <td className="tdwd1">Media & Number </td>
+                  <td className="tdwd1">Media & Number</td>
                   <td className="tdwd">{customerInfo?.media}</td>
                 </tr>
                 <tr>
-                  <td className="tdwd1">Guarantor 1 </td>
+                  <td className="tdwd1">Guarantor 1</td>
                   <td className="tdwd"></td>
                 </tr>
                 <tr>
@@ -67,30 +67,30 @@ const CusInfo = ({ singleCustomer }) => {
               </thead>
               <tbody className="p-datatable-tbody">
                 <tr>
-                  <td className="tdwd1">Sale Price </td>
+                  <td className="tdwd1">Sale Price</td>
                   <td className="tdwd">{accountInfo?.saleprice}</td>
                 </tr>
 
                 <tr>
-                  <td className="tdwd1">Downpayment </td>
+                  <td className="tdwd1">Downpayment</td>
                   <td className="tdwd">{accountInfo?.dpamount}</td>
                 </tr>
                 <tr>
-                  <td className="tdwd1">Hire Price </td>
+                  <td className="tdwd1">Hire Price</td>
                   <td className="tdwd">{accountInfo?.hireprice}</td>
                 </tr>
                 <tr>
-                  <td className="tdwd1">Installment Date </td>
+                  <td className="tdwd1">Installment Date</td>
                   <td className="tdwd">
                     {moment(accountInfo?.insdate).format("D/MM/YY")}
                   </td>
                 </tr>
                 <tr>
-                  <td className="tdwd1">Installment Amount </td>
+                  <td className="tdwd1">Installment Amount</td>
                   <td className="tdwd">{accountInfo?.insamount}</td>
                 </tr>
                 <tr>
-                  <td className="tdwd1">Conditation Date </td>
+                  <td className="tdwd1">Conditation Date</td>
                   <td className="tdwd">
                     {accountInfo?.conddate
                       ? moment(accountInfo?.conddate).format("D/MM/YY")
@@ -98,11 +98,11 @@ const CusInfo = ({ singleCustomer }) => {
                   </td>
                 </tr>
                 <tr>
-                  <td className="tdwd1">Conditation Amount </td>
+                  <td className="tdwd1">Conditation Amount</td>
                   <td className="tdwd">{accountInfo?.condamount}</td>
                 </tr>
                 <tr>
-                  <td className="tdwd1">Credit balance </td>
+                  <td className="tdwd1">Credit balance</td>
                   <td className="tdwd">{creditBalance}</td>
                 </tr>
               </tbody>
@@ -119,7 +119,7 @@ const CusInfo = ({ singleCustomer }) => {
               </thead>
               <tbody className="p-datatable-tbody">
                 <tr>
-                  <td className="tdwd1">Sale Date </td>
+                  <td className="tdwd1">Sale Date</td>
                   <td className="tdwd">{moment(saledate).format("D/MM/YY")}</td>
                 </tr>
                 <tr>
@@ -127,20 +127,20 @@ const CusInfo = ({ singleCustomer }) => {
                   <td className="tdwd">{cardno}</td>
                 </tr>
                 <tr>
-                  <td className="tdwd1">Showroom </td>
+                  <td className="tdwd1">Showroom</td>
                   <td className="tdwd">{showRoom}</td>
                 </tr>
                 <tr>
-                  <td className="tdwd1">Model </td>
+                  <td className="tdwd1">Model</td>
                   <td className="tdwd">{productInfo?.models}</td>
                 </tr>
 
                 <tr>
-                  <td className="tdwd1">Engine No. </td>
+                  <td className="tdwd1">Engine No.</td>
                   <td className="tdwd">{productInfo?.engine}</td>
                 </tr>
                 <tr>
-                  <td className="tdwd1">Chassis No. </td>
+                  <td className="tdwd1">Chassis No.</td>
                   <td className="tdwd">{productInfo?.chassis}</td>
                 </tr>
                 <tr>

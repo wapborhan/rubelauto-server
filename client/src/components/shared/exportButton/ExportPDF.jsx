@@ -47,7 +47,7 @@ const ExportPDF = ({ product }) => {
       label="PDF"
       onClick={exportPdf}
       data-pr-tooltip="PDF"
-      className="p-badge-danger border-2 !bg-[#ff4646] px-4 py-2 text-white"
+      className="p-badge-danger border-2 !bg-[#198754] px-4 py-2 text-white"
     />
   );
 };

@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useRef, useState } from "react";
 import { FilterMatchMode } from "primereact/api";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
@@ -41,7 +41,7 @@ const ViewPurchase = () => {
   };
   const categoriesTemplate = (rowData) => {
     const filterData = proTypeList?.find(
-      (item) => item?.sku === rowData?.categories
+      (item) => item?.sku === rowData?.categories,
     );
     return (
       <div className="flex align-items-center gap-2">
@@ -50,20 +50,20 @@ const ViewPurchase = () => {
     );
   };
 
-  const verifiedBodyTemplate = (rowData) => {
-    return (
-      <div className="flex gap-2">
-        <NavLink
-          to={`/products/edit/${rowData?._id}`}
-          className="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline custom-tooltip cursor-pointer"
-          data-pr-tooltip="Update"
-          data-pr-position="top"
-        >
-          <i className="pi pi-pencil"></i>
-        </NavLink>
-      </div>
-    );
-  };
+  // const verifiedBodyTemplate = (rowData) => {
+  //   return (
+  //     <div className="flex gap-2">
+  //       <NavLink
+  //         to={`/products/edit/${rowData?._id}`}
+  //         className="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline custom-tooltip cursor-pointer"
+  //         data-pr-tooltip="Update"
+  //         data-pr-position="top"
+  //       >
+  //         <i className="pi pi-pencil"></i>
+  //       </NavLink>
+  //     </div>
+  //   );
+  // };
 
   const tabID = (data, props) => {
     return props.rowIndex + 1;
@@ -162,12 +162,14 @@ const ViewPurchase = () => {
           filterPlaceholder="Search"
           // style={{ minWidth: "8rem" }}
         />
-        <Column
+        {
+          /* <Column
           header="A"
           dataType="boolean"
           // style={{ minWidth: "6rem" }}
           body={verifiedBodyTemplate}
-        />
+        /> */
+        }
       </DataTable>
     </div>
   );

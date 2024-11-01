@@ -9,13 +9,17 @@ const themes = {
     sidebar: {
       backgroundColor: "#ffffff",
       color: "#000",
+      hover: {
+        backgroundColor: "#198754",
+        color: "#000",
+      },
     },
     menu: {
       menuContent: "#fbfcfd",
       icon: "#000",
       hover: {
-        backgroundColor: "#ca5d5d",
-        color: "#fff",
+        backgroundColor: "#198754",
+        color: "#000",
       },
       disabled: {
         color: "#9fb6cf",
@@ -31,8 +35,8 @@ const themes = {
       menuContent: "#082440",
       icon: "#59d0ff",
       hover: {
-        backgroundColor: "#00458b",
-        color: "#b6c8d9",
+        backgroundColor: "#198754",
+        color: "#000",
       },
       disabled: {
         color: "#3e5e7e",
