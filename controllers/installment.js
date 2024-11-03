@@ -1,15 +1,30 @@
 const Installment = require("../models/Installment");
+const Showroom = require("../models/Showroom");
 
 exports.createInstallment = async (req, res, next) => {
   try {
     const inslattment = req.body;
-    // const noCard = req.params.cardNo;
+    const { showroom, amount } = req.body;
 
-    // const query = { cardno: noCard };
-    // const updateDoc = {
-    // $push: { installment: inslattment },
-    // };
-    // const result = await Customer.updateOne(query, updateDoc);
+    const filterShowroom = await Showroom.findOne({ name: showroom });
+
+    if (!filterShowroom) {
+      return res.status(404).json({
+        success: false,
+        status: 404,
+        message: "Showroom not found",
+      });
+    }
+
+    // Calculate the new balance
+    const newBalance =
+      parseInt(filterShowroom.remainingBalance) + parseInt(amount);
+
+    // Update the remaining balance in the Showroom model
+    filterShowroom.remainingBalance = newBalance;
+    await filterShowroom.save();
+
+    console.log(filterShowroom);
 
     const newInstallment = new Installment(inslattment);
     const data = await newInstallment.save();

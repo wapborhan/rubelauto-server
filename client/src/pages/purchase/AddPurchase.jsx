@@ -2,7 +2,7 @@ import { Dropdown } from "primereact/dropdown";
 import { useRef, useState } from "react";
 import DatePick from "../../components/shared/DatePick";
 import SearchAbleDropDown from "../../components/shared/SearchAbleDropDown";
-import useShowroom from "../../hooks/data/useShowroom";
+import useShowroom from "../../hooks/useShowroom";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import useProduct from "../../hooks/useProduct";
 import { Toast } from "primereact/toast";
@@ -11,7 +11,8 @@ const AddPurchase = () => {
   const toast = useRef(null);
   const axiosPublic = useAxiosPublic();
   const [product] = useProduct();
-  const [showrooms] = useShowroom();
+  // const [showrooms] = useShowroom();
+  const [allShowroom] = useShowroom();
 
   //
   const [receivedDate, setReceivedDate] = useState(new Date());
@@ -121,7 +122,7 @@ const AddPurchase = () => {
                   <Dropdown
                     value={showroom}
                     onChange={(e) => setShowroom(e.value)}
-                    options={showrooms}
+                    options={allShowroom}
                     optionLabel="name"
                     placeholder="Showroom"
                     className="w-full md:w-14rem border-2"

@@ -2,7 +2,7 @@ import { Dropdown } from "primereact/dropdown";
 import { useRef, useState } from "react";
 import DatePick from "../../components/shared/DatePick";
 import useLeads from "../../hooks/useLeads";
-import useShowroom from "../../hooks/data/useShowroom";
+import useShowroom from "../../hooks/useShowroom";
 import useProdType from "../../hooks/data/useProdType";
 import useProduct from "../../hooks/useProduct";
 import useStock from "../../hooks/useStock";
@@ -12,6 +12,7 @@ import { Toast } from "primereact/toast";
 const SaleForm = ({ status, postData }) => {
   const toast = useRef(null);
   const [showroom, setShowroom] = useState(null);
+  
   const [customerInfo, setCustomerInfo] = useState(null);
   const [saledate, setSaleDate] = useState(new Date());
   const [insdate, setInsdate] = useState(null);
@@ -29,7 +30,8 @@ const SaleForm = ({ status, postData }) => {
     : priceSale?.creditPrice;
   //
   const [leads] = useLeads();
-  const [showrooms] = useShowroom();
+  // const [showrooms] = useShowroom();
+  const [allShowroom] = useShowroom()
   const [proTypeList] = useProdType();
   const [product] = useProduct();
   const [stock] = useStock();
@@ -161,7 +163,7 @@ const SaleForm = ({ status, postData }) => {
                   <SearchAbleDropDown
                     state={showroom}
                     setState={setShowroom}
-                    data={showrooms}
+                    data={allShowroom}
                     requir={true}
                     config={{
                       optLabel: "name",

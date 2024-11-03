@@ -102,10 +102,13 @@ export const menuData = [
         label: "Income",
         path: "/account/income",
       },
-
       {
         label: "Cost",
         path: "/account/cost",
+      },
+      {
+        label: "Accounts List",
+        path: "/account/list",
       },
     ],
   },

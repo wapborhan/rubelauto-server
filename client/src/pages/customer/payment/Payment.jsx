@@ -22,7 +22,6 @@ const Payment = () => {
   const [paymentTypeList] = usePaymentType();
   const [singlestaff] = useSingleStaff(user?.email);
 
-  console.log(singleCustomer);
 
   const showSuccess = () => {
     toast.current.show({
