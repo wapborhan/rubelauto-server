@@ -181,7 +181,7 @@ const routes = createBrowserRouter([
         ],
       },
       // account
-       {
+      {
         path: "/account",
         children: [
           {
@@ -191,9 +191,14 @@ const routes = createBrowserRouter([
           {
             path: "cost",
             element: <All.ViewShowroom />,
-          },{
+          },
+          {
             path: "list",
             element: <All.AccountLists />,
+          },
+          {
+            path: "transfer",
+            element: <All.Transfer />,
           },
         ],
       },

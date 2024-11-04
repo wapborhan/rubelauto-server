@@ -4,7 +4,12 @@ import { useQuery } from "@tanstack/react-query";
 const useShowroom = () => {
   const axiosPublic = useAxiosPublic();
 
-  const { data: allShowroom = [], isLoading, refetch } = useQuery({
+  const {
+    data: allShowroom = [],
+    isLoading,
+    refetch,
+    isPending,
+  } = useQuery({
     queryKey: ["allShowroom"],
     queryFn: async () => {
       const res = await axiosPublic.get("/showroom");
@@ -12,7 +17,7 @@ const useShowroom = () => {
     },
   });
 
-  return [allShowroom, refetch, isLoading];
+  return [allShowroom, refetch, isLoading, isPending];
 };
 
 export default useShowroom;

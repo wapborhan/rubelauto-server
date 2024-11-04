@@ -1,9 +1,71 @@
 const Accounts = require("../models/accounts");
-var ObjectId = require("mongoose").Types.ObjectId;
+const Showroom = require("../models/Showroom");
+// var ObjectId = require("mongoose").Types.ObjectId;
 
 exports.allAccounts = async (req, res, next) => {
   try {
     const data = await Accounts.find();
+    res.status(200).json({
+      success: true,
+      status: 200,
+      message: `${data.length} Accounts Found`,
+      data: data,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      status: 500,
+      message: error.message,
+      data: {},
+    });
+  }
+};
+
+exports.transferAmount = async (req, res, next) => {
+  const { sendType, receivedType, amount } = req.body;
+  try {
+    const data = "";
+
+    if (sendType?.groupLabel === "showroom") {
+      const filterShowroom = await Showroom.findOne({ name: sendType.name });
+
+      const newBalance =
+        parseInt(filterShowroom.remainingBalance) - parseInt(amount);
+
+      filterShowroom.remainingBalance = newBalance;
+      await filterShowroom.save();
+    } else {
+      const paymentAccount = await Accounts.findOne({ code: sendType.code });
+
+      const newBalance =
+        parseInt(paymentAccount.remainingBalance) - parseInt(amount);
+      paymentAccount.remainingBalance = newBalance;
+
+      await paymentAccount.save();
+    }
+
+    if (receivedType?.groupLabel === "showroom") {
+      const filterShowroom = await Showroom.findOne({
+        name: receivedType.name,
+      });
+
+      const newBalance =
+        parseInt(filterShowroom.remainingBalance) + parseInt(amount);
+
+      filterShowroom.remainingBalance = newBalance;
+      await filterShowroom.save();
+    } else {
+      const paymentAccount = await Accounts.findOne({
+        code: receivedType.code,
+      });
+
+      const newBalance =
+        parseInt(paymentAccount.remainingBalance) + parseInt(amount);
+      paymentAccount.remainingBalance = newBalance;
+
+      await paymentAccount.save();
+    }
+
     res.status(200).json({
       success: true,
       status: 200,

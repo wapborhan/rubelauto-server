@@ -110,6 +110,10 @@ export const menuData = [
         label: "Accounts List",
         path: "/account/list",
       },
+      {
+        label: "Transfer",
+        path: "/account/transfer",
+      },
     ],
   },
   {

@@ -78,7 +78,7 @@ const Payment = () => {
         if (data.status === 200) {
           showSuccess();
           setTimeout(() => {
-            // navigate(`/customer/view/${cardNo}`);
+            navigate(`/customer/view/${cardNo}`);
           }, 3000);
         } else {
           showError();
