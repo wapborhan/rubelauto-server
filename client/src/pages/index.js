@@ -27,6 +27,8 @@ import ViewPurchase from "./purchase/ViewPurchase";
 //
 import AddSale from "./sale/AddSale";
 //
+import AccountLists from "./accounts/AccountLists";
+//
 import Documents from "./documents/Documents";
 //
 import AddShowroom from "./showroom/AddShowroom";
@@ -48,6 +50,8 @@ export {
   AddLead,
   ViewLead,
   EditLead,
+  //
+  AccountLists,
   //
   AddSuplier,
   ViewSuplier,

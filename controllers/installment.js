@@ -1,10 +1,11 @@
+const Accounts = require("../models/accounts");
 const Installment = require("../models/Installment");
 const Showroom = require("../models/Showroom");
 
 exports.createInstallment = async (req, res, next) => {
   try {
     const inslattment = req.body;
-    const { showroom, amount } = req.body;
+    const { showroom, amount, type } = req.body;
 
     const filterShowroom = await Showroom.findOne({ name: showroom });
 
@@ -16,18 +17,25 @@ exports.createInstallment = async (req, res, next) => {
       });
     }
 
-    // Calculate the new balance
-    const newBalance =
-      parseInt(filterShowroom.remainingBalance) + parseInt(amount);
+    const paymentAccount = await Accounts.findOne({ code: type });
 
-    // Update the remaining balance in the Showroom model
-    filterShowroom.remainingBalance = newBalance;
-    await filterShowroom.save();
+    if (type === "cash") {
+      const newBalance =
+        parseInt(filterShowroom.remainingBalance) + parseInt(amount);
 
-    console.log(filterShowroom);
+      filterShowroom.remainingBalance = newBalance;
+      await filterShowroom.save();
+    } else {
+      const newBalance =
+        parseInt(paymentAccount.remainingBalance) + parseInt(amount);
+
+      paymentAccount.remainingBalance = newBalance;
+      await paymentAccount.save();
+    }
 
     const newInstallment = new Installment(inslattment);
     const data = await newInstallment.save();
+    // const data = "";
 
     res.status(200).json({
       success: true,

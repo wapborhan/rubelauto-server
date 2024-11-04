@@ -8,6 +8,7 @@ import { Dropdown } from "primereact/dropdown";
 import { InputTextarea } from "primereact/inputtextarea";
 import { Toast } from "primereact/toast";
 import useSingleStaff from "../../../hooks/useSingleStaff";
+import useAccount from "../../../hooks/useAccount";
 
 const Payment = () => {
   const toast = useRef(null);
@@ -19,9 +20,17 @@ const Payment = () => {
   const navigate = useNavigate();
   const { cardNo } = useParams();
   const [singleCustomer] = useSingleCustomer(cardNo);
-  const [paymentTypeList] = usePaymentType();
   const [singlestaff] = useSingleStaff(user?.email);
+  const [allAccounts, refetch, isLoading, isPending] = useAccount()
 
+  const paymentTypeList = [
+    {
+      name: "Cash",
+      code: "cash",
+      remainingBalance:0
+    },
+    ...allAccounts
+  ]
 
   const showSuccess = () => {
     toast.current.show({
@@ -69,7 +78,7 @@ const Payment = () => {
         if (data.status === 200) {
           showSuccess();
           setTimeout(() => {
-            navigate(`/customer/view/${cardNo}`);
+            // navigate(`/customer/view/${cardNo}`);
           }, 3000);
         } else {
           showError();

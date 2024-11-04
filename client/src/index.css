@@ -215,6 +215,12 @@ nav.ps-menu-root ul li {
   height: 40px !important;
 }
 
+button.p-highlight {
+  background: rgb(25 135 84 / 1);
+  ;
+  color: white;
+}
+
 /* 
 @media screen and (max-width: 960px) {
 

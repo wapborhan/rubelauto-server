@@ -180,6 +180,23 @@ const routes = createBrowserRouter([
           },
         ],
       },
+      // account
+       {
+        path: "/account",
+        children: [
+          {
+            path: "income",
+            element: <All.AddShowroom />,
+          },
+          {
+            path: "cost",
+            element: <All.ViewShowroom />,
+          },{
+            path: "list",
+            element: <All.AccountLists />,
+          },
+        ],
+      },
       // Staff
       {
         path: "/staff",
