@@ -1,5 +1,5 @@
 import { Dropdown } from "primereact/dropdown";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import DatePick from "../../components/shared/DatePick";
 import useLeads from "../../hooks/useLeads";
 import useShowroom from "../../hooks/useShowroom";
@@ -12,7 +12,7 @@ import { Toast } from "primereact/toast";
 const SaleForm = ({ status, postData }) => {
   const toast = useRef(null);
   const [showroom, setShowroom] = useState(null);
-  
+
   const [customerInfo, setCustomerInfo] = useState(null);
   const [saledate, setSaleDate] = useState(new Date());
   const [insdate, setInsdate] = useState(null);
@@ -23,15 +23,17 @@ const SaleForm = ({ status, postData }) => {
   const [model, setModel] = useState(null);
   const [selectedEnCn, setSelectedEnCn] = useState(null);
   const [priceSale, setPriceSale] = useState("");
+  const [saleprice, setSaleprice] = useState("");
   const [proCond, setProCond] = useState("");
   //
-  const saleprice = status === "cash"
-    ? priceSale?.cashPrice
-    : priceSale?.creditPrice;
+
+  const price =
+    status === "cash" ? priceSale?.cashPrice : priceSale?.creditPrice;
+
   //
   const [leads] = useLeads();
   // const [showrooms] = useShowroom();
-  const [allShowroom] = useShowroom()
+  const [allShowroom] = useShowroom();
   const [proTypeList] = useProdType();
   const [product] = useProduct();
   const [stock] = useStock();
@@ -53,7 +55,7 @@ const SaleForm = ({ status, postData }) => {
     const dpamount = form.dpamount.value;
     const term = status === "cash" ? null : form.term.value;
     const percentage = status === "cash" ? null : form.percentage.value;
-    const hireprice = status === "cash" ? null : form.hireprice.value;
+    const hirevalue = status === "cash" ? null : form.hireprice.value;
     const insamount = status === "cash" ? null : form.insamount.value;
     const condamount = status === "cash" ? null : form.condamount.value;
     const cardSts = {
@@ -94,7 +96,7 @@ const SaleForm = ({ status, postData }) => {
         term,
         percentage,
         insdate,
-        hireprice,
+        hireprice: hirevalue - saleprice,
         insamount,
         conddate,
         condamount,
@@ -174,9 +176,7 @@ const SaleForm = ({ status, postData }) => {
 
                 <div className="form-control w-full">
                   <label className="label">
-                    <span className="label-text font-bold">
-                      Card Number
-                    </span>
+                    <span className="label-text font-bold">Card Number</span>
                   </label>
                   <input
                     type="text"
@@ -277,8 +277,7 @@ const SaleForm = ({ status, postData }) => {
                     disabled={!productType}
                     required={true}
                   />
-                  {
-                    /* <Dropdown
+                  {/* <Dropdown
                     value={model}
                     onChange={(e) => {
                       const { value } = e;
@@ -292,8 +291,7 @@ const SaleForm = ({ status, postData }) => {
                     className="w-full md:w-14rem border-2"
                     disabled={!productType}
                     required={true}
-                  /> */
-                  }
+                  /> */}
                 </div>
                 <div className="form-control w-full">
                   <label className="label">
@@ -339,10 +337,11 @@ const SaleForm = ({ status, postData }) => {
                   </label>
                   <input
                     type="number"
-                    defaultValue={saleprice}
+                    defaultValue={price}
                     name="saleprice"
                     placeholder="Enter Sale Price"
                     className="input input-bordered w-full"
+                    onChange={(e) => setSaleprice(e.target.value)}
                     disabled={!model}
                     required={true}
                   />
@@ -359,7 +358,9 @@ const SaleForm = ({ status, postData }) => {
                     required={true}
                   />
                 </div>
-                {status === "cash" ? <></> : (
+                {status === "cash" ? (
+                  <></>
+                ) : (
                   <>
                     <div className="form-control w-full">
                       <label className="label">
@@ -400,80 +401,80 @@ const SaleForm = ({ status, postData }) => {
                 </div>
               </div>
 
-              {status === "cash"
-                ? <></>
-                : (
-                  <div className="fourth flex gap-5 lg:flex-nowrap flex-wrap  justify-between mb-8">
-                    <div className="form-control w-full">
-                      <label className="label">
-                        <span className="label-text font-bold">Hire Price</span>
-                      </label>
-                      <input
-                        type="number"
-                        name="hireprice"
-                        placeholder="Enter Hire Price"
-                        className="input input-bordered w-full"
-                        required={true}
-                      />
-                    </div>
-                    <div className="form-control w-full">
-                      <label className="label">
-                        <span className="label-text font-bold">
-                          Installment Date
-                        </span>
-                      </label>
-                      <DatePick
-                        dateValue={insdate}
-                        setDateValue={setInsdate}
-                        placeHolder="Installment Date"
-                        iconShow={true}
-                        endDate={40}
-                        requir={true}
-                      />
-                    </div>
-                    <div className="form-control w-full">
-                      <label className="label">
-                        <span className="label-text font-bold">
-                          Installment Amount
-                        </span>
-                      </label>
-                      <input
-                        type="number"
-                        name="insamount"
-                        placeholder="Enter Terms"
-                        className="input input-bordered w-full"
-                        required={true}
-                      />
-                    </div>
-                    <div className="form-control w-full">
-                      <label className="label">
-                        <span className="label-text font-bold">
-                          Condition Date
-                        </span>
-                      </label>
-                      <DatePick
-                        dateValue={conddate}
-                        setDateValue={setConddate}
-                        iconShow={true}
-                        placeHolder="Condition Date"
-                        endDate={15}
-                      />
-                    </div>
-                    <div className="form-control w-full">
-                      <label className="label">
-                        <span className="label-text font-bold">
-                          Condition Amount
-                        </span>
-                      </label>
-                      <input
-                        type="number"
-                        name="condamount"
-                        placeholder="Enter Percentage"
-                        className="input input-bordered w-full"
-                      />
-                    </div>
+              {status === "cash" ? (
+                <></>
+              ) : (
+                <div className="fourth flex gap-5 lg:flex-nowrap flex-wrap  justify-between mb-8">
+                  <div className="form-control w-full">
+                    <label className="label">
+                      <span className="label-text font-bold">Hire Price</span>
+                    </label>
+                    <input
+                      type="number"
+                      name="hireprice"
+                      placeholder="Enter Hire Price"
+                      className="input input-bordered w-full"
+                      required={true}
+                    />
                   </div>
-                )}
+                  <div className="form-control w-full">
+                    <label className="label">
+                      <span className="label-text font-bold">
+                        Installment Date
+                      </span>
+                    </label>
+                    <DatePick
+                      dateValue={insdate}
+                      setDateValue={setInsdate}
+                      placeHolder="Installment Date"
+                      iconShow={true}
+                      endDate={40}
+                      requir={true}
+                    />
+                  </div>
+                  <div className="form-control w-full">
+                    <label className="label">
+                      <span className="label-text font-bold">
+                        Installment Amount
+                      </span>
+                    </label>
+                    <input
+                      type="number"
+                      name="insamount"
+                      placeholder="Enter Terms"
+                      className="input input-bordered w-full"
+                      required={true}
+                    />
+                  </div>
+                  <div className="form-control w-full">
+                    <label className="label">
+                      <span className="label-text font-bold">
+                        Condition Date
+                      </span>
+                    </label>
+                    <DatePick
+                      dateValue={conddate}
+                      setDateValue={setConddate}
+                      iconShow={true}
+                      placeHolder="Condition Date"
+                      endDate={15}
+                    />
+                  </div>
+                  <div className="form-control w-full">
+                    <label className="label">
+                      <span className="label-text font-bold">
+                        Condition Amount
+                      </span>
+                    </label>
+                    <input
+                      type="number"
+                      name="condamount"
+                      placeholder="Enter Percentage"
+                      className="input input-bordered w-full"
+                    />
+                  </div>
+                </div>
+              )}
             </fieldset>
             <div className="submit">
               <input

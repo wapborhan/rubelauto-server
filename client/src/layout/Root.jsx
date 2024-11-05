@@ -36,15 +36,15 @@ const Root = () => {
               broken={broken}
             />
             <div className="p-5">
-              {loading
-                ? (
-                  <div className="flex justify-center items-center h-full">
-                    <Loading />
-                  </div>
-                )
-                : <Outlet />}
+              {loading ? (
+                <div className="flex justify-center items-center h-full">
+                  <Loading />
+                </div>
+              ) : (
+                <Outlet />
+              )}
             </div>
-            <Footer />
+            {/* <Footer /> */}
           </div>
         </div>
       </div>

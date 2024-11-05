@@ -1,19 +1,22 @@
 //
 const Customer = require("../models/Customers");
 const Leads = require("../models/Leads");
+const Showroom = require("../models/Showroom");
 const Stocks = require("../models/Stocks");
 
 exports.createCustomer = async (req, res, next) => {
   try {
-    const cusData = req.body;
-    const { leadId } = req.query;
-    const { status } = req.query;
+    const { accountInfo, cardno, productInfo, showRoom } = req.body;
+    const { leadId, status } = req.query;
     const { engine } = req.body.productInfo;
+
+    const cashDue = accountInfo?.saleprice - accountInfo?.dpamount;
+    const hireDue = accountInfo?.hireprice;
 
     // Crad No. Existing Check
     if (status !== "cash") {
       const existingCustomer = await Customer.findOne({
-        cardno: cusData?.cardno,
+        cardno: cardno,
       });
       if (existingCustomer) {
         return res.status(409).json("Card No already exists");
@@ -22,10 +25,10 @@ exports.createCustomer = async (req, res, next) => {
 
     // Engine & Chassis Existing Check
     const existingEngine = await Customer.findOne({
-      "productInfo.engine": cusData?.productInfo?.engine,
+      "productInfo.engine": productInfo?.engine,
     });
     const existingChassis = await Customer.findOne({
-      "productInfo.chassis": cusData?.productInfo?.chassis,
+      "productInfo.chassis": productInfo?.chassis,
     });
 
     if (existingEngine && existingChassis) {
@@ -37,9 +40,23 @@ exports.createCustomer = async (req, res, next) => {
       return res.status(404).json("Stock with this engine not found");
     }
 
+    const filterShowroom = await Showroom.findOne({ name: showRoom });
+
+    if (filterShowroom) {
+      const cashBalance = parseInt(filterShowroom.cashDue) + parseInt(cashDue);
+      const hireBalance =
+        parseInt(filterShowroom.percentDue) + parseInt(hireDue);
+
+      filterShowroom.cashDue = cashBalance;
+      filterShowroom.percentDue = hireBalance;
+      await filterShowroom.save();
+    }
+
     // Add customer
-    const newCustomer = new Customer(cusData);
+    const newCustomer = new Customer(req.body);
     await newCustomer.save();
+
+    // const newCustomer = "";
 
     // Delete stock by engine
     await Stocks.findOneAndDelete({ engine: engine });
