@@ -10,12 +10,10 @@ import {
   signOut,
   updateProfile,
 } from "firebase/auth";
-import { app } from "./firebase.config";
+import auth from "./firebase.config";
 // import useAxiosPublic from "../hooks/useAxiosPublic";
 
 export const AuthContext = createContext(null);
-
-const auth = getAuth(app);
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);

@@ -27,6 +27,10 @@ import ViewPurchase from "./purchase/ViewPurchase";
 //
 import AddSale from "./sale/AddSale";
 //
+import AddIncome from "./accounts/AddIncome";
+import ViewIncome from "./accounts/ViewIncome";
+import AddCost from "./accounts/AddCost";
+import ViewCost from "./accounts/ViewCost";
 import AccountLists from "./accounts/AccountLists";
 import Transfer from "./accounts/Transfer";
 //
@@ -52,7 +56,11 @@ export {
   ViewLead,
   EditLead,
   //
+  AddIncome,
   AccountLists,
+  ViewIncome,
+  AddCost,
+  ViewCost,
   Transfer,
   //
   AddSuplier,

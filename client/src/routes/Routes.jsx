@@ -185,12 +185,20 @@ const routes = createBrowserRouter([
         path: "/account",
         children: [
           {
-            path: "income",
-            element: <All.AddShowroom />,
+            path: "income/add",
+            element: <All.AddIncome />,
           },
           {
-            path: "cost",
-            element: <All.ViewShowroom />,
+            path: "income/view",
+            element: <All.ViewIncome />,
+          },
+          {
+            path: "cost/add",
+            element: <All.AddCost />,
+          },
+          {
+            path: "cost/view",
+            element: <All.ViewCost />,
           },
           {
             path: "list",

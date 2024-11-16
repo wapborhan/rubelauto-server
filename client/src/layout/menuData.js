@@ -99,12 +99,21 @@ export const menuData = [
     icon: "pi-user",
     subMenu: [
       {
-        label: "Income",
-        path: "/account/income",
+        label: "Add Income",
+        path: "/account/income/add",
       },
       {
-        label: "Cost",
-        path: "/account/cost",
+        label: "Add Cost",
+        path: "/account/cost/add",
+      },
+      {
+        label: "View Income",
+        path: "/account/income/view",
+      },
+
+      {
+        label: "View Cost",
+        path: "/account/cost/view",
       },
       {
         label: "Accounts List",

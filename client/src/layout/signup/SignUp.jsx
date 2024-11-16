@@ -3,6 +3,12 @@ import { useForm } from "react-hook-form";
 // import SocialSignIn from "../signin/SocialSignIn";
 import useAuth from "../../hooks/useAuth";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
+import { useContext } from "react";
+import { AuthContext } from "../../provider/AuthProvider";
+
+// import { useDispatch, useSelector } from "react-redux";
+// import { createUser } from "../../redux/feature/user/userSlice";
+// import { useEffect } from "react";
 
 const SignUp = () => {
   const axiosPublic = useAxiosPublic();
@@ -12,21 +18,25 @@ const SignUp = () => {
     reset,
     formState: { errors },
   } = useForm();
-  const { createUser, updateUserProfile } = useAuth();
+  const { updateUserProfile } = useAuth();
   const navigate = useNavigate();
+  const { createUser } = useContext(AuthContext);
+  // const dispatch = useDispatch();
+  // const { email, isError, isLoading, error } = useSelector(
+  //   (state) => state.userStore
+  // );
 
-  const onSubmit = (formData) => {
-    console.log(formData);
-
-    createUser(formData.email, formData.password).then((result) => {
+  const onSubmit = ({ name, email, photoURL, password }) => {
+    // dispatch(createUser({ name, email, photoURL, password }));
+    createUser(email, password).then((result) => {
       const loggedUser = result.user;
-      updateUserProfile(formData.name, formData.photoURL)
+      updateUserProfile(name, photoURL)
         .then(() => {
           const userInfo = {
             joinDate: "",
-            name: formData.name,
-            photo: formData.photoURL,
-            email: formData.email,
+            name: name,
+            photo: photoURL,
+            email: email,
             mobile: "",
             showRoom: "",
             designation: "",
@@ -47,6 +57,12 @@ const SignUp = () => {
         .catch((error) => console.log(error));
     });
   };
+
+  // useEffect(() => {
+  //   if (!isLoading && email) {
+  //     navigate("/");
+  //   }
+  // }, [isLoading, email, navigate]);
 
   return (
     <div className="flex items-center min-h-screen p-4 bg-gray-100 lg:justify-center">

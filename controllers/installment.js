@@ -4,11 +4,10 @@ const Showroom = require("../models/Showroom");
 
 exports.createInstallment = async (req, res, next) => {
   try {
-    const inslattment = req.body;
+    const installment = req.body;
     const { showroom, amount, type } = req.body;
 
     const filterShowroom = await Showroom.findOne({ name: showroom });
-
     if (!filterShowroom) {
       return res.status(404).json({
         success: false,
@@ -17,30 +16,55 @@ exports.createInstallment = async (req, res, next) => {
       });
     }
 
-    const paymentAccount = await Accounts.findOne({ code: type });
+    let cashDue = filterShowroom.cashDue;
+    let percentDue = filterShowroom.percentDue;
+    let remainingPayment = parseInt(amount); // Initial payment amount
 
-    if (type === "cash") {
-      const newBalance =
-        parseInt(filterShowroom.remainingBalance) + parseInt(amount);
-
-      filterShowroom.remainingBalance = newBalance;
-      await filterShowroom.save();
+    // Deduct from cashDue and percentDue based on the payment amount
+    if (remainingPayment <= cashDue) {
+      // Payment is less than or equal to cashDue
+      cashDue -= remainingPayment;
+      remainingPayment = 0;
     } else {
-      const newBalance =
-        parseInt(paymentAccount.remainingBalance) + parseInt(amount);
+      // Payment is more than cashDue
+      remainingPayment -= cashDue;
+      cashDue = 0;
 
-      paymentAccount.remainingBalance = newBalance;
-      await paymentAccount.save();
+      // Deduct the remaining payment from percentDue
+      percentDue -= remainingPayment;
+      if (percentDue < 0) percentDue = 0; // Ensure it doesn't go negative
     }
 
-    const newInstallment = new Installment(inslattment);
+    // Update the showroom's cashDue and percentDue in the database
+    filterShowroom.cashDue = cashDue;
+    filterShowroom.percentDue = percentDue;
+    await filterShowroom.save();
+
+    if (type === "cash") {
+      // Update showroom balance
+      filterShowroom.remainingBalance += parseInt(amount);
+      await filterShowroom.save();
+    } else {
+      // Update the balance for non-cash types
+      const paymentAccount = await Accounts.findOne({ code: type });
+      if (paymentAccount) {
+        paymentAccount.remainingBalance += parseInt(amount);
+        await paymentAccount.save();
+      }
+    }
+
+    console.log(filterShowroom);
+
+    // Save the new installment record
+    const newInstallment = new Installment(installment);
     const data = await newInstallment.save();
+
     // const data = "";
 
     res.status(200).json({
       success: true,
       status: 200,
-      message: "Leads Created",
+      message: "Installment Created",
       data: data,
     });
   } catch (error) {
@@ -63,7 +87,7 @@ exports.showInstallment = async (req, res, next) => {
     res.status(200).json({
       success: true,
       status: 200,
-      message: "Leads Created",
+      message: "Installments Retrieved",
       data: data,
     });
   } catch (error) {

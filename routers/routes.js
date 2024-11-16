@@ -8,6 +8,8 @@ const customerRouter = require("./customer");
 const documentRouter = require("./document");
 const showroomRouter = require("./showroom");
 const accountRouter = require("./account");
+const incomeRouter = require("./income");
+const costRouter = require("./cost");
 
 const routers = [
   {
@@ -41,6 +43,14 @@ const routers = [
   {
     path: "/api/account",
     handler: accountRouter,
+  },
+  {
+    path: "/api/income",
+    handler: incomeRouter,
+  },
+  {
+    path: "/api/cost",
+    handler: costRouter,
   },
   {
     path: "/api/document",
