@@ -1,38 +1,25 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import useAuth from "../../hooks/useAuth";
 import { useState } from "react";
 import { Button } from "primereact/button";
+import { useDispatch } from "react-redux";
+import { loginUser } from "../../redux/feature/user/userSlice";
 
 const SignIn = () => {
-  const { logIn } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
 
-  const load = () => {
-    setLoading(true);
-
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
-  };
   const handleLogin = async (event) => {
     event.preventDefault();
     setLoading(true);
-    load();
     const form = event.target;
     const email = form.email.value;
     const password = form.password.value;
 
-    try {
-      const result = await logIn(email, password);
-      const user = result.user;
-
+    const result = await dispatch(loginUser({ email, password }));
+    if (result) {
       navigate(location?.state ? location?.state : "/dashboard");
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
     }
   };
 

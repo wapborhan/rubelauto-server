@@ -1,10 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 // import SocialSignIn from "../signin/SocialSignIn";
-import useAuth from "../../hooks/useAuth";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
-import { useContext } from "react";
-import { AuthContext } from "../../provider/AuthProvider";
+import { useDispatch } from "react-redux";
+import { createUser } from "../../redux/feature/user/userSlice";
 
 // import { useDispatch, useSelector } from "react-redux";
 // import { createUser } from "../../redux/feature/user/userSlice";
@@ -18,44 +17,34 @@ const SignUp = () => {
     reset,
     formState: { errors },
   } = useForm();
-  const { updateUserProfile } = useAuth();
   const navigate = useNavigate();
-  const { createUser } = useContext(AuthContext);
-  // const dispatch = useDispatch();
-  // const { email, isError, isLoading, error } = useSelector(
-  //   (state) => state.userStore
-  // );
+  const dispatch = useDispatch();
 
   const onSubmit = ({ name, email, photoURL, password }) => {
-    // dispatch(createUser({ name, email, photoURL, password }));
-    createUser(email, password).then((result) => {
-      const loggedUser = result.user;
-      updateUserProfile(name, photoURL)
-        .then(() => {
-          const userInfo = {
-            joinDate: "",
-            name: name,
-            photo: photoURL,
-            email: email,
-            mobile: "",
-            showRoom: "",
-            designation: "",
-            address: "",
-            bloodGroup: "",
-            userType: "user",
-          };
-          console.log(userInfo);
-          axiosPublic.post("/user", userInfo).then((res) => {
-            if (res.status === 200) {
-              // console.log("user added to the database");
-              reset();
-              navigate("/dashboard");
-            }
-          });
-          // navigate("/dashboard");
-        })
-        .catch((error) => console.log(error));
-    });
+    dispatch(createUser({ name, email, photoURL, password }));
+    const userInfo = {
+      joinDate: new Date(),
+      name: name,
+      photo: photoURL,
+      email: email,
+      mobile: "",
+      showRoom: "",
+      designation: "",
+      address: "",
+      bloodGroup: "",
+      userType: "user",
+      isUpdated: false,
+    };
+    // console.log(userInfo);
+    axiosPublic
+      .post("/user", userInfo)
+      .then((res) => {
+        if (res.status === 200) {
+          reset();
+          navigate("/profile/edit");
+        }
+      })
+      .catch((error) => console.error(error));
   };
 
   // useEffect(() => {
@@ -136,7 +125,7 @@ const SignUp = () => {
                   required: true,
                   minLength: 6,
                   maxLength: 12,
-                  pattern: /(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z])/,
+                  pattern: /(?=.*[A-Z])(?=.*[!@#-$&*])(?=.*[0-9])(?=.*[a-z])/,
                 })}
                 placeholder="password"
                 className="px-4 py-2 transition duration-300 border border-gray-300 rounded focus:border-transparent focus:outline-none focus:ring-4 focus:ring-blue-200"

@@ -1,9 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import {
   GoogleAuthProvider,
-  createUserWithEmailAndPassword,
   deleteUser,
-  getAuth,
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signInWithPopup,
@@ -11,20 +9,18 @@ import {
   updateProfile,
 } from "firebase/auth";
 import auth from "./firebase.config";
-// import useAxiosPublic from "../hooks/useAxiosPublic";
+import { useDispatch, useSelector } from "react-redux";
+import { setUser, toggleLoading } from "../redux/feature/user/userSlice";
+import { useGetUserByEmailQuery } from "../redux/feature/api/userApi";
 
 export const AuthContext = createContext(null);
 
 const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [mainUser, setMainUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const googleProvider = new GoogleAuthProvider();
-  // const axiosPublic = useAxiosPublic();
-
-  const createUser = (email, password) => {
-    setLoading(true);
-    return createUserWithEmailAndPassword(auth, email, password);
-  };
+  const dispatch = useDispatch();
+  const { data: user } = useGetUserByEmailQuery(mainUser?.email);
 
   const logIn = (email, password) => {
     setLoading(true);
@@ -48,13 +44,34 @@ const AuthProvider = ({ children }) => {
   };
 
   const deleteUserFromFRB = () => {
-    return deleteUser(user);
+    return deleteUser(mainUser);
   };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-      console.log("current user", currentUser);
+      setMainUser(currentUser);
+      if (currentUser && mainUser) {
+        dispatch(
+          setUser({
+            name: currentUser?.displayName,
+            photo: currentUser?.photoURL,
+            email: currentUser?.email,
+            joinDate: user?.data?.joinDate,
+            mobile: user?.data?.mobile,
+            showRoom: user?.data?.showRoom,
+            designation: user?.data?.designation,
+            bloodGroup: user?.data?.bloodGroup,
+            address: user?.data?.address,
+            userType: user?.data?.userType,
+            isUpdated: false,
+            isLoading: false,
+          })
+        );
+        dispatch(toggleLoading(false));
+      } else {
+        dispatch(toggleLoading(false));
+      }
+      // console.log("current user", currentUser);
       // get token and store client
       //   const userInfo = { email: currentUser?.email };
       //   axiosPublic.post("/auth", userInfo).then((res) => {
@@ -72,12 +89,11 @@ const AuthProvider = ({ children }) => {
     return () => {
       return unsubscribe();
     };
-  }, []);
+  }, [dispatch, mainUser, user]);
 
   const authInfo = {
-    user,
+    mainUser,
     loading,
-    createUser,
     logIn,
     googleSignIn,
     logOut,

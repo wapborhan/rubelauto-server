@@ -26,7 +26,7 @@ exports.createUser = async (req, res, next) => {
 
 exports.allUser = async (req, res, next) => {
   try {
-    const data = await Users.find();
+    const data = await Users.find({});
 
     res.status(200).json({
       success: true,
@@ -49,7 +49,7 @@ exports.singleUser = async (req, res, next) => {
     const email = req.query.email;
     const filter = { email: email };
 
-    const data = await Users.find(filter);
+    const data = await Users.findOne(filter);
 
     res.status(200).json({
       success: true,

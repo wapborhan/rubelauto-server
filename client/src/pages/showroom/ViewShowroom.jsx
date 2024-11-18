@@ -39,8 +39,7 @@ const ViewShowroom = () => {
   const verifiedBodyTemplate = (rowData) => {
     return (
       <div className="flex gap-4">
-        {
-          /* <NavLink
+        {/* <NavLink
           to={`/contact/supplier/view/${rowData?._id}`}
           className="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline custom-tooltip cursor-pointer"
           data-pr-tooltip="View"
@@ -55,8 +54,7 @@ const ViewShowroom = () => {
           data-pr-position="top"
         >
           <i className="pi pi-file-edit"></i>
-        </NavLink> */
-        }
+        </NavLink> */}
       </div>
     );
   };
@@ -78,9 +76,9 @@ const ViewShowroom = () => {
         loading={isLoading}
         filters={filters}
         globalFilterFields={["name"]}
-        paginator
-        rows={10}
-        rowsPerPageOptions={[10, 25, 50, 100]}
+        // paginator
+        rows={15}
+        // rowsPerPageOptions={[15, 25, 50, 100]}
         emptyMessage="No Suplier found."
       >
         <Column

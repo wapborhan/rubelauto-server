@@ -18,7 +18,7 @@ const useSingleStaff = (email) => {
     },
   });
 
-  return [singlestaff[0], refetch, isLoading, isPending];
+  return [singlestaff, refetch, isLoading, isPending];
 };
 
 export default useSingleStaff;

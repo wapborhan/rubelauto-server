@@ -46,30 +46,30 @@ const Documents = () => {
   };
   const statusDateTemplate = (rowData) => {
     return (
-      <span>{moment(rowData.cardStatus.docDate).format("DD-MMM-YYYY")}</span>
+      <span>
+        {rowData.cardStatus.docDate
+          ? moment(rowData.cardStatus.docDate).format("DD-MMM-YYYY")
+          : moment(rowData.cardStatus.paiddate).format("DD-MMM-YYYY")}
+      </span>
     );
   };
 
   const statusTemplate = (rowData) => {
     return (
       <div className="flex gap-3 justify-center">
-        {rowData.cardStatus.docStatus === "delivared"
-          ? (
-            <span className="bg-blue-500 text-white py-1 px-3 rounded-md text-sm">
-              Delivared
-            </span>
-          )
-          : rowData.cardStatus.docStatus === "complete"
-          ? (
-            <span className="bg-green-500 text-white py-1 px-3 rounded-md text-sm">
-              Complete
-            </span>
-          )
-          : (
-            <span className="bg-red-500 text-white py-1 px-3 rounded-md text-sm">
-              Pending
-            </span>
-          )}
+        {rowData.cardStatus.docStatus === "delivared" ? (
+          <span className="bg-blue-500 text-white py-1 px-3 rounded-md text-sm">
+            Delivared
+          </span>
+        ) : rowData.cardStatus.docStatus === "complete" ? (
+          <span className="bg-green-500 text-white py-1 px-3 rounded-md text-sm">
+            Complete
+          </span>
+        ) : (
+          <span className="bg-red-500 text-white py-1 px-3 rounded-md text-sm">
+            Pending
+          </span>
+        )}
       </div>
     );
   };
@@ -86,10 +86,7 @@ const Documents = () => {
           <i className="pi pi-eye"></i>
         </NavLink>
 
-        <UpdateDocument
-          data={rowData}
-          refetch={refetch}
-        />
+        <UpdateDocument data={rowData} refetch={refetch} />
       </div>
     );
   };
@@ -145,13 +142,11 @@ const Documents = () => {
           header="Customer"
           style={{ minWidth: "10rem" }}
         />
-        {
-          /* <Column
+        {/* <Column
           field="customerInfo.number"
           header="Number"
           // style={{ minWidth: "8rem" }}
-        /> */
-        }
+        /> */}
         <Column
           field="productInfo.models"
           header="Model"

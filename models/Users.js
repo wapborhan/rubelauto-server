@@ -1,24 +1,22 @@
-const mongoose = require("mongoose");
-const userSchema = mongoose.Schema(
+const { model, Schema } = require("mongoose");
+
+const usersSchema = new Schema(
   {
-    username: {
-      type: String,
-    },
-    email: {
-      type: String,
-    },
-    photoUrl: {
-      type: String,
-    },
-    mobileNo: {
-      type: Number,
-    },
-    address: {
-      type: String,
-    },
+    joinDate: { type: Date },
+    name: { type: String },
+    photo: { type: String },
+    email: { type: String },
+    mobile: { type: String },
+    showRoom: { type: String },
+    designation: { type: String },
+    bloodGroup: { type: String },
+    address: { type: String },
+    userType: { type: String },
+    isUpdated: { type: Boolean },
   },
-  { timestamps: true }
+  { versionKey: false, timestamps: true }
 );
 
-const Users = mongoose.model("Users", userSchema);
+const Users = model("users", usersSchema);
+
 module.exports = Users;

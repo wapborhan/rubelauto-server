@@ -120,25 +120,25 @@ export const menuData = [
         path: "/account/list",
       },
       {
+        label: "Showroom List",
+        path: "/showroom/list",
+      },
+      {
         label: "Transfer",
         path: "/account/transfer",
       },
     ],
   },
-  {
-    label: "Showroom",
-    icon: "pi-database",
-    subMenu: [
-      {
-        label: "Add Showroom",
-        path: "/showroom/add",
-      },
-      {
-        label: "Showroom List",
-        path: "/showroom/view",
-      },
-    ],
-  },
+  // {
+  //   label: "Showroom",
+  //   icon: "pi-database",
+  //   subMenu: [
+  //     {
+  //       label: "Add Showroom",
+  //       path: "/showroom/add",
+  //     },
+  //   ],
+  // },
   {
     label: "Staff",
     icon: "pi-user-plus",

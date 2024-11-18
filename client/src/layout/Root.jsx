@@ -1,17 +1,17 @@
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
-import Footer from "./Footer";
+// import Footer from "./Footer";
 import MySidebar from "./MySidebar";
 
 import Header from "./Header";
-import useAuth from "../hooks/useAuth";
 import Loading from "../components/shared/Loading";
+import { useSelector } from "react-redux";
 
 const Root = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [broken, setBroken] = useState(false);
   const [toggled, setToggled] = useState(false);
-  const { loading } = useAuth();
+  const { isLoading } = useSelector((state) => state.userStore);
 
   return (
     <>
@@ -36,7 +36,7 @@ const Root = () => {
               broken={broken}
             />
             <div className="p-5">
-              {loading ? (
+              {isLoading ? (
                 <div className="flex justify-center items-center h-full">
                   <Loading />
                 </div>

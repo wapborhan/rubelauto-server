@@ -10,6 +10,9 @@ import { useQuery } from "@tanstack/react-query";
 import useSingleStaff from "../../hooks/useSingleStaff";
 import { AuthContext } from "../../provider/AuthProvider";
 import { Column } from "primereact/column";
+import moment from "moment";
+import useCostList from "../../hooks/data/useCostList";
+import useIncomeCatList from "../../hooks/data/useIncomeCatList";
 
 const ViewIncome = () => {
   const dt = useRef(null);
@@ -17,6 +20,7 @@ const ViewIncome = () => {
   const axiosPublic = useAxiosPublic();
   const { user } = useContext(AuthContext);
   const [singlestaff] = useSingleStaff(user?.email);
+  const [incomeCatList] = useIncomeCatList();
 
   console.log(singlestaff);
 
@@ -46,8 +50,19 @@ const ViewIncome = () => {
     );
   };
 
+  const dateBodyTemplate = (rowData) => {
+    return <span>{moment(rowData.date).format("DD-MMM-YYYY")}</span>;
+  };
+
   const statusBodyTemplate = (rowData) => {
-    return <span>{rowData.date}</span>;
+    const category = incomeCatList.find(
+      (inc) => inc.code === rowData.categories
+    );
+
+    return <span>{category?.name}</span>;
+  };
+  const userBodyTemplate = (rowData) => {
+    return <span>{rowData?.staffEmail}</span>;
   };
 
   const tabID = (data, props) => {
@@ -107,11 +122,11 @@ const ViewIncome = () => {
           // style={{ minWidth: "8rem" }}
         />
         <Column
-          field="status"
-          header="Status"
+          field="date"
+          header="Date"
           showFilterMenu={false}
           filterPlaceholder="Search"
-          body={statusBodyTemplate}
+          body={dateBodyTemplate}
           // style={{ minWidth: "8rem" }}
           className="capitalize"
         />
@@ -120,6 +135,7 @@ const ViewIncome = () => {
           header="Categories"
           showFilterMenu={false}
           filterPlaceholder="Search"
+          body={statusBodyTemplate}
           style={{ minWidth: "8rem" }}
         />
         <Column
@@ -134,22 +150,23 @@ const ViewIncome = () => {
           header="Added By"
           showFilterMenu={false}
           filterPlaceholder="Search"
+          body={userBodyTemplate}
           style={{ minWidth: "8rem" }}
         />
         <Column
           field="amount"
-          header="Amount"
+          header="Cost Amount"
           showFilterMenu={false}
           filterPlaceholder="Search"
           style={{ minWidth: "8rem" }}
         />
-        <Column
+        {/* <Column
           field="verified"
           header="Action"
           dataType="boolean"
           style={{ minWidth: "2rem" }}
           body={verifiedBodyTemplate}
-        />
+        /> */}
       </DataTable>
     </div>
   );

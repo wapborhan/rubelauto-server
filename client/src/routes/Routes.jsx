@@ -170,12 +170,12 @@ const routes = createBrowserRouter([
       {
         path: "/showroom",
         children: [
+          // {
+          //   path: "add",
+          //   element: <All.AddShowroom />,
+          // },
           {
-            path: "add",
-            element: <All.AddShowroom />,
-          },
-          {
-            path: "view",
+            path: "list",
             element: <All.ViewShowroom />,
           },
         ],
