@@ -1,68 +1,67 @@
 import { Toast } from "primereact/toast";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import useSingleStaff from "../../hooks/useSingleStaff";
-import useAxiosPublic from "../../hooks/useAxiosPublic";
 import { useNavigate } from "react-router-dom";
 import { Dropdown } from "primereact/dropdown";
 import useCostList from "../../hooks/data/useCostList";
+import { useSelector } from "react-redux";
+import { useForm } from "react-hook-form";
+import { useSetCostMutation } from "../../redux/feature/api/costApi";
 
 const AddCost = () => {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
+
   const toast = useRef(null);
-  const { user } = useAuth();
-  const [singlestaff] = useSingleStaff(user?.email);
-  const axiosPublic = useAxiosPublic();
   const navigate = useNavigate();
   const [costCat, setCostCat] = useState();
   const [costCatList] = useCostList();
+  const { showRoom, email, name } = useSelector((state) => state.userStore);
+  const [setPost, { isSuccess, isError, error }] = useSetCostMutation();
 
-  console.log(singlestaff);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const form = e.target;
-
-    const amount = form.amount.value;
-    const description = form.description.value;
-
+  const onSubmit = (data) => {
     const inputData = {
       date: new Date(),
-      staffEmail: singlestaff?.email,
-      categories: costCat.code,
-      showroom: singlestaff.showRoom,
-      description,
-      amount,
+      staffEmail: email,
+      categories: costCat?.code,
+      showroom: showRoom,
+      ...data,
     };
-    // console.log(inputData);
-
-    axiosPublic
-      .post(`/cost`, inputData)
-      .then((res) => {
-        console.log(res);
-        if (res.data.status === 200) {
-          toast.current.show({
-            severity: "success",
-            summary: "Cost",
-            detail: "Succesfully Added.",
-          });
-          setTimeout(() => {
-            navigate("/account/cost/view");
-          }, 3000);
-          form.reset();
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.current.show({
-          severity: "error",
-          summary: "Income",
-          detail: err?.message,
-        });
-      });
+    setPost(inputData);
+    isSuccess && reset();
   };
 
+  useEffect(() => {
+    if (isSuccess) {
+      toast.current.show({
+        severity: "success",
+        summary: "Cost",
+        detail: "Successfully Added.",
+      });
+      reset();
+      setTimeout(() => {
+        navigate("/account/cost/view");
+      }, 3000);
+    }
+  }, [isSuccess, navigate, reset]);
+
+  useEffect(() => {
+    if (isError) {
+      toast.current.show({
+        severity: "error",
+        summary: "Cost",
+        detail: error?.data?.message || "Error occurred while adding income.",
+      });
+    }
+  }, [isError, error]);
+
   return (
-    <div className="addIncome">
+    <div className="addCost">
       <Toast
         ref={toast}
         pt={{
@@ -78,7 +77,7 @@ const AddCost = () => {
         </div>
         <fieldset className="mb-4">
           <legend>Add Cost</legend>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <div className="form space-y-5">
               <div className="frist flex gap-5 lg:flex-nowrap flex-wrap justify-between">
                 <div className="form-control  w-full">
@@ -87,11 +86,10 @@ const AddCost = () => {
                   </label>
                   <input
                     type="text"
-                    name="date"
                     defaultValue={new Date()}
-                    placeholder="Showroom Name"
+                    placeholder="Date"
                     className="input input-bordered w-full text-slate-600 disabled:text-slate-600"
-                    disabled
+                    readOnly
                   />
                 </div>
                 <div className="form-control w-full">
@@ -100,12 +98,10 @@ const AddCost = () => {
                   </label>
                   <input
                     type="text"
-                    name="staff"
-                    placeholder="Staff"
-                    defaultValue={singlestaff?.name}
+                    defaultValue={name}
+                    {...register("staff", { required: true })}
                     className="input input-bordered w-full"
-                    required
-                    disabled
+                    readOnly
                   />
                 </div>
                 <div className="form-control w-full">
@@ -132,10 +128,9 @@ const AddCost = () => {
                   </label>
                   <input
                     type="text"
-                    name="description"
+                    {...register("description", { required: true })}
                     placeholder="Cost Description"
                     className="input input-bordered w-full"
-                    required
                   />
                 </div>
                 <div className="form-control w-3/12 flex-1">
@@ -144,8 +139,8 @@ const AddCost = () => {
                   </label>
                   <input
                     type="number"
-                    name="amount"
-                    placeholder="Address"
+                    {...register("amount", { required: true })}
+                    placeholder="Amount"
                     className="input input-bordered w-full"
                     required
                   />

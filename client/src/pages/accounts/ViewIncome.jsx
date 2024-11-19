@@ -10,6 +10,7 @@ import moment from "moment";
 import useIncomeCatList from "../../hooks/data/useIncomeCatList";
 import { useSelector } from "react-redux";
 import { useGetIncomeQuery } from "../../redux/feature/api/incomeApi";
+import { useGetUserByEmailQuery } from "../../redux/feature/api/userApi";
 
 const ViewIncome = () => {
   const dt = useRef(null);
@@ -45,7 +46,11 @@ const ViewIncome = () => {
     return <span>{category?.name}</span>;
   };
   const userBodyTemplate = (rowData) => {
-    return <span>{rowData?.staffEmail}</span>;
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const { data: user, isLoading } = useGetUserByEmailQuery(
+      rowData?.staffEmail
+    );
+    return <span>{user?.data?.name}</span>;
   };
 
   const tabID = (data, props) => {

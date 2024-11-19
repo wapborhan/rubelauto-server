@@ -84,7 +84,7 @@ const AddIncome = () => {
                   </label>
                   <input
                     type="text"
-                    defaultValue={new Date().toISOString()}
+                    defaultValue={new Date()}
                     className="input input-bordered w-full text-slate-600 disabled:text-slate-600"
                     readOnly
                   />
