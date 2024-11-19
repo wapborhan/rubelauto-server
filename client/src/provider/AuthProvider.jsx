@@ -1,15 +1,7 @@
 import { createContext, useEffect, useState } from "react";
-import {
-  GoogleAuthProvider,
-  deleteUser,
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-  signInWithPopup,
-  signOut,
-  updateProfile,
-} from "firebase/auth";
+import { deleteUser, onAuthStateChanged } from "firebase/auth";
 import auth from "./firebase.config";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setUser, toggleLoading } from "../redux/feature/user/userSlice";
 import { useGetUserByEmailQuery } from "../redux/feature/api/userApi";
 
@@ -18,30 +10,8 @@ export const AuthContext = createContext(null);
 const AuthProvider = ({ children }) => {
   const [mainUser, setMainUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const googleProvider = new GoogleAuthProvider();
   const dispatch = useDispatch();
   const { data: user } = useGetUserByEmailQuery(mainUser?.email);
-
-  const logIn = (email, password) => {
-    setLoading(true);
-    return signInWithEmailAndPassword(auth, email, password);
-  };
-  const googleSignIn = () => {
-    setLoading(true);
-    return signInWithPopup(auth, googleProvider);
-  };
-
-  const logOut = () => {
-    setLoading(true);
-    return signOut(auth);
-  };
-
-  const updateUserProfile = (name, photo) => {
-    return updateProfile(auth.currentUser, {
-      displayName: name,
-      photoURL: photo,
-    });
-  };
 
   const deleteUserFromFRB = () => {
     return deleteUser(mainUser);
@@ -53,9 +23,9 @@ const AuthProvider = ({ children }) => {
       if (currentUser && mainUser) {
         dispatch(
           setUser({
-            name: currentUser?.displayName,
-            photo: currentUser?.photoURL,
-            email: currentUser?.email,
+            name: user?.data?.name,
+            photo: user?.data?.photo,
+            email: user?.data?.email,
             joinDate: user?.data?.joinDate,
             mobile: user?.data?.mobile,
             showRoom: user?.data?.showRoom,
@@ -94,10 +64,6 @@ const AuthProvider = ({ children }) => {
   const authInfo = {
     mainUser,
     loading,
-    logIn,
-    googleSignIn,
-    logOut,
-    updateUserProfile,
     deleteUserFromFRB,
   };
 

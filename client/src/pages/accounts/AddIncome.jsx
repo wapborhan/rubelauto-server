@@ -1,65 +1,63 @@
-import { useRef, useState } from "react";
-import useAxiosPublic from "../../hooks/useAxiosPublic";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 import { Toast } from "primereact/toast";
-import useAuth from "../../hooks/useAuth";
-import useSingleStaff from "../../hooks/useSingleStaff";
 import { Dropdown } from "primereact/dropdown";
 import useIncomeCatList from "../../hooks/data/useIncomeCatList";
+import { useSelector } from "react-redux";
+import { useSetIncomeMutation } from "../../redux/feature/api/incomeApi";
 
 const AddIncome = () => {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
+
   const toast = useRef(null);
-  const { user } = useAuth();
-  const [singlestaff] = useSingleStaff(user?.email);
-  const axiosPublic = useAxiosPublic();
   const navigate = useNavigate();
   const [incomeCat, setIncomeCat] = useState();
   const [incomeCatList] = useIncomeCatList();
+  const { showRoom, email, name } = useSelector((state) => state.userStore);
+  const [setPost, { isSuccess, isError, error }] = useSetIncomeMutation();
 
-  console.log(singlestaff);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const form = e.target;
-
-    const amount = form.amount.value;
-    const description = form.description.value;
-
+  const onSubmit = (data) => {
     const inputData = {
       date: new Date(),
-      staffEmail: singlestaff?.email,
+      staffEmail: email,
       categories: incomeCat?.code,
-      showroom: singlestaff?.showRoom,
-      description,
-      amount,
+      showroom: showRoom,
+      ...data,
     };
-    // console.log(inputData);
-
-    axiosPublic
-      .post(`/income`, inputData)
-      .then((res) => {
-        console.log(res);
-        if (res.data.status === 2000) {
-          toast.current.show({
-            severity: "success",
-            summary: "Income",
-            detail: "Succesfully Added.",
-          });
-          setTimeout(() => {
-            navigate("/account/income/view");
-          }, 3000);
-          form.reset();
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.current.show({
-          severity: "error",
-          summary: "Income",
-          detail: err?.message,
-        });
-      });
+    setPost(inputData);
+    isSuccess && reset();
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.current.show({
+        severity: "success",
+        summary: "Income",
+        detail: "Successfully Added.",
+      });
+      reset();
+      setTimeout(() => {
+        navigate("/account/income/view");
+      }, 3000);
+    }
+  }, [isSuccess, navigate, reset]);
+
+  useEffect(() => {
+    if (isError) {
+      toast.current.show({
+        severity: "error",
+        summary: "Income",
+        detail: error?.data?.message || "Error occurred while adding income.",
+      });
+    }
+  }, [isError, error]);
+
   return (
     <div className="addIncome">
       <Toast
@@ -77,7 +75,7 @@ const AddIncome = () => {
         </div>
         <fieldset className="mb-4">
           <legend>Add Income</legend>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <div className="form space-y-5">
               <div className="frist flex gap-5 lg:flex-nowrap flex-wrap justify-between">
                 <div className="form-control  w-full">
@@ -86,11 +84,9 @@ const AddIncome = () => {
                   </label>
                   <input
                     type="text"
-                    name="date"
-                    defaultValue={new Date()}
-                    placeholder="Showroom Name"
+                    defaultValue={new Date().toISOString()}
                     className="input input-bordered w-full text-slate-600 disabled:text-slate-600"
-                    disabled
+                    readOnly
                   />
                 </div>
                 <div className="form-control w-full">
@@ -99,12 +95,11 @@ const AddIncome = () => {
                   </label>
                   <input
                     type="text"
-                    name="staff"
-                    placeholder="Staff"
-                    defaultValue={singlestaff?.name}
+                    {...register("staff")}
+                    defaultValue={name}
                     className="input input-bordered w-full"
                     required
-                    disabled
+                    readOnly
                   />
                 </div>
                 <div className="form-control w-full">
@@ -131,10 +126,9 @@ const AddIncome = () => {
                   </label>
                   <input
                     type="text"
-                    name="description"
+                    {...register("description", { required: true })}
                     placeholder="Income Description"
                     className="input input-bordered w-full"
-                    required
                   />
                 </div>
                 <div className="form-control w-3/12 flex-1">
@@ -143,10 +137,9 @@ const AddIncome = () => {
                   </label>
                   <input
                     type="number"
-                    name="amount"
+                    {...register("amount", { required: true })}
                     placeholder="Address"
                     className="input input-bordered w-full"
-                    required
                   />
                 </div>
               </div>

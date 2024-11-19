@@ -3,37 +3,20 @@ import { Tooltip } from "primereact/tooltip";
 import { NavLink } from "react-router-dom";
 import ExportButtons from "../../components/shared/exportButton/ExportButtons";
 import GlobalFilter from "../../components/shared/GlobalFilter";
-import { useContext, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { FilterMatchMode } from "primereact/api";
-import useAxiosPublic from "../../hooks/useAxiosPublic";
-import { useQuery } from "@tanstack/react-query";
-import useSingleStaff from "../../hooks/useSingleStaff";
-import { AuthContext } from "../../provider/AuthProvider";
 import { Column } from "primereact/column";
 import moment from "moment";
-import useCostList from "../../hooks/data/useCostList";
 import useIncomeCatList from "../../hooks/data/useIncomeCatList";
+import { useSelector } from "react-redux";
+import { useGetIncomeQuery } from "../../redux/feature/api/incomeApi";
 
 const ViewIncome = () => {
   const dt = useRef(null);
   const tooltipRef = useRef(null);
-  const axiosPublic = useAxiosPublic();
-  const { user } = useContext(AuthContext);
-  const [singlestaff] = useSingleStaff(user?.email);
   const [incomeCatList] = useIncomeCatList();
-
-  console.log(singlestaff);
-
-  const { data: allIncome = [], isPending } = useQuery({
-    queryKey: ["allIncome"],
-    enabled: !!singlestaff,
-    queryFn: async () => {
-      const res = await axiosPublic.get(
-        `/income?showroom=${singlestaff?.showRoom}`
-      );
-      return res.data.data;
-    },
-  });
+  const { showRoom } = useSelector((state) => state.userStore);
+  const { data: allIncome, isLoading } = useGetIncomeQuery(showRoom);
 
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -44,7 +27,7 @@ const ViewIncome = () => {
       <div className="flex lg:flex-nowrap flex-wrap gap-5 lg:justify-between justify-center">
         <GlobalFilter setFilters={setFilters} filters={filters} />
         <div className="flex align-items-center  justify-between gap-2">
-          <ExportButtons state={allIncome} dt={dt} />
+          <ExportButtons state={allIncome?.data} dt={dt} />
         </div>
       </div>
     );
@@ -104,9 +87,9 @@ const ViewIncome = () => {
       <DataTable
         ref={dt}
         dataKey="_id"
-        value={allIncome}
+        value={allIncome?.data}
         header={header}
-        loading={isPending}
+        loading={isLoading}
         filters={filters}
         globalFilterFields={["name"]}
         paginator

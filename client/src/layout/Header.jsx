@@ -4,21 +4,17 @@ import { Badge } from "primereact/badge";
 import { useRef } from "react";
 import { Avatar } from "primereact/avatar";
 import { Link, useNavigate } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
+import { useDispatch, useSelector } from "react-redux";
+import { logOutUser } from "../redux/feature/user/userSlice";
 
 const Header = (props) => {
   const menuRight = useRef(null);
-  const { user, logOut } = useAuth();
+  const { name, photo, showRoom } = useSelector((state) => state.userStore);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const handleSignOut = () => {
-    logOut()
-      .then(() => {
-        // Sign-out successful.
-      })
-      .catch((error) => {
-        // An error happened.
-        console.error(error);
-      });
+    dispatch(logOutUser());
     navigate("/");
   };
 
@@ -48,15 +44,17 @@ const Header = (props) => {
             className="w-full p-link flex align-items-center p-2 pl-4 text-color hover:surface-200 border-noround"
           >
             <Avatar
-              image={user?.photoURL
-                ? user?.photoURL
-                : "https://png.pngtree.com/png-vector/20220709/ourmid/pngtree-businessman-user-avatar-wearing-suit-with-red-tie-png-image_5809521.png"}
+              image={
+                photo
+                  ? photo
+                  : "https://png.pngtree.com/png-vector/20220709/ourmid/pngtree-businessman-user-avatar-wearing-suit-with-red-tie-png-image_5809521.png"
+              }
               className="mr-2"
               shape="circle"
             />
             <div className="flex flex-col align">
-              <span className="font-bold">{user?.displayName}</span>
-              <span className="text-sm">{user?.showRoom}</span>
+              <span className="font-bold">{name}</span>
+              <span className="text-sm">{showRoom}</span>
             </div>
           </Link>
         );
@@ -95,15 +93,7 @@ const Header = (props) => {
       ],
     },
   ];
-  const {
-    handleToggle,
-    isActive,
-    setCollapsed,
-    collapsed,
-    broken,
-    setToggled,
-    toggled,
-  } = props;
+  const { setCollapsed, collapsed, broken, setToggled, toggled } = props;
 
   return (
     <>
@@ -111,27 +101,24 @@ const Header = (props) => {
         id="topbar"
         className="topbar navbar-expand navbar-light bg-white  mb-4 static-top shadow flex justify-between px-4 py-2 items-center"
       >
-        {broken
-          ? (
-            <>
-              <button
-                className="sb-button"
-                onClick={() => setToggled(!toggled)}
-              >
-                <i className="pi pi-align-left"></i>
-              </button>
-            </>
-          )
-          : (
-            <div
-              className="sidebars-button text-dark cursor-pointer"
-              onClick={() => setCollapsed(!collapsed)}
-            >
-              {collapsed
-                ? <i className="pi pi-align-left"></i>
-                : <i className="pi pi-bars"></i>}
-            </div>
-          )}
+        {broken ? (
+          <>
+            <button className="sb-button" onClick={() => setToggled(!toggled)}>
+              <i className="pi pi-align-left"></i>
+            </button>
+          </>
+        ) : (
+          <div
+            className="sidebars-button text-dark cursor-pointer"
+            onClick={() => setCollapsed(!collapsed)}
+          >
+            {collapsed ? (
+              <i className="pi pi-align-left"></i>
+            ) : (
+              <i className="pi pi-bars"></i>
+            )}
+          </div>
+        )}
 
         <h2 id="nameTitle" className="text-center text-dark font-bold">
           Rubel Auto
@@ -144,7 +131,7 @@ const Header = (props) => {
             aria-controls="popup_menu_right"
             aria-haspopup
           >
-            <img src={user?.photoURL} alt="P" />
+            <img src={photo} alt="P" />
           </Button>
 
           <Menu
