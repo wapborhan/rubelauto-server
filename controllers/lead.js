@@ -48,7 +48,7 @@ exports.singleLead = async (req, res, next) => {
     const leadId = req.params.id;
 
     const cursor = { _id: new ObjectId(leadId) };
-    const data = await Leads.find(cursor);
+    const data = await Leads.findOne(cursor);
 
     res.status(200).json({
       success: true,

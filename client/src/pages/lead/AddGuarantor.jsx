@@ -2,7 +2,6 @@ import { useRef } from "react";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import { useNavigate, useParams } from "react-router-dom";
 import { Toast } from "primereact/toast";
-import useSingleLead from "../../hooks/useSingleLead";
 
 const AddGuarantor = () => {
   // Hooks

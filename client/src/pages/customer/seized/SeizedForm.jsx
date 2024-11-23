@@ -1,12 +1,10 @@
 import { InputTextarea } from "primereact/inputtextarea";
 import { useState } from "react";
-import useAuth from "../../../hooks/useAuth";
-import useSingleStaff from "../../../hooks/useSingleStaff";
 import { InputNumber } from "primereact/inputnumber";
+import { useSelector } from "react-redux";
 
 const SeizedForm = ({ postData }) => {
-  const { user } = useAuth();
-  const [singlestaff] = useSingleStaff(user?.email);
+  const { name } = useSelector((state) => state.userStore);
   const [seizedCost, setSeizedCost] = useState();
   const [coments, setComents] = useState(undefined);
 
@@ -16,7 +14,7 @@ const SeizedForm = ({ postData }) => {
     const inputData = {
       date: new Date(),
       seizedCost,
-      staff: singlestaff?.name,
+      staff: name,
       type: "seized",
       coments,
     };
@@ -48,7 +46,7 @@ const SeizedForm = ({ postData }) => {
               <input
                 type="text"
                 name="seizedDate"
-                placeholder={singlestaff?.name}
+                placeholder={name}
                 className="input input-bordered w-full"
                 disabled
               />

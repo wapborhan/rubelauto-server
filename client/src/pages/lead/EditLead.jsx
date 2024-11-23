@@ -7,11 +7,11 @@ import useUpazila from "../../hooks/data/useUpazila";
 import useUnion from "../../hooks/data/useUnion";
 import { useNavigate, useParams } from "react-router-dom";
 import { Toast } from "primereact/toast";
-import useSingleLead from "../../hooks/useSingleLead";
+import { useGetSingleLeadQuery } from "../../redux/feature/api/leadApi";
 
 const EditLead = () => {
   const { id } = useParams();
-  const [singleLead] = useSingleLead(id);
+  const { data: singleLead } = useGetSingleLeadQuery(id);
   // Hooks
   const toast = useRef(null);
   const navigate = useNavigate();
@@ -61,18 +61,22 @@ const EditLead = () => {
       nid,
       address: {
         village: village,
-        union: union?.name === undefined
-          ? singleLead?.address?.union
-          : union?.name,
-        upazila: upazila?.name === undefined
-          ? singleLead?.address?.upazila
-          : upazila?.name,
-        district: district?.name === undefined
-          ? singleLead?.address?.district
-          : district?.name,
-        division: division?.name === undefined
-          ? singleLead?.address?.division
-          : division?.name,
+        union:
+          union?.name === undefined
+            ? singleLead?.data?.address?.union
+            : union?.name,
+        upazila:
+          upazila?.name === undefined
+            ? singleLead?.data?.address?.upazila
+            : upazila?.name,
+        district:
+          district?.name === undefined
+            ? singleLead?.data?.address?.district
+            : district?.name,
+        division:
+          division?.name === undefined
+            ? singleLead?.data?.address?.division
+            : division?.name,
       },
       number,
       location,
@@ -117,8 +121,7 @@ const EditLead = () => {
           <form onSubmit={handleSubmit}>
             <div className="form space-y-5">
               <div className="frist flex gap-5 lg:flex-nowrap flex-wrap justify-between">
-                {
-                  /* <div className="form-control  w-full">
+                {/* <div className="form-control  w-full">
                     <label className="label">
                       <span className="label-text font-bold">Lead Status</span>
                     </label>
@@ -131,8 +134,7 @@ const EditLead = () => {
                       className="w-full md:w-14rem border-2"
                       required
                     />
-                  </div> */
-                }
+                  </div> */}
 
                 <div className="form-control w-full">
                   <label className="label">
@@ -142,7 +144,7 @@ const EditLead = () => {
                     type="text"
                     name="name"
                     placeholder="Enter Customer Name"
-                    defaultValue={singleLead?.name}
+                    defaultValue={singleLead?.data?.name}
                     className="input input-bordered w-full"
                     required
                   />
@@ -157,7 +159,7 @@ const EditLead = () => {
                     type="text"
                     name="coname"
                     placeholder="Enter Father/Husband Name"
-                    defaultValue={singleLead?.coname}
+                    defaultValue={singleLead?.data?.coname}
                     className="input input-bordered w-full"
                     required
                   />
@@ -170,7 +172,7 @@ const EditLead = () => {
                     type="number"
                     name="nid"
                     placeholder="Enter Customer NID Number"
-                    defaultValue={singleLead?.nid}
+                    defaultValue={singleLead?.data?.nid}
                     className="input input-bordered w-full"
                   />
                 </div>
@@ -182,9 +184,11 @@ const EditLead = () => {
                   </label>
                   <input
                     type="text"
-                    defaultValue={division?.name === undefined
-                      ? singleLead?.address?.division
-                      : division?.name}
+                    defaultValue={
+                      division?.name === undefined
+                        ? singleLead?.data?.address?.division
+                        : division?.name
+                    }
                     disabled
                     className="rounded-md px-3 py-1 text-white !bg-slate-200"
                   />
@@ -206,9 +210,11 @@ const EditLead = () => {
                   </label>
                   <input
                     type="text"
-                    defaultValue={district?.name === undefined
-                      ? singleLead?.address?.district
-                      : district?.name}
+                    defaultValue={
+                      district?.name === undefined
+                        ? singleLead?.data?.address?.district
+                        : district?.name
+                    }
                     disabled
                     className="rounded-md px-3 py-1 text-white !bg-slate-200"
                   />
@@ -232,9 +238,11 @@ const EditLead = () => {
                   </label>
                   <input
                     type="text"
-                    defaultValue={upazila?.name === undefined
-                      ? singleLead?.address?.upazila
-                      : upazila?.name}
+                    defaultValue={
+                      upazila?.name === undefined
+                        ? singleLead?.data?.address?.upazila
+                        : upazila?.name
+                    }
                     disabled
                     className="rounded-md px-3 py-1 text-white !bg-slate-200"
                   />
@@ -256,9 +264,11 @@ const EditLead = () => {
                   </label>
                   <input
                     type="text"
-                    defaultValue={union?.name === undefined
-                      ? singleLead?.address?.union
-                      : union?.name}
+                    defaultValue={
+                      union?.name === undefined
+                        ? singleLead?.data?.address?.union
+                        : union?.name
+                    }
                     disabled
                     className="rounded-md px-3 py-1 text-white !bg-slate-200"
                   />
@@ -281,7 +291,7 @@ const EditLead = () => {
                   <input
                     type="text"
                     name="village"
-                    defaultValue={singleLead?.address.village}
+                    defaultValue={singleLead?.data?.address.village}
                     placeholder="Enter Customer Village"
                     className="input input-bordered w-full"
                     required
@@ -298,7 +308,7 @@ const EditLead = () => {
                       type="text"
                       name="number"
                       placeholder="Enter Mobile Number"
-                      defaultValue={singleLead?.number}
+                      defaultValue={singleLead?.data?.number}
                       className="input input-bordered w-full"
                       required
                     />
@@ -313,7 +323,7 @@ const EditLead = () => {
                       type="text"
                       name="media"
                       placeholder="Enter Media name - Mobile No."
-                      defaultValue={singleLead?.media}
+                      defaultValue={singleLead?.data?.media}
                       className="input input-bordered w-full"
                       required
                     />
@@ -327,7 +337,7 @@ const EditLead = () => {
                     type="text"
                     name="location"
                     placeholder="Enter Customer Location Mark"
-                    defaultValue={singleLead?.location}
+                    defaultValue={singleLead?.data?.location}
                     className="input input-bordered w-full"
                   />
                 </div>

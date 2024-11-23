@@ -115,7 +115,7 @@ exports.cardCustomer = async (req, res, next) => {
     const cusData = req.params.cardNo;
 
     const cursor = { cardno: cusData };
-    const data = await Customer.find(cursor);
+    const data = await Customer.findOne(cursor);
 
     res.status(200).json({
       success: true,

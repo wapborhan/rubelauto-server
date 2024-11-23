@@ -8,12 +8,12 @@ import { NavLink } from "react-router-dom";
 import { Tooltip } from "primereact/tooltip";
 import GlobalFilter from "../../components/shared/GlobalFilter";
 import ExportButtons from "../../components/shared/exportButton/ExportButtons";
-import useSuplier from "../../hooks/useSuplier";
+import { useGetSupplierQuery } from "../../redux/feature/api/supplierApi";
 
 function ViewSuplier() {
   const dt = useRef(null);
   const tooltipRef = useRef(null);
-  const [allSuplier, isLoading, isPending] = useSuplier();
+  const { data: allSuplier, isLoading } = useGetSupplierQuery();
 
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -24,7 +24,7 @@ function ViewSuplier() {
       <div className="flex lg:flex-nowrap flex-wrap gap-5 lg:justify-between justify-center">
         <GlobalFilter setFilters={setFilters} filters={filters} />
         <div className="flex align-items-center  justify-between gap-2">
-          <ExportButtons state={allSuplier} dt={dt} />
+          <ExportButtons state={allSuplier?.data} dt={dt} />
         </div>
       </div>
     );
@@ -87,7 +87,7 @@ function ViewSuplier() {
       <DataTable
         ref={dt}
         dataKey="_id"
-        value={allSuplier}
+        value={allSuplier?.data}
         header={header}
         loading={isLoading}
         filters={filters}
@@ -104,8 +104,7 @@ function ViewSuplier() {
           filterPlaceholder="Search"
           // style={{ minWidth: "8rem" }}
         />
-        {
-          /* <Column
+        {/* <Column
           field="status"
           header="Status"
           showFilterMenu={false}
@@ -113,8 +112,7 @@ function ViewSuplier() {
           body={statusBodyTemplate}
           // style={{ minWidth: "8rem" }}
           className="capitalize"
-        /> */
-        }
+        /> */}
         <Column
           field="bssName"
           header="Bussiness Name"

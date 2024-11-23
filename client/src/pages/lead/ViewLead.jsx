@@ -1,19 +1,19 @@
+import "primereact/resources/themes/lara-light-indigo/theme.css";
 import { FilterMatchMode } from "primereact/api";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
-import "primereact/resources/themes/lara-light-indigo/theme.css";
 import { Tag } from "primereact/tag";
 import { useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
-import useLeads from "../../hooks/useLeads";
 import { Tooltip } from "primereact/tooltip";
 import GlobalFilter from "../../components/shared/GlobalFilter";
 import ExportButtons from "../../components/shared/exportButton/ExportButtons";
+import { useGetLeadQuery } from "../../redux/feature/api/leadApi";
 
 export default function ViewLead() {
   const dt = useRef(null);
   const tooltipRef = useRef(null);
-  const [leads, isLoading, isPending] = useLeads();
+  const { data: leads, isLoading } = useGetLeadQuery();
 
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -24,7 +24,7 @@ export default function ViewLead() {
       <div className="flex lg:flex-nowrap flex-wrap gap-5 lg:justify-between justify-center">
         <GlobalFilter setFilters={setFilters} filters={filters} />
         <div className="flex align-items-center  justify-between gap-2">
-          <ExportButtons state={leads} dt={dt} />
+          <ExportButtons state={leads?.data} dt={dt} />
         </div>
       </div>
     );
@@ -79,27 +79,25 @@ export default function ViewLead() {
         >
           <i className="pi pi-file-edit"></i>
         </NavLink>
-        {rowData?.guarantor.length > 0
-          ? (
-            <NavLink
-              to={`/contact/lead/edit/guarantor/${rowData?._id}`}
-              className="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline custom-tooltip cursor-pointer"
-              data-pr-tooltip="Update Guarantor"
-              data-pr-position="top"
-            >
-              <i className="pi pi-pencil"></i>
-            </NavLink>
-          )
-          : (
-            <NavLink
-              to={`/contact/lead/add/guarantor/${rowData?._id}`}
-              className="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline custom-tooltip cursor-pointer"
-              data-pr-tooltip="Add Guarantor"
-              data-pr-position="top"
-            >
-              <i className="pi pi-plus-circle"></i>
-            </NavLink>
-          )}
+        {rowData?.guarantor.length > 0 ? (
+          <NavLink
+            to={`/contact/lead/edit/guarantor/${rowData?._id}`}
+            className="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline custom-tooltip cursor-pointer"
+            data-pr-tooltip="Update Guarantor"
+            data-pr-position="top"
+          >
+            <i className="pi pi-pencil"></i>
+          </NavLink>
+        ) : (
+          <NavLink
+            to={`/contact/lead/add/guarantor/${rowData?._id}`}
+            className="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline custom-tooltip cursor-pointer"
+            data-pr-tooltip="Add Guarantor"
+            data-pr-position="top"
+          >
+            <i className="pi pi-plus-circle"></i>
+          </NavLink>
+        )}
       </div>
     );
   };
@@ -116,9 +114,9 @@ export default function ViewLead() {
       <DataTable
         ref={dt}
         dataKey="_id"
-        value={leads}
+        value={leads?.data}
         header={header}
-        loading={isPending}
+        loading={isLoading}
         filters={filters}
         globalFilterFields={["name"]}
         paginator

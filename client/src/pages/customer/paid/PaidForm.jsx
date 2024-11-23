@@ -1,13 +1,9 @@
 import { useState } from "react";
-import useAuth from "../../../hooks/useAuth";
-import useSingleStaff from "../../../hooks/useSingleStaff";
-import { InputNumber } from "primereact/inputnumber";
 import { InputTextarea } from "primereact/inputtextarea";
+import { useSelector } from "react-redux";
 
 const PaidForm = ({ postData }) => {
-  const { user } = useAuth();
-  const [singlestaff] = useSingleStaff(user?.email);
-  const [seizedCost, setSeizedCost] = useState();
+  const { name } = useSelector((state) => state.userStore);
   const [coments, setComents] = useState(undefined);
 
   const handleSubmit = (e) => {
@@ -17,7 +13,7 @@ const PaidForm = ({ postData }) => {
       type: "paid",
       paidDate: new Date(),
       // seizedCost,
-      staff: singlestaff?.name,
+      staff: name,
       coments,
     };
 
@@ -48,13 +44,12 @@ const PaidForm = ({ postData }) => {
               <input
                 type="text"
                 name="seizedDate"
-                placeholder={singlestaff?.name}
+                placeholder={name}
                 className="input input-bordered w-full"
                 disabled
               />
             </div>
-            {
-              /* <div className="form-control w-full">
+            {/* <div className="form-control w-full">
               <label className="label">
                 <span className="label-text font-bold">Discounts</span>
               </label>
@@ -65,8 +60,7 @@ const PaidForm = ({ postData }) => {
                 locale="en-IN"
                 className="input pl-0 pr-0 input-bordered w-full"
               />
-            </div> */
-            }
+            </div> */}
           </div>
           <div className="third flex gap-5 my-4 lg:flex-nowrap flex-wrap justify-between">
             <div className="form-control w-full">

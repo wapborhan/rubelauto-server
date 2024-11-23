@@ -5,14 +5,12 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { Dropdown } from "primereact/dropdown";
-import useAuth from "../../hooks/useAuth";
-import useSingleStaff from "../../hooks/useSingleStaff";
+import { useSelector } from "react-redux";
 
 export default function UpdateDocument({ data, refetch }) {
   const [visible, setVisible] = useState(false);
   const toast = useRef(null);
-  const { user } = useAuth();
-  const [singlestaff] = useSingleStaff(user?.email);
+  const { name } = useSelector((state) => state.userStore);
   const navigate = useNavigate();
   const axiosPublic = useAxiosPublic();
 
@@ -40,7 +38,7 @@ export default function UpdateDocument({ data, refetch }) {
     const backData = {
       docDate: new Date(),
       docStatus: sts,
-      staff: singlestaff?.name,
+      staff: name,
     };
 
     axiosPublic
@@ -72,10 +70,7 @@ export default function UpdateDocument({ data, refetch }) {
   return (
     <div className="card flex justify-content-center">
       <Toast ref={toast}></Toast>
-      <Button
-        icon="pi pi-user"
-        onClick={() => setVisible(true)}
-      />
+      <Button icon="pi pi-user" onClick={() => setVisible(true)} />
       <Dialog
         header="Update Documents Status"
         visible={visible}
@@ -88,10 +83,7 @@ export default function UpdateDocument({ data, refetch }) {
         breakpoints={{ "960px": "75vw", "641px": "100vw" }}
       >
         <div className="flex flex-col gap-5 text-center mx-auto">
-          <label
-            htmlFor="Status"
-            className="text-primary-50 font-semibold"
-          >
+          <label htmlFor="Status" className="text-primary-50 font-semibold">
             Status
           </label>
           <Dropdown

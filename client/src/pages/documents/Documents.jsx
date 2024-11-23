@@ -8,16 +8,25 @@ import { NavLink, useParams } from "react-router-dom";
 import ExportCSV from "../../components/shared/exportButton/ExportCSV";
 import ExportExcel from "../../components/shared/exportButton/ExportExcel";
 import ExportPDF from "../../components/shared/exportButton/ExportPDF";
-import useCustomers from "../../hooks/useCustomers";
 import GlobalFilter from "../../components/shared/GlobalFilter";
 import UpdateDocument from "./UpdateDocument";
+import { useGetCustomerQuery } from "../../redux/feature/api/customerApi";
+import { useSelector } from "react-redux";
 
 const Documents = () => {
   const path = useParams();
   const tooltipRef = useRef(null);
   const dt = useRef(null);
 
-  const [customers, refetch, isPending] = useCustomers("paid");
+  const { showRoom } = useSelector((state) => state.userStore);
+  const {
+    data: customers,
+    refetch,
+    isPending,
+  } = useGetCustomerQuery({
+    path: "paid",
+    showRoom,
+  });
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   });
@@ -33,9 +42,9 @@ const Documents = () => {
         <GlobalFilter setFilters={setFilters} filters={filters} />
 
         <div className="flex align-items-center  justify-between gap-2">
-          <ExportCSV dt={dt} customers={customers} />
-          <ExportExcel product={customers} />
-          <ExportPDF product={customers} />
+          <ExportCSV dt={dt} customers={customers?.data} />
+          <ExportExcel product={customers?.data} />
+          <ExportPDF product={customers?.data} />
         </div>
       </div>
     );
@@ -96,11 +105,9 @@ const Documents = () => {
 
   const header = renderHeader();
 
-  const footer = `In total there are ${
-    customers ? customers.length : 0
-  } Customers.`;
-
-  console.log(customers);
+  const footer = `In total there are total ${
+    customers ? customers?.data.length : 0
+  } Paid Customers.`;
 
   return (
     <div className="card w-full mx-auto">
@@ -108,7 +115,7 @@ const Documents = () => {
       <DataTable
         ref={dt}
         dataKey="_id"
-        value={customers}
+        value={customers?.data}
         header={header}
         footer={footer}
         loading={isPending}
@@ -122,7 +129,7 @@ const Documents = () => {
         paginator
         rows={10}
         rowsPerPageOptions={[10, 25, 50, 100]}
-        emptyMessage="No customers found."
+        emptyMessage="No paid customers found."
       >
         <Column body={tabID} header="SL" />
         <Column

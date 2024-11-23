@@ -2,17 +2,16 @@ import { Dropdown } from "primereact/dropdown";
 import { useRef, useState } from "react";
 import DatePick from "../../components/shared/DatePick";
 import SearchAbleDropDown from "../../components/shared/SearchAbleDropDown";
-import useShowroom from "../../hooks/useShowroom";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
-import useProduct from "../../hooks/useProduct";
 import { Toast } from "primereact/toast";
+import { useGetproductQuery } from "../../redux/feature/api/productApi";
+import { useGetShowroomQuery } from "../../redux/feature/api/showroomApi";
 
 const AddPurchase = () => {
   const toast = useRef(null);
   const axiosPublic = useAxiosPublic();
-  const [product] = useProduct();
-  // const [showrooms] = useShowroom();
-  const [allShowroom] = useShowroom();
+  const { data: product } = useGetproductQuery();
+  const { data: allShowroom } = useGetShowroomQuery();
 
   //
   const [receivedDate, setReceivedDate] = useState(new Date());
@@ -56,25 +55,28 @@ const AddPurchase = () => {
     };
     // console.log(inputData);
 
-    axiosPublic.post("/stock", inputData).then((res) => {
-      if (res.status === 200) {
+    axiosPublic
+      .post("/stock", inputData)
+      .then((res) => {
+        if (res.status === 200) {
+          toast.current.show({
+            severity: "success",
+            summary: "Success",
+            detail: "Product adde success.",
+            life: 3000,
+          });
+          // form.reset();
+        }
+      })
+      .catch((err) => {
+        console.error(err.response.data.message);
         toast.current.show({
-          severity: "success",
-          summary: "Success",
-          detail: "Product adde success.",
+          severity: "error",
+          summary: "Error",
+          detail: err.response.data.message,
           life: 3000,
         });
-        // form.reset();
-      }
-    }).catch((err) => {
-      console.error(err.response.data.message);
-      toast.current.show({
-        severity: "error",
-        summary: "Error",
-        detail: err.response.data.message,
-        life: 3000,
       });
-    });
   };
   return (
     <div className="addstock">
@@ -164,7 +166,7 @@ const AddPurchase = () => {
                   <SearchAbleDropDown
                     state={productInfo}
                     setState={setProductInfo}
-                    data={product}
+                    data={product?.data}
                     requir={true}
                     config={{
                       optLabel: "modelName",

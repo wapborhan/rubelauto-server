@@ -1,13 +1,13 @@
 import { useRef } from "react";
-import useSingleCustomer from "../../../hooks/useSingleCustomer";
 import SeizedForm from "./SeizedForm";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
 import { Toast } from "primereact/toast";
+import { useGetSingleCustomerQuery } from "../../../redux/feature/api/customerApi";
 
 const Seized = () => {
   const { cardNo } = useParams();
-  const [singleCustomer] = useSingleCustomer(cardNo);
+  const { data: singleCustomer } = useGetSingleCustomerQuery(cardNo);
   const navigate = useNavigate();
   const toast = useRef(null);
   const axiosPublic = useAxiosPublic();
@@ -49,10 +49,10 @@ const Seized = () => {
       <fieldset className="mb-4">
         <legend>Customer Info</legend>
         <div className="card mt-4 grid lg:grid-cols-4 mx-auto w-full text-center">
-          <h1>Card No: {singleCustomer?.cardno}</h1>
-          <h1>Name: {singleCustomer?.customerInfo?.name}</h1>
-          <h1>Product: {singleCustomer?.productInfo?.type}</h1>
-          <h1>Chassiss: {singleCustomer?.productInfo?.chassis}</h1>
+          <h1>Card No: {singleCustomer?.data?.cardno}</h1>
+          <h1>Name: {singleCustomer?.data?.customerInfo?.name}</h1>
+          <h1>Product: {singleCustomer?.data?.productInfo?.type}</h1>
+          <h1>Chassiss: {singleCustomer?.data?.productInfo?.chassis}</h1>
         </div>
       </fieldset>
       <SeizedForm postData={(e) => postData(e)} />

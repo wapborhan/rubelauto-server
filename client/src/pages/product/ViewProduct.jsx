@@ -3,7 +3,6 @@ import { FilterMatchMode } from "primereact/api";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { NavLink } from "react-router-dom";
-import useProduct from "../../hooks/useProduct";
 import ExportPDF from "../../components/shared/exportButton/ExportPDF";
 import ExportExcel from "../../components/shared/exportButton/ExportExcel";
 import ExportCSV from "../../components/shared/exportButton/ExportCSV";
@@ -12,12 +11,13 @@ import ProductDelete from "./ProductDelete";
 import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import { Toast } from "primereact/toast";
+import { useGetproductQuery } from "../../redux/feature/api/productApi";
 
 export default function ViewProduct() {
   const dt = useRef(null);
   const toast = useRef(null);
   const axiosPublic = useAxiosPublic();
-  const [product, refetch, isLoading] = useProduct();
+  const { data: product, isLoading, refetch } = useGetproductQuery();
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   });
@@ -29,8 +29,8 @@ export default function ViewProduct() {
         <GlobalFilter filters={filters} setFilters={setFilters} />
         <div className="flex align-items-center  justify-between gap-2">
           <ExportCSV dt={dt} />
-          <ExportExcel product={product} />
-          <ExportPDF product={product} />
+          <ExportExcel product={product?.data} />
+          <ExportPDF product={product?.data} />
         </div>
       </div>
     );
@@ -41,7 +41,7 @@ export default function ViewProduct() {
     setCurrentProductId(id); // Set the product to delete
     confirmDialog({
       message: "Are you sure you want to proceed?",
-      header: "Seized Back Confirmation",
+      header: "Product Delete Confirmation",
       icon: "pi pi-exclamation-triangle",
       acceptLabel: "Confirm",
       rejectLabel: "Cancel",
@@ -124,7 +124,7 @@ export default function ViewProduct() {
       <ConfirmDialog />
       <DataTable
         ref={dt}
-        value={product}
+        value={product?.data}
         paginator
         rows={10}
         dataKey="_id"

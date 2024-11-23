@@ -1,12 +1,19 @@
-import useLeads from "../../hooks/useLeads";
-import useCustomers from "../../hooks/useCustomers";
 import { Link } from "react-router-dom";
-import useStock from "../../hooks/useStock";
+import { useGetLeadQuery } from "../../redux/feature/api/leadApi";
+import { useGetPurchaseQuery } from "../../redux/feature/api/purchaseApi";
+import { useGetCustomerQuery } from "../../redux/feature/api/customerApi";
+import { useSelector } from "react-redux";
 
 const AllSRCards = () => {
-  const [leads] = useLeads();
-  const [customers] = useCustomers("running");
-  const [stock] = useStock();
+  const { showRoom } = useSelector((state) => state.userStore);
+  const { data: leads } = useGetLeadQuery();
+  const { data: customers } = useGetCustomerQuery({
+    path: "running",
+    showRoom,
+  });
+  console.log(customers);
+
+  const { data: stock } = useGetPurchaseQuery();
   return (
     <>
       <div className="flex items-center p-4 bg-white rounded">
@@ -25,7 +32,7 @@ const AllSRCards = () => {
           </svg>
         </div>
         <div className="flex-grow flex flex-col ml-4">
-          <span className="text-xl font-bold">{leads.length}</span>
+          <span className="text-xl font-bold">{leads?.data?.length}</span>
           <div className="flex items-center justify-between">
             <span className="text-gray-500">Total Leads</span>
             <span className="text-green-500 text-md font-semibold ml-2">
@@ -51,7 +58,9 @@ const AllSRCards = () => {
           </svg>
         </div>
         <div className="flex-grow flex flex-col ml-4">
-          <span className="text-xl font-bold">{customers.length}</span>
+          <span className="text-xl font-bold">
+            {customers?.data ? customers?.data?.length : "-"}
+          </span>
           <div className="flex items-center justify-between">
             <span className="text-gray-500">Running Customer</span>
             <span className="text-red-500 text-md font-semibold ml-2">
@@ -77,7 +86,7 @@ const AllSRCards = () => {
           </svg>
         </div>
         <div className="flex-grow flex flex-col ml-4">
-          <span className="text-xl font-bold">{stock.length}</span>
+          <span className="text-xl font-bold">{stock?.data?.length}</span>
           <div className="flex items-center justify-between">
             <span className="text-gray-500">Total Stock</span>
             <span className="text-green-500 text-md font-semibold ml-2">

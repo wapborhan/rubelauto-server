@@ -2,7 +2,7 @@ import { useRef } from "react";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import { useNavigate, useParams } from "react-router-dom";
 import { Toast } from "primereact/toast";
-import useSingleLead from "../../hooks/useSingleLead";
+import { useGetSingleLeadQuery } from "../../redux/feature/api/leadApi";
 
 const EditGuarantor = () => {
   // Hooks
@@ -11,10 +11,10 @@ const EditGuarantor = () => {
   const navigate = useNavigate();
   const axiosPublic = useAxiosPublic();
 
-  const [singleLead] = useSingleLead(id);
+  const { data: singleLead } = useGetSingleLeadQuery(id);
 
-  const guarantor1 = singleLead?.guarantor[0]?.guarantor1;
-  const guarantor2 = singleLead?.guarantor[0]?.guarantor2;
+  const guarantor1 = singleLead?.data?.guarantor[0]?.guarantor1;
+  const guarantor2 = singleLead?.data?.guarantor[0]?.guarantor2;
 
   // Submit
   const handleSubmit = (e) => {

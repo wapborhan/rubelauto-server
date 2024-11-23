@@ -1,10 +1,23 @@
 import { useParams } from "react-router-dom";
-import useSingleLead from "../../hooks/useSingleLead";
-import useSingleSuplier from "../../hooks/useSingleSuplier";
+import { useGetSingleSupplierQuery } from "../../redux/feature/api/supplierApi";
+import Loading from "../../components/shared/Loading";
 
 const SuplierDetails = () => {
   const { id } = useParams();
-  const [singleSuplier] = useSingleSuplier(id);
+  const {
+    data: singleSuplier,
+    isLoading,
+    isError,
+  } = useGetSingleSupplierQuery(id);
+
+  // Handle loading and error states
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (isError || !singleSuplier?.data) {
+    return <p>Error loading supplier details. Please try again later.</p>;
+  }
   const {
     bssName,
     bssLogoUrl,
@@ -14,7 +27,8 @@ const SuplierDetails = () => {
     address,
     openingBalance,
     addedDate,
-  } = singleSuplier;
+    // eslint-disable-next-line no-unsafe-optional-chaining
+  } = singleSuplier?.data;
   return (
     <>
       {/* <BackPage /> */}
@@ -29,7 +43,9 @@ const SuplierDetails = () => {
                 <img src={bssLogoUrl} alt={bssName} />
               </li>
               <li>
-                <span className="font-bold">Business Name:</span>{"  "}{bssName}
+                <span className="font-bold">Business Name:</span>
+                {"  "}
+                {bssName}
               </li>
               <li>
                 <span className="font-bold">Employee Name:</span>

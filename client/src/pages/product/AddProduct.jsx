@@ -1,19 +1,20 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import useProdType from "../../hooks/data/useProdType";
 import { Dropdown } from "primereact/dropdown";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import { useNavigate } from "react-router-dom";
 import { Toast } from "primereact/toast";
 import SearchAbleDropDown from "../../components/shared/SearchAbleDropDown";
-import useSuplier from "../../hooks/useSuplier";
-import { useForm } from "react-hook-form";
+import { useGetSupplierQuery } from "../../redux/feature/api/supplierApi";
+import { useSetproductMutation } from "../../redux/feature/api/productApi";
 
 const AddProduct = () => {
   const toast = useRef(null);
   const navigate = useNavigate();
   const axiosPublic = useAxiosPublic();
   const [proTypeList] = useProdType();
-  const [allSuplier] = useSuplier();
+  const { data: allSuplier } = useGetSupplierQuery();
+  const [setPost, { isSuccess, isError, error }] = useSetproductMutation();
   const [prodType, setProdType] = useState(null);
   const [suplier, setSuplier] = useState(null);
 
@@ -38,23 +39,40 @@ const AddProduct = () => {
       typeCode,
       sku,
     };
-    console.log(inputData);
+    // console.log(inputData);
+    setPost(inputData);
 
-    axiosPublic.post("/product", inputData).then((res) => {
-      if (res.status === 200) {
-        toast.current.show({
-          severity: "info",
-          summary: "Info",
-          detail: "Product Added",
-        });
-        setTimeout(() => {
-          navigate("/products/view");
-        }, 3000);
+    // axiosPublic.post("/product", inputData).then((res) => {
+    //   if (res.status === 200) {
 
-        form.reset();
-      }
-    });
+    //   }
+    // });
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.current.show({
+        severity: "info",
+        summary: "Info",
+        detail: "Product Added",
+      });
+      setTimeout(() => {
+        navigate("/products/view");
+      }, 3000);
+      // form.reset();
+    }
+  }, [isSuccess, navigate]);
+
+  useEffect(() => {
+    if (isError) {
+      toast.current.show({
+        severity: "info",
+        summary: "Info",
+        detail: error || "Error adding Product.",
+      });
+    }
+  }, [isError, error]);
+
   return (
     <div className="addProduct">
       <Toast
@@ -83,7 +101,7 @@ const AddProduct = () => {
                   <SearchAbleDropDown
                     state={suplier}
                     setState={setSuplier}
-                    data={allSuplier}
+                    data={allSuplier?.data}
                     requir={true}
                     config={{
                       optLabel: "bssName",

@@ -1,12 +1,12 @@
 import { useParams } from "react-router-dom";
 import CusInfo from "./CusInfo";
 import CusAccountInfo from "./CusAccountInfo";
-import useSingleCustomer from "../../../hooks/useSingleCustomer";
 import Loading from "../../../components/shared/Loading";
+import { useGetSingleCustomerQuery } from "../../../redux/feature/api/customerApi";
 
 const CustomerDetails = () => {
   const { cardNo } = useParams();
-  const [singleCustomer] = useSingleCustomer(cardNo);
+  const { data: singleCustomer } = useGetSingleCustomerQuery(cardNo);
 
   return (
     <div>
@@ -18,8 +18,8 @@ const CustomerDetails = () => {
         <div className="customer-info">
           {singleCustomer ? (
             <>
-              <CusInfo singleCustomer={singleCustomer} />
-              <CusAccountInfo singleCustomer={singleCustomer} />
+              <CusInfo singleCustomer={singleCustomer?.data} />
+              <CusAccountInfo singleCustomer={singleCustomer?.data} />
             </>
           ) : (
             <Loading />

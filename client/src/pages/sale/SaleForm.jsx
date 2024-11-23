@@ -1,13 +1,13 @@
 import { Dropdown } from "primereact/dropdown";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import DatePick from "../../components/shared/DatePick";
-import useLeads from "../../hooks/useLeads";
-import useShowroom from "../../hooks/useShowroom";
 import useProdType from "../../hooks/data/useProdType";
-import useProduct from "../../hooks/useProduct";
-import useStock from "../../hooks/useStock";
 import SearchAbleDropDown from "../../components/shared/SearchAbleDropDown";
 import { Toast } from "primereact/toast";
+import { useGetLeadQuery } from "../../redux/feature/api/leadApi";
+import { useGetproductQuery } from "../../redux/feature/api/productApi";
+import { useGetPurchaseQuery } from "../../redux/feature/api/purchaseApi";
+import { useGetShowroomQuery } from "../../redux/feature/api/showroomApi";
 
 const SaleForm = ({ status, postData }) => {
   const toast = useRef(null);
@@ -31,12 +31,11 @@ const SaleForm = ({ status, postData }) => {
     status === "cash" ? priceSale?.cashPrice : priceSale?.creditPrice;
 
   //
-  const [leads] = useLeads();
-  // const [showrooms] = useShowroom();
-  const [allShowroom] = useShowroom();
+  const { data: leads } = useGetLeadQuery();
+  const { data: allShowroom } = useGetShowroomQuery();
   const [proTypeList] = useProdType();
-  const [product] = useProduct();
-  const [stock] = useStock();
+  const { data: product } = useGetproductQuery();
+  const { data: stock } = useGetPurchaseQuery();
   const condtionList = [{ cond: "New" }, { cond: "Resale" }];
   //
 
@@ -111,12 +110,12 @@ const SaleForm = ({ status, postData }) => {
 
   // Filter product based on the type
   const filteredModel = productType
-    ? product.filter((model) => model.typeCode === productType.sku)
+    ? product?.data?.filter((model) => model.typeCode === productType.sku)
     : [];
 
   // Filter stock based on the sku
   const filteredDistricts = model
-    ? stock.filter((district) => district.modelCode === model.sku)
+    ? stock?.data?.filter((district) => district.modelCode === model.sku)
     : [];
   return (
     <div className="addsale">
@@ -195,7 +194,7 @@ const SaleForm = ({ status, postData }) => {
                   <SearchAbleDropDown
                     state={customerInfo}
                     setState={setCustomerInfo}
-                    data={leads}
+                    data={leads?.data}
                     requir={true}
                     config={{
                       optLabel: "name",

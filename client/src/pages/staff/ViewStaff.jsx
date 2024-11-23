@@ -1,12 +1,12 @@
 import { NavLink } from "react-router-dom";
-import useStaff from "../../hooks/useStaff";
 import { Tag } from "primereact/tag";
 import { DataTable } from "primereact/datatable";
 import { Column } from "jspdf-autotable";
 import moment from "moment";
+import { useGetStaffQuery } from "../../redux/feature/api/staffApi";
 
 const ViewStaff = () => {
-  const [staff, isPending, isLoading] = useStaff();
+  const { data: staff, isLoading } = useGetStaffQuery();
 
   const renderHeader = () => {
     return (
@@ -53,10 +53,10 @@ const ViewStaff = () => {
   return (
     <div className="users w-full">
       <DataTable
-        value={staff}
+        value={staff?.data}
         paginator
         rows={10}
-        // rowsPerPageOptions={[10, 25, 50, 100]}
+        rowsPerPageOptions={[10, 25, 50, 100]}
         dataKey="_id"
         loading={isLoading}
         header={header}

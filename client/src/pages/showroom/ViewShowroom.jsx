@@ -6,12 +6,12 @@ import { NavLink } from "react-router-dom";
 import { Tooltip } from "primereact/tooltip";
 import { DataTable } from "primereact/datatable";
 import { Column } from "jspdf-autotable";
-import useShowroom from "../../hooks/useShowroom";
+import { useGetShowroomQuery } from "../../redux/feature/api/showroomApi";
 
 const ViewShowroom = () => {
   const dt = useRef(null);
   const tooltipRef = useRef(null);
-  const [allShowroom, refetch, isLoading] = useShowroom();
+  const { data: allShowroom, isLoading } = useGetShowroomQuery();
 
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },

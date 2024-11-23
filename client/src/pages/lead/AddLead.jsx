@@ -1,6 +1,5 @@
 import { Dropdown } from "primereact/dropdown";
-import { useRef, useState } from "react";
-import useAxiosPublic from "../../hooks/useAxiosPublic";
+import { useEffect, useRef, useState } from "react";
 import useDivision from "../../hooks/data/useDivision";
 import SearchAbleDropDown from "../../components/shared/SearchAbleDropDown";
 import useDistrict from "../../hooks/data/useDistrict";
@@ -8,12 +7,12 @@ import useUpazila from "../../hooks/data/useUpazila";
 import useUnion from "../../hooks/data/useUnion";
 import { useNavigate } from "react-router-dom";
 import { Toast } from "primereact/toast";
+import { useSetLeadMutation } from "../../redux/feature/api/leadApi";
 
 const AddLead = () => {
   // Hooks
   const toast = useRef(null);
   const navigate = useNavigate();
-  const axiosPublic = useAxiosPublic();
   const [divisions] = useDivision();
   const [districts] = useDistrict();
   const [upazilas] = useUpazila();
@@ -26,6 +25,7 @@ const AddLead = () => {
   const [status, setStatus] = useState(null);
 
   const stats = ["Cold", "Warm", "Hot"];
+  const [setPost, { isSuccess, isError, error }] = useSetLeadMutation();
 
   // Filter Wise Select
   const filteredDistricts = divisions
@@ -72,21 +72,32 @@ const AddLead = () => {
 
     console.log(inputData);
 
-    axiosPublic.post("/lead", inputData).then((res) => {
-      if (res.status === 200) {
-        toast.current.show({
-          severity: "info",
-          summary: "Info",
-          detail: "Lead Added",
-        });
-        setTimeout(() => {
-          navigate("/contact/lead/view");
-        }, 3000);
-
-        form.reset();
-      }
-    }).catch((err) => console.error(err));
+    setPost(inputData);
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.current.show({
+        severity: "success",
+        summary: "Lead",
+        detail: "Added Successfully.",
+      });
+      setTimeout(() => {
+        navigate("/contact/lead/view");
+      }, 3000);
+    }
+  }, [isSuccess, navigate]);
+
+  useEffect(() => {
+    if (isError) {
+      toast.current.show({
+        severity: "success",
+        summary: "Lead",
+        detail: error,
+      });
+    }
+  }, [isError, error]);
+
   return (
     <div className="addlead">
       <Toast

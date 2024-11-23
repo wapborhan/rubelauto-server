@@ -2,17 +2,23 @@ import { useEffect, useRef, useState } from "react";
 import useProdType from "../../hooks/data/useProdType";
 import { Dropdown } from "primereact/dropdown";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
-import useSingleProduct from "../../hooks/usesingleProduct";
 import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../../components/shared/Loading";
 import { Toast } from "primereact/toast";
+import { useGetSingleProductQuery } from "../../redux/feature/api/productApi";
 
 const EditProduct = () => {
   const toast = useRef(null);
   const navigate = useNavigate();
   const axiosPublic = useAxiosPublic();
   const { id } = useParams();
-  const [singleProduct, refetch, isLoading, isPending] = useSingleProduct(id);
+
+  const {
+    data: singleProduct,
+    refetch,
+    isLoading,
+  } = useGetSingleProductQuery(id);
+
   const [proTypeList] = useProdType();
   const [prodType, setProdType] = useState();
 
@@ -29,19 +35,19 @@ const EditProduct = () => {
   const [creditPrice, setCreditPrice] = useState("");
 
   useEffect(() => {
-    if (singleProduct) {
-      setBrandImg(singleProduct.brandImg || "");
-      setBrandName(singleProduct.brandName || "");
-      setSku(singleProduct.sku || "");
-      setModelImg(singleProduct.modelImg || "");
-      setModelName(singleProduct.modelName || "");
-      setCashPrice(singleProduct.cashPrice || "");
-      setCreditPrice(singleProduct.creditPrice || "");
+    if (singleProduct?.data) {
+      setBrandImg(singleProduct?.data?.brandImg || "");
+      setBrandName(singleProduct?.data?.brandName || "");
+      setSku(singleProduct?.data?.sku || "");
+      setModelImg(singleProduct?.data?.modelImg || "");
+      setModelName(singleProduct?.data?.modelName || "");
+      setCashPrice(singleProduct?.data?.cashPrice || "");
+      setCreditPrice(singleProduct?.data.creditPrice || "");
       setProdType(
-        proTypeList.find((type) => type.sku === singleProduct.typeCode),
+        proTypeList.find((type) => type.sku === singleProduct?.data?.typeCode)
       );
     }
-  }, [singleProduct]);
+  }, [singleProduct, proTypeList]);
 
   // console.log(singleProduct);
 
@@ -55,9 +61,10 @@ const EditProduct = () => {
     const modelName = form.modelName.value;
     const cashPrice = form.cashPrice.value;
     const creditPrice = form.creditPrice.value;
-    const typeCode = prodType?.name === undefined
-      ? singleProduct?.typeCode
-      : prodType?.sku;
+    const typeCode =
+      prodType?.name === undefined
+        ? singleProduct?.data?.typeCode
+        : prodType?.sku;
     const sku = form.sku.value;
 
     const inputData = {
@@ -143,7 +150,7 @@ const EditProduct = () => {
                     <span className="label-text font-bold">Type Code</span>{" "}
                     <b className=" text-red-500">
                       {prodType?.sku === undefined
-                        ? singleProduct?.typeCode
+                        ? singleProduct?.data?.typeCode
                         : prodType?.name}
                     </b>
                   </label>

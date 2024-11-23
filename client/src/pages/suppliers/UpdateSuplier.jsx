@@ -2,12 +2,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useRef } from "react";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import { Toast } from "primereact/toast";
-import useSingleSuplier from "../../hooks/useSingleSuplier";
+import { useGetSingleSupplierQuery } from "../../redux/feature/api/supplierApi";
 
 const UpdateSuplier = () => {
   const { id } = useParams();
-  // Hooks
-  const [singleSuplier] = useSingleSuplier(id);
+  const { data: singleSuplier } = useGetSingleSupplierQuery(id);
   const toast = useRef(null);
   const navigate = useNavigate();
   const axiosPublic = useAxiosPublic();
@@ -77,7 +76,7 @@ const UpdateSuplier = () => {
                   <input
                     type="text"
                     name="bssLogoUrl"
-                    defaultValue={singleSuplier?.bssLogoUrl}
+                    defaultValue={singleSuplier?.data?.bssLogoUrl}
                     placeholder="Business Logo Url"
                     className="input input-bordered w-full"
                   />
@@ -89,7 +88,7 @@ const UpdateSuplier = () => {
                   <input
                     type="text"
                     name="bssName"
-                    defaultValue={singleSuplier?.bssName}
+                    defaultValue={singleSuplier?.data?.bssName}
                     placeholder="Business Name"
                     className="input input-bordered w-full"
                     required
@@ -103,7 +102,7 @@ const UpdateSuplier = () => {
                   <input
                     type="text"
                     name="empName"
-                    defaultValue={singleSuplier?.empName}
+                    defaultValue={singleSuplier?.data?.empName}
                     placeholder="Employee Name"
                     className="input input-bordered w-full"
                     required
@@ -119,7 +118,7 @@ const UpdateSuplier = () => {
                   <input
                     type="text"
                     name="email"
-                    defaultValue={singleSuplier?.email}
+                    defaultValue={singleSuplier?.data?.email}
                     placeholder="Email"
                     className="input input-bordered w-full"
                   />
@@ -131,7 +130,7 @@ const UpdateSuplier = () => {
                   <input
                     type="number"
                     name="mobile"
-                    defaultValue={singleSuplier?.mobile}
+                    defaultValue={singleSuplier?.data?.mobile}
                     placeholder="Mobile Number"
                     className="input input-bordered w-full"
                     required
@@ -144,7 +143,7 @@ const UpdateSuplier = () => {
                   <input
                     type="text"
                     name="address"
-                    defaultValue={singleSuplier?.address}
+                    defaultValue={singleSuplier?.data?.address}
                     placeholder="Address"
                     className="input input-bordered w-full"
                   />

@@ -1,36 +1,37 @@
 import { useNavigate, useParams } from "react-router-dom";
-import useSingleCustomer from "../../../hooks/useSingleCustomer";
-import usePaymentType from "../../../hooks/data/usePaymentType";
 import { useRef, useState } from "react";
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
-import useAuth from "../../../hooks/useAuth";
 import { Dropdown } from "primereact/dropdown";
 import { InputTextarea } from "primereact/inputtextarea";
 import { Toast } from "primereact/toast";
-import useSingleStaff from "../../../hooks/useSingleStaff";
-import useAccount from "../../../hooks/useAccount";
+import { useSelector } from "react-redux";
+import { useGetAccountQuery } from "../../../redux/feature/api/accountApi";
+import Loading from "../../../components/shared/Loading";
+import { useGetSingleCustomerQuery } from "../../../redux/feature/api/customerApi";
 
 const Payment = () => {
   const toast = useRef(null);
-  const { user } = useAuth();
   const [selectedType, setSelectedType] = useState(null);
   const [coments, setComents] = useState(undefined);
   const axiosPublic = useAxiosPublic();
   const today = new Date();
   const navigate = useNavigate();
   const { cardNo } = useParams();
-  const [singleCustomer] = useSingleCustomer(cardNo);
-  const [singlestaff] = useSingleStaff(user?.email);
-  const [allAccounts, refetch, isLoading, isPending] = useAccount()
+  const { data: singleCustomer } = useGetSingleCustomerQuery(cardNo);
+  const { name } = useSelector((state) => state.userStore);
+  const { data: allAccounts, isLoading, error } = useGetAccountQuery();
+
+  if (isLoading) return <Loading />;
+  if (error) return <p>Error fetching accounts: {error.message}</p>;
 
   const paymentTypeList = [
     {
       name: "Cash",
       code: "cash",
-      remainingBalance:0
+      remainingBalance: 0,
     },
-    ...allAccounts
-  ]
+    ...allAccounts,
+  ];
 
   const showSuccess = () => {
     toast.current.show({
@@ -55,8 +56,8 @@ const Payment = () => {
     const date = today;
     const amount = form.amount.value;
     const voucher = form.voucher.value;
-    const receiver = singlestaff?.name;
-    const showroom = singleCustomer?.showRoom;
+    const receiver = name;
+    const showroom = singleCustomer?.data?.showRoom;
     const type = selectedType?.code;
 
     const installmentData = {
@@ -98,10 +99,10 @@ const Payment = () => {
         <fieldset className="mb-4">
           <legend>Customer Info</legend>
           <div className="card mt-4 grid lg:grid-cols-4 mx-auto w-full text-center">
-            <h1>Card No: {singleCustomer?.cardno}</h1>
-            <h1>Name: {singleCustomer?.customerInfo?.name}</h1>
-            <h1>Product: {singleCustomer?.productInfo?.type}</h1>
-            <h1>Chassiss: {singleCustomer?.productInfo?.chassis}</h1>
+            <h1>Card No: {singleCustomer?.data?.cardno}</h1>
+            <h1>Name: {singleCustomer?.data?.customerInfo?.name}</h1>
+            <h1>Product: {singleCustomer?.data?.productInfo?.type}</h1>
+            <h1>Chassiss: {singleCustomer?.data?.productInfo?.chassis}</h1>
           </div>
         </fieldset>
 
@@ -138,7 +139,7 @@ const Payment = () => {
                   <input
                     type="text"
                     name="date"
-                    placeholder={singlestaff?.name}
+                    placeholder={name}
                     className="input input-bordered w-full"
                     disabled
                   />

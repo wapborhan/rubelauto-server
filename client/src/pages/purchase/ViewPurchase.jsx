@@ -2,18 +2,18 @@ import { useRef, useState } from "react";
 import { FilterMatchMode } from "primereact/api";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { NavLink } from "react-router-dom";
+// import { NavLink } from "react-router-dom";
 import ExportPDF from "../../components/shared/exportButton/ExportPDF";
 import ExportExcel from "../../components/shared/exportButton/ExportExcel";
 import ExportCSV from "../../components/shared/exportButton/ExportCSV";
-import useStock from "../../hooks/useStock";
 import useProdType from "../../hooks/data/useProdType";
 import moment from "moment";
 import GlobalFilter from "../../components/shared/GlobalFilter";
+import { useGetPurchaseQuery } from "../../redux/feature/api/purchaseApi";
 
 const ViewPurchase = () => {
   const dt = useRef(null);
-  const [stock, isLoading] = useStock();
+  const { data: stock, isLoading } = useGetPurchaseQuery();
   const [proTypeList] = useProdType();
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -25,8 +25,8 @@ const ViewPurchase = () => {
         <GlobalFilter filters={filters} setFilters={setFilters} />
         <div className="flex align-items-center  justify-between gap-2">
           <ExportCSV dt={dt} />
-          <ExportExcel product={stock} />
-          <ExportPDF product={stock} />
+          <ExportExcel product={stock?.data} />
+          <ExportPDF product={stock?.data} />
         </div>
       </div>
     );
@@ -41,7 +41,7 @@ const ViewPurchase = () => {
   };
   const categoriesTemplate = (rowData) => {
     const filterData = proTypeList?.find(
-      (item) => item?.sku === rowData?.categories,
+      (item) => item?.sku === rowData?.categories
     );
     return (
       <div className="flex align-items-center gap-2">
@@ -75,7 +75,7 @@ const ViewPurchase = () => {
     <div className="card">
       <DataTable
         ref={dt}
-        value={stock}
+        value={stock?.data}
         paginator
         rows={10}
         dataKey="_id"
@@ -162,14 +162,12 @@ const ViewPurchase = () => {
           filterPlaceholder="Search"
           // style={{ minWidth: "8rem" }}
         />
-        {
-          /* <Column
+        {/* <Column
           header="A"
           dataType="boolean"
           // style={{ minWidth: "6rem" }}
           body={verifiedBodyTemplate}
-        /> */
-        }
+        /> */}
       </DataTable>
     </div>
   );

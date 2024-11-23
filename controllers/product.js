@@ -45,13 +45,17 @@ exports.createProduct = async (req, res, next) => {
 
 exports.singleProduct = async (req, res, next) => {
   const id = req.params.id;
+
   try {
-    const data = await Products.findOne({ _id: new ObjectId(id) });
+    const filter = { _id: new ObjectId(id) };
+    const data = await Products.findOne(filter);
+
+    console.log(filter);
 
     res.status(200).json({
       success: true,
       status: 200,
-      message: "Product Created",
+      message: "Product Found",
       data: data,
     });
   } catch (error) {

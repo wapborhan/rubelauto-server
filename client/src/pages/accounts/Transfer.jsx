@@ -1,18 +1,18 @@
 import { Dropdown } from "primereact/dropdown";
-import useAccount from "../../hooks/useAccount";
 import { useNavigate } from "react-router-dom";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Button } from "primereact/button";
-import useShowroom from "../../hooks/useShowroom";
 import { Toast } from "primereact/toast";
+import { useGetAccountQuery } from "../../redux/feature/api/accountApi";
+import { useGetShowroomQuery } from "../../redux/feature/api/showroomApi";
 
 const Transfer = () => {
   const toast = useRef(null);
   const axiosPublic = useAxiosPublic();
   const navigate = useNavigate();
-  const [allAccounts] = useAccount();
-  const [allShowroom] = useShowroom();
+  const { data: allAccounts } = useGetAccountQuery();
+  const { data: allShowroom } = useGetShowroomQuery();
   const [sendMessage, setSendMessage] = useState("");
   const [recMessage, setRecMessage] = useState("");
   const [sendType, setSendType] = useState();
