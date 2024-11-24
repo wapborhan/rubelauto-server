@@ -1,36 +1,41 @@
 import { Dropdown } from "primereact/dropdown";
 import { useNavigate } from "react-router-dom";
-import useAxiosPublic from "../../hooks/useAxiosPublic";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "primereact/button";
 import { Toast } from "primereact/toast";
-import { useGetAccountQuery } from "../../redux/feature/api/accountApi";
+import {
+  useGetAccountQuery,
+  useSetTransferMutation,
+} from "../../redux/feature/api/accountApi";
 import { useGetShowroomQuery } from "../../redux/feature/api/showroomApi";
 
 const Transfer = () => {
   const toast = useRef(null);
-  const axiosPublic = useAxiosPublic();
   const navigate = useNavigate();
   const { data: allAccounts } = useGetAccountQuery();
   const { data: allShowroom } = useGetShowroomQuery();
+  const [setPost, { isSuccess, isError, error }] = useSetTransferMutation();
   const [sendMessage, setSendMessage] = useState("");
   const [recMessage, setRecMessage] = useState("");
   const [sendType, setSendType] = useState();
   const [receivedType, setReceivedType] = useState();
   const [loading, setLoading] = useState(false);
 
-  const allAccountsNShowrrom = [
-    {
-      label: "Accounts",
-      code: "accounts",
-      items: [...allAccounts],
-    },
-    {
-      label: "Showroom",
-      code: "showroom",
-      items: [...allShowroom],
-    },
-  ];
+  const allAccountsNShowrrom =
+    allAccounts && allShowroom
+      ? [
+          {
+            label: "Accounts",
+            code: "accounts",
+            items: [...allAccounts],
+          },
+          {
+            label: "Showroom",
+            code: "showroom",
+            items: [...allShowroom],
+          },
+        ]
+      : [];
 
   const handleDropdownChange = (e, setType) => {
     const selectedValue = e.value;
@@ -76,9 +81,6 @@ const Transfer = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // setLoading(true);
-
     const amount = e.target.amount.value;
 
     const inputData = {
@@ -107,27 +109,26 @@ const Transfer = () => {
       });
       return;
     }
-
-    console.log(inputData);
-
-    axiosPublic
-      .post(`/account/transfer`, inputData)
-      .then((data) => {
-        if (data.status === 200) {
-          showSuccess();
-          setLoading(false);
-          setTimeout(() => {
-            // navigate(`/customer/view/`);
-          }, 3000);
-        } else {
-          showError();
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-        setLoading(false);
-      });
+    setPost(inputData);
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      showSuccess();
+      setLoading(false);
+      setTimeout(() => {
+        navigate(`/account/list`);
+      }, 3000);
+    }
+  }, [isSuccess, navigate]);
+
+  useEffect(() => {
+    if (isError) {
+      showError();
+      setLoading(false);
+    }
+  }, [isError, error]);
+
   return (
     <div className="transfer">
       <Toast ref={toast} />

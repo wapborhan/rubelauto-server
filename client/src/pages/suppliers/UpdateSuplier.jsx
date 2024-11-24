@@ -1,15 +1,18 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useRef } from "react";
-import useAxiosPublic from "../../hooks/useAxiosPublic";
+import { useEffect, useRef } from "react";
 import { Toast } from "primereact/toast";
-import { useGetSingleSupplierQuery } from "../../redux/feature/api/supplierApi";
+import {
+  useGetSingleSupplierQuery,
+  useSetUpdateSupplierMutation,
+} from "../../redux/feature/api/supplierApi";
 
 const UpdateSuplier = () => {
   const { id } = useParams();
   const { data: singleSuplier } = useGetSingleSupplierQuery(id);
   const toast = useRef(null);
   const navigate = useNavigate();
-  const axiosPublic = useAxiosPublic();
+  const [setPost, { isSuccess, isError, error }] =
+    useSetUpdateSupplierMutation();
 
   // Submit
   const handleSubmit = (e) => {
@@ -30,23 +33,33 @@ const UpdateSuplier = () => {
       mobile,
       address,
     };
-    console.log(inputData);
-
-    axiosPublic.patch(`/supplier/${id}`, inputData).then((res) => {
-      if (res.status === 200) {
-        toast.current.show({
-          severity: "info",
-          summary: "Info",
-          detail: "Supplier Updated",
-        });
-        setTimeout(() => {
-          navigate("/contact/supplier/view");
-        }, 3000);
-
-        form.reset();
-      }
-    });
+    // console.log(inputData);
+    setPost({ id, inputData });
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.current.show({
+        severity: "success",
+        summary: "Supplier",
+        detail: "Data Update Successfully",
+      });
+      setTimeout(() => {
+        navigate("/contact/supplier/view");
+      }, 3000);
+    }
+  }, [isSuccess, navigate]);
+
+  useEffect(() => {
+    if (isError) {
+      toast.current.show({
+        severity: "error",
+        summary: "Info",
+        detail: error,
+      });
+    }
+  }, [isError, error]);
+
   return (
     <div className="addlead">
       <Toast

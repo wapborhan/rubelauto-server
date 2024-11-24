@@ -1,5 +1,4 @@
 import { useRef } from "react";
-import useAxiosPublic from "../../hooks/useAxiosPublic";
 import { useNavigate, useParams } from "react-router-dom";
 import { Toast } from "primereact/toast";
 import { useGetSingleLeadQuery } from "../../redux/feature/api/leadApi";
@@ -9,7 +8,6 @@ const EditGuarantor = () => {
   const toast = useRef(null);
   const { id } = useParams();
   const navigate = useNavigate();
-  const axiosPublic = useAxiosPublic();
 
   const { data: singleLead } = useGetSingleLeadQuery(id);
 
@@ -55,22 +53,6 @@ const EditGuarantor = () => {
       summary: "Lead",
       detail: "Update System Include Soon",
     });
-
-    // axiosPublic.put(`/lead/addguarantor/${id}`, inputData).then((res) => {
-    //   if (res.status === 200) {
-    //     // alert("Customer Added");
-    //     toast.current.show({
-    //       severity: "info",
-    //       summary: "Lead",
-    //       detail: "Guarantor Add On this Lead.",
-    //     });
-    //     setTimeout(() => {
-    //       navigate(`/lead/view/${id}`);
-    //     }, 3000);
-
-    //     form.reset();
-    //   }
-    // });
   };
   return (
     <div className="addlead">

@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import useProdType from "../../hooks/data/useProdType";
 import { Dropdown } from "primereact/dropdown";
-import useAxiosPublic from "../../hooks/useAxiosPublic";
 import { useNavigate } from "react-router-dom";
 import { Toast } from "primereact/toast";
 import SearchAbleDropDown from "../../components/shared/SearchAbleDropDown";
@@ -11,7 +10,6 @@ import { useSetproductMutation } from "../../redux/feature/api/productApi";
 const AddProduct = () => {
   const toast = useRef(null);
   const navigate = useNavigate();
-  const axiosPublic = useAxiosPublic();
   const [proTypeList] = useProdType();
   const { data: allSuplier } = useGetSupplierQuery();
   const [setPost, { isSuccess, isError, error }] = useSetproductMutation();
@@ -41,12 +39,6 @@ const AddProduct = () => {
     };
     // console.log(inputData);
     setPost(inputData);
-
-    // axiosPublic.post("/product", inputData).then((res) => {
-    //   if (res.status === 200) {
-
-    //   }
-    // });
   };
 
   useEffect(() => {

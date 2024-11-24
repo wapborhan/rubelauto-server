@@ -1,14 +1,11 @@
 import { Toast } from "primereact/toast";
-import { useRef, useState } from "react";
-import useAxiosPublic from "../../hooks/useAxiosPublic";
+import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { Dropdown } from "primereact/dropdown";
-import useProdType from "../../hooks/data/useProdType";
+import { useSetSupplierMutation } from "../../redux/feature/api/supplierApi";
 
 const AddSuplier = () => {
   const toast = useRef(null);
-  const [supType, setSupType] = useState([]);
-  const axiosPublic = useAxiosPublic();
+  const [setPost, { isSuccess, isError, error }] = useSetSupplierMutation();
   const navigate = useNavigate();
   const today = new Date();
 
@@ -33,32 +30,31 @@ const AddSuplier = () => {
       openingBalance: 0,
       addedDate: today,
     };
-    console.log(inputData);
-
-    axiosPublic
-      .post(`/suplier`, inputData)
-      .then((res) => {
-        console.log(res);
-        toast.current.show({
-          severity: "success",
-          summary: "Supplier",
-          detail: inputData?.bssName + " Added.",
-        });
-
-        setTimeout(() => {
-          navigate("/contact/supplier/view");
-        }, 3000);
-        form.reset();
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.current.show({
-          severity: "error",
-          summary: "Supplier",
-          detail: err?.message,
-        });
-      });
+    setPost(inputData);
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.current.show({
+        severity: "success",
+        summary: "Supplier",
+        detail: "Data Added Successfully",
+      });
+      setTimeout(() => {
+        navigate("/contact/supplier/view");
+      }, 3000);
+    }
+  }, [isSuccess, navigate]);
+
+  useEffect(() => {
+    if (isError) {
+      toast.current.show({
+        severity: "error",
+        summary: "Supplier",
+        detail: error,
+      });
+    }
+  }, [isError, error]);
 
   return (
     <div className="addlead">

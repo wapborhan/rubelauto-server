@@ -36,7 +36,7 @@ const AllSRCards = () => {
           <div className="flex items-center justify-between">
             <span className="text-gray-500">Total Leads</span>
             <span className="text-green-500 text-md font-semibold ml-2">
-              <Link to="/lead/view">{"  >"}</Link>
+              <Link to="/contact/lead/view">{"  >"}</Link>
             </span>
           </div>
         </div>

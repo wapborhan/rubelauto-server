@@ -1,11 +1,11 @@
 import { Toast } from "primereact/toast";
-import { useRef } from "react";
-import useAxiosPublic from "../../hooks/useAxiosPublic";
+import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSetShowroomMutation } from "../../redux/feature/api/showroomApi";
 
 const AddShowroom = () => {
   const toast = useRef(null);
-  const axiosPublic = useAxiosPublic();
+  const [setPost, { isSuccess, isError, error }] = useSetShowroomMutation();
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
@@ -25,34 +25,33 @@ const AddShowroom = () => {
       remainingBalance: 0,
       addedDate: new Date(),
     };
-    console.log(inputData);
-
-    axiosPublic
-      .post(`/showroom`, inputData)
-      .then((res) => {
-        console.log(res);
-        toast.current.show({
-          severity: "success",
-          summary: "Showroom",
-          detail: inputData?.name + " Added.",
-        });
-
-        setTimeout(() => {
-          navigate("/showroom/view");
-        }, 3000);
-        form.reset();
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.current.show({
-          severity: "error",
-          summary: "Showroom",
-          detail: err?.message,
-        });
-      });
+    setPost(inputData);
   };
+  useEffect(() => {
+    if (isSuccess) {
+      toast.current.show({
+        severity: "success",
+        summary: "Showroom",
+        detail: "Data Added Successfully",
+      });
+      setTimeout(() => {
+        navigate("/contact/supplier/view");
+      }, 3000);
+    }
+  }, [isSuccess, navigate]);
+
+  useEffect(() => {
+    if (isError) {
+      toast.current.show({
+        severity: "error",
+        summary: "Showroom",
+        detail: error,
+      });
+    }
+  }, [isError, error]);
+
   return (
-    <div className="addlead">
+    <div className="addShowroom">
       <Toast
         ref={toast}
         pt={{
@@ -73,9 +72,7 @@ const AddShowroom = () => {
               <div className="frist flex gap-5 lg:flex-nowrap flex-wrap justify-between">
                 <div className="form-control  w-full">
                   <label className="label">
-                    <span className="label-text font-bold">
-                      Showroom Name
-                    </span>
+                    <span className="label-text font-bold">Showroom Name</span>
                   </label>
                   <input
                     type="text"

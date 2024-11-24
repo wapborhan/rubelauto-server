@@ -1,13 +1,11 @@
 import { useRef } from "react";
-import useAuth from "../../hooks/useAuth";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import { useNavigate } from "react-router-dom";
 import { Toast } from "primereact/toast";
 
 const Settings = () => {
   const toast = useRef(null);
-  const axiosPublic = useAxiosPublic();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -19,30 +17,6 @@ const Settings = () => {
       showroom: "",
     };
     console.log(inputData);
-
-    // axiosPublic
-    //   .post(`/showroom`, inputData)
-    //   .then((res) => {
-    //     console.log(res);
-    //     toast.current.show({
-    //       severity: "success",
-    //       summary: "Showroom",
-    //       detail: inputData?.name + " Added.",
-    //     });
-
-    //     setTimeout(() => {
-    //       navigate("/showroom/view");
-    //     }, 3000);
-    //     form.reset();
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //     toast.current.show({
-    //       severity: "error",
-    //       summary: "Showroom",
-    //       detail: err?.message,
-    //     });
-    //   });
   };
 
   return (
