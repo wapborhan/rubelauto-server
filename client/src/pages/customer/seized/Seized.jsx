@@ -1,48 +1,47 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import SeizedForm from "./SeizedForm";
 import { useNavigate, useParams } from "react-router-dom";
-import useAxiosPublic from "../../../hooks/useAxiosPublic";
 import { Toast } from "primereact/toast";
-import { useGetSingleCustomerQuery } from "../../../redux/feature/api/customerApi";
+import {
+  useGetSingleCustomerQuery,
+  useSetSeizedCustomerMutation,
+} from "../../../redux/feature/api/customerApi";
 
 const Seized = () => {
   const { cardNo } = useParams();
   const { data: singleCustomer } = useGetSingleCustomerQuery(cardNo);
+  const [setPost, { isSuccess, isError }] = useSetSeizedCustomerMutation();
   const navigate = useNavigate();
   const toast = useRef(null);
-  const axiosPublic = useAxiosPublic();
 
-  const showSuccess = () => {
-    toast.current.show({
-      severity: "success",
-      summary: "Success",
-      detail: `Your Card No. ${cardNo}  has been added to Seized List.`,
-      life: 3000,
-    });
-  };
-  const showError = () => {
-    toast.current.show({
-      severity: "error",
-      summary: "Error",
-      detail: `Your Card No. ${cardNo}  has not been added to Seized List.`,
-      life: 3000,
-    });
-  };
   const postData = (data) => {
-    axiosPublic
-      .patch(`/customer/seized/${cardNo}`, data)
-      .then((res) => {
-        showSuccess();
-        setTimeout(() => {
-          navigate(`/customer/seized`);
-        }, 1000);
-        console.log(res);
-      })
-      .catch((err) => {
-        showError();
-        console.log(err);
-      });
+    setPost({ cardNo, data });
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.current.show({
+        severity: "success",
+        summary: "Success",
+        detail: `Your Card No. ${cardNo}  has been added to Seized List.`,
+        life: 3000,
+      });
+      setTimeout(() => {
+        navigate(`/customer/seized`);
+      }, 1000);
+    }
+  }, [isSuccess, navigate, cardNo]);
+  useEffect(() => {
+    if (isError) {
+      toast.current.show({
+        severity: "error",
+        summary: "Error",
+        detail: `Your Card No. ${cardNo}  has not been added to Seized List.`,
+        life: 3000,
+      });
+    }
+  }, [isError, cardNo]);
+
   return (
     <div className="card justify-center w-full">
       <Toast ref={toast} />

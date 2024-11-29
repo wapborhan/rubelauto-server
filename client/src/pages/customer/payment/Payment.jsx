@@ -1,25 +1,51 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useRef, useState } from "react";
-import useAxiosPublic from "../../../hooks/useAxiosPublic";
+import { useEffect, useRef, useState } from "react";
 import { Dropdown } from "primereact/dropdown";
 import { InputTextarea } from "primereact/inputtextarea";
 import { Toast } from "primereact/toast";
 import { useSelector } from "react-redux";
 import { useGetAccountQuery } from "../../../redux/feature/api/accountApi";
 import Loading from "../../../components/shared/Loading";
-import { useGetSingleCustomerQuery } from "../../../redux/feature/api/customerApi";
+import {
+  useGetSingleCustomerQuery,
+  useSetInstallmentMutation,
+} from "../../../redux/feature/api/customerApi";
 
 const Payment = () => {
   const toast = useRef(null);
   const [selectedType, setSelectedType] = useState(null);
   const [coments, setComents] = useState(undefined);
-  const axiosPublic = useAxiosPublic();
   const today = new Date();
   const navigate = useNavigate();
   const { cardNo } = useParams();
   const { data: singleCustomer } = useGetSingleCustomerQuery(cardNo);
   const { name } = useSelector((state) => state.userStore);
   const { data: allAccounts, isLoading, error } = useGetAccountQuery();
+  const [setPost, { isSuccess, isError }] = useSetInstallmentMutation();
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.current.show({
+        severity: "success",
+        summary: "Success",
+        detail: "Installment Addeded Complited",
+        life: 3000,
+      });
+      setTimeout(() => {
+        navigate(`/customer/view/${cardNo}`);
+      }, 3000);
+    }
+  }, [isSuccess, navigate, cardNo]);
+  useEffect(() => {
+    if (isError) {
+      toast.current.show({
+        severity: "error",
+        summary: "Error",
+        detail: "Installment Not Posted",
+        life: 3000,
+      });
+    }
+  }, [isError]);
 
   if (isLoading) return <Loading />;
   if (error) return <p>Error fetching accounts: {error.message}</p>;
@@ -32,23 +58,6 @@ const Payment = () => {
     },
     ...allAccounts,
   ];
-
-  const showSuccess = () => {
-    toast.current.show({
-      severity: "success",
-      summary: "Success",
-      detail: "Installment Addeded Complited",
-      life: 3000,
-    });
-  };
-  const showError = () => {
-    toast.current.show({
-      severity: "error",
-      summary: "Error",
-      detail: "Installment Not Posted",
-      life: 3000,
-    });
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -71,23 +80,7 @@ const Payment = () => {
       coments,
     };
 
-    // console.log(installmentData);
-
-    axiosPublic
-      .post(`/installment/`, installmentData)
-      .then((data) => {
-        if (data.status === 200) {
-          showSuccess();
-          setTimeout(() => {
-            navigate(`/customer/view/${cardNo}`);
-          }, 3000);
-        } else {
-          showError();
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    setPost(installmentData);
   };
 
   return (

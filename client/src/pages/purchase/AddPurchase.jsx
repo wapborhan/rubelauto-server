@@ -1,17 +1,17 @@
 import { Dropdown } from "primereact/dropdown";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import DatePick from "../../components/shared/DatePick";
 import SearchAbleDropDown from "../../components/shared/SearchAbleDropDown";
-import useAxiosPublic from "../../hooks/useAxiosPublic";
 import { Toast } from "primereact/toast";
 import { useGetproductQuery } from "../../redux/feature/api/productApi";
 import { useGetShowroomQuery } from "../../redux/feature/api/showroomApi";
+import { useSetPurchaseMutation } from "../../redux/feature/api/purchaseApi";
 
 const AddPurchase = () => {
   const toast = useRef(null);
-  const axiosPublic = useAxiosPublic();
   const { data: product } = useGetproductQuery();
   const { data: allShowroom } = useGetShowroomQuery();
+  const [setPost, { isSuccess, isError, error }] = useSetPurchaseMutation();
 
   //
   const [receivedDate, setReceivedDate] = useState(new Date());
@@ -53,31 +53,30 @@ const AddPurchase = () => {
       showroomName,
       showroomCode,
     };
-    // console.log(inputData);
-
-    axiosPublic
-      .post("/stock", inputData)
-      .then((res) => {
-        if (res.status === 200) {
-          toast.current.show({
-            severity: "success",
-            summary: "Success",
-            detail: "Product adde success.",
-            life: 3000,
-          });
-          // form.reset();
-        }
-      })
-      .catch((err) => {
-        console.error(err.response.data.message);
-        toast.current.show({
-          severity: "error",
-          summary: "Error",
-          detail: err.response.data.message,
-          life: 3000,
-        });
-      });
+    setPost(inputData);
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.current.show({
+        severity: "success",
+        summary: "Success",
+        detail: "Product adde success.",
+        life: 3000,
+      });
+    }
+  }, [isSuccess]);
+  useEffect(() => {
+    if (isError) {
+      toast.current.show({
+        severity: "success",
+        summary: "Success",
+        detail: error,
+        life: 3000,
+      });
+    }
+  }, [isError, error]);
+
   return (
     <div className="addstock">
       <Toast ref={toast} />

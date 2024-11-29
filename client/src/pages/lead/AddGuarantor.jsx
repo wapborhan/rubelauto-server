@@ -1,14 +1,14 @@
-import { useRef } from "react";
-import useAxiosPublic from "../../hooks/useAxiosPublic";
+import { useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Toast } from "primereact/toast";
+import { useSetGuarantorMutation } from "../../redux/feature/api/leadApi";
 
 const AddGuarantor = () => {
   // Hooks
   const toast = useRef(null);
   const { id } = useParams();
   const navigate = useNavigate();
-  const axiosPublic = useAxiosPublic();
+  const [setPost, { isSuccess, isError, error }] = useSetGuarantorMutation();
 
   // Submit
   const handleSubmit = (e) => {
@@ -43,22 +43,31 @@ const AddGuarantor = () => {
         address: gd2address,
       },
     };
-
-    axiosPublic.put(`/lead/addguarantor/${id}`, inputData).then((res) => {
-      if (res.status === 200) {
-        toast.current.show({
-          severity: "info",
-          summary: "Info",
-          detail: "Guarantor Add On this Lead.",
-        });
-        setTimeout(() => {
-          navigate(`/contact/lead/view/${id}`);
-        }, 3000);
-
-        form.reset();
-      }
-    });
+    setPost({ id, inputData });
   };
+  useEffect(() => {
+    if (isSuccess) {
+      toast.current.show({
+        severity: "info",
+        summary: "Info",
+        detail: "Guarantor Add On this Lead.",
+      });
+      setTimeout(() => {
+        navigate(`/contact/lead/view/${id}`);
+      }, 3000);
+    }
+  }, [isSuccess, navigate, id]);
+
+  useEffect(() => {
+    if (isError) {
+      toast.current.show({
+        severity: "info",
+        summary: "Info",
+        detail: error,
+      });
+    }
+  }, [isError, error]);
+
   return (
     <div className="addlead">
       <Toast

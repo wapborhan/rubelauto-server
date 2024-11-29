@@ -1,16 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import useProdType from "../../hooks/data/useProdType";
 import { Dropdown } from "primereact/dropdown";
-import useAxiosPublic from "../../hooks/useAxiosPublic";
 import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../../components/shared/Loading";
 import { Toast } from "primereact/toast";
-import { useGetSingleProductQuery } from "../../redux/feature/api/productApi";
+import {
+  useGetSingleProductQuery,
+  useSetUpdateProductMutation,
+} from "../../redux/feature/api/productApi";
 
 const EditProduct = () => {
   const toast = useRef(null);
   const navigate = useNavigate();
-  const axiosPublic = useAxiosPublic();
   const { id } = useParams();
 
   const {
@@ -18,6 +19,8 @@ const EditProduct = () => {
     refetch,
     isLoading,
   } = useGetSingleProductQuery(id);
+  const [setPost, { isSuccess, isError, error }] =
+    useSetUpdateProductMutation();
 
   const [proTypeList] = useProdType();
   const [prodType, setProdType] = useState();
@@ -77,21 +80,30 @@ const EditProduct = () => {
       typeCode,
       sku,
     };
-    console.log(inputData);
-
-    axiosPublic.patch(`/product/${id}`, inputData).then((res) => {
-      if (res.status === 200) {
-        toast.current.show({
-          severity: "success",
-          summary: "Success",
-          detail: "Product Updated",
-        });
-        setTimeout(() => {
-          navigate("/products/view");
-        }, 3000);
-      }
-    });
+    setPost({ id, inputData });
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.current.show({
+        severity: "success",
+        summary: "Success",
+        detail: "Product Updated",
+      });
+      setTimeout(() => {
+        navigate("/products/view");
+      }, 3000);
+    }
+  }, [isSuccess, navigate]);
+  useEffect(() => {
+    if (isError) {
+      toast.current.show({
+        severity: "success",
+        summary: "Success",
+        detail: error,
+      });
+    }
+  }, [isError, error]);
 
   if (isLoading) {
     return <Loading />;

@@ -1,33 +1,16 @@
-import React, { useRef } from "react";
-import { useNavigate } from "react-router-dom";
-import useAxiosPublic from "../../../hooks/useAxiosPublic";
+import { useEffect, useRef } from "react";
+// import { useNavigate } from "react-router-dom";
 import { Toast } from "primereact/toast";
 import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
+import { useSetSeizedBackMutation } from "../../../redux/feature/api/customerApi";
 
 const SeizedBack = ({ data }) => {
   const { cardno } = data;
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const toast = useRef(null);
-  const axiosPublic = useAxiosPublic();
+  const [setPost, { isSuccess, isError }] = useSetSeizedBackMutation();
 
   const accept = () => {
-    const showSuccess = () => {
-      toast.current.show({
-        severity: "success",
-        summary: "Success",
-        detail: `Your Card No. ${cardno}  has been Seized Back.`,
-        life: 3000,
-      });
-    };
-    const showError = () => {
-      toast.current.show({
-        severity: "error",
-        summary: "Error",
-        detail: `Your Card No. ${cardno}  has not been added to Seized List.`,
-        life: 3000,
-      });
-    };
-
     const backData = {
       type: "running",
       date: null,
@@ -36,20 +19,29 @@ const SeizedBack = ({ data }) => {
       coments: null,
     };
 
-    axiosPublic
-      .patch(`/customer/seized/${cardno}`, backData)
-      .then((res) => {
-        showSuccess();
-        // setTimeout(() => {
-        //   navigate(`/customer/seized`);
-        // }, 3000);
-        console.log(res);
-      })
-      .catch((err) => {
-        showError();
-        console.log(err);
-      });
+    setPost({ cardno, backData });
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.current.show({
+        severity: "success",
+        summary: "Success",
+        detail: `Your Card No. ${cardno}  has been Seized Back.`,
+        life: 3000,
+      });
+    }
+  }, [isSuccess, cardno]);
+  useEffect(() => {
+    if (isError) {
+      toast.current.show({
+        severity: "error",
+        summary: "Error",
+        detail: `Your Card No. ${cardno}  has not been added to Seized List.`,
+        life: 3000,
+      });
+    }
+  }, [isError, cardno]);
 
   const reject = () => {
     toast.current.show({

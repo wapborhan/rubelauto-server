@@ -1,49 +1,49 @@
 import { useNavigate, useParams } from "react-router-dom";
 import PaidForm from "./PaidForm";
-import { useRef } from "react";
-import useAxiosPublic from "../../../hooks/useAxiosPublic";
+import { useEffect, useRef } from "react";
 import { Toast } from "primereact/toast";
-import { useGetSingleCustomerQuery } from "../../../redux/feature/api/customerApi";
+import {
+  useGetSingleCustomerQuery,
+  useSetPaidCustomerMutation,
+} from "../../../redux/feature/api/customerApi";
 
 const Paid = () => {
   const { cardNo } = useParams();
   const { data: singleCustomer } = useGetSingleCustomerQuery(cardNo);
+  const [setPost, { isSuccess, isError, error }] = useSetPaidCustomerMutation();
   const navigate = useNavigate();
   const toast = useRef(null);
-  const axiosPublic = useAxiosPublic();
 
-  const showSuccess = () => {
-    toast.current.show({
-      severity: "success",
-      summary: "Success",
-      detail: `Your Card No. ${cardNo}  has been added to Paid List.`,
-      life: 1000,
-    });
-  };
-  const showError = () => {
-    toast.current.show({
-      severity: "error",
-      summary: "Error",
-      detail: `Your Card No. ${cardNo}  has not been added to Paid List.`,
-      life: 1000,
-    });
-  };
   const postData = (data) => {
-    console.log(data);
-    axiosPublic
-      .patch(`/customer/paid/${cardNo}`, data)
-      .then(function (response) {
-        showSuccess();
-        setTimeout(() => {
-          navigate(`/documents`);
-        }, 3000);
-        console.log(response);
-      })
-      .catch(function (error) {
-        showError();
-        console.error(error);
-      });
+    setPost({ cardNo, data });
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.current.show({
+        severity: "success",
+        summary: "Success",
+        detail: `Your Card No. ${cardNo}  has been added to Paid List.`,
+        life: 1000,
+      });
+      setTimeout(() => {
+        navigate(`/documents`);
+      }, 3000);
+    }
+  }, [isSuccess, navigate, cardNo]);
+
+  useEffect(() => {
+    if (isError) {
+      toast.current.show({
+        severity: "error",
+        summary: "Error",
+        detail: `Your Card No. ${cardNo}  has not been added to Paid List.`,
+        life: 1000,
+      });
+    }
+    console.log(error);
+  }, [isError, cardNo, error]);
+
   return (
     <div className="card justify-content-center">
       <Toast ref={toast} />

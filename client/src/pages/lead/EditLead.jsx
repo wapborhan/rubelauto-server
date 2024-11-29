@@ -1,5 +1,4 @@
-import { useRef, useState } from "react";
-import useAxiosPublic from "../../hooks/useAxiosPublic";
+import { useEffect, useRef, useState } from "react";
 import useDivision from "../../hooks/data/useDivision";
 import SearchAbleDropDown from "../../components/shared/SearchAbleDropDown";
 import useDistrict from "../../hooks/data/useDistrict";
@@ -7,15 +6,18 @@ import useUpazila from "../../hooks/data/useUpazila";
 import useUnion from "../../hooks/data/useUnion";
 import { useNavigate, useParams } from "react-router-dom";
 import { Toast } from "primereact/toast";
-import { useGetSingleLeadQuery } from "../../redux/feature/api/leadApi";
+import {
+  useGetSingleLeadQuery,
+  useSetUpdateLeadMutation,
+} from "../../redux/feature/api/leadApi";
 
 const EditLead = () => {
   const { id } = useParams();
   const { data: singleLead } = useGetSingleLeadQuery(id);
+  const [setPost, { isSuccess, isError, error }] = useSetUpdateLeadMutation();
   // Hooks
   const toast = useRef(null);
   const navigate = useNavigate();
-  const axiosPublic = useAxiosPublic();
   const [divisions] = useDivision();
   const [districts] = useDistrict();
   const [upazilas] = useUpazila();
@@ -83,24 +85,32 @@ const EditLead = () => {
       media,
       guarantor: [],
     };
-
-    console.log(inputData);
-
-    axiosPublic.patch(`/lead/${id}`, inputData).then((res) => {
-      if (res.status === 200) {
-        toast.current.show({
-          severity: "info",
-          summary: "Info",
-          detail: "Lead Updated",
-        });
-        setTimeout(() => {
-          navigate("/contact/lead/view");
-        }, 3000);
-
-        form.reset();
-      }
-    });
+    setPost({ id, inputData });
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.current.show({
+        severity: "info",
+        summary: "Info",
+        detail: "Lead Updated",
+      });
+      setTimeout(() => {
+        navigate("/contact/lead/view");
+      }, 3000);
+    }
+  }, [isSuccess, navigate]);
+
+  useEffect(() => {
+    if (isError) {
+      toast.current.show({
+        severity: "info",
+        summary: "Info",
+        detail: error,
+      });
+    }
+  }, [isError, error]);
+
   return (
     <div className="addlead">
       <Toast

@@ -1,48 +1,44 @@
 import { useNavigate, useParams } from "react-router-dom";
 import SaleForm from "./SaleForm";
-import useAxiosPublic from "../../hooks/useAxiosPublic";
 import { Toast } from "primereact/toast";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
+import { useSetCustomerMutation } from "../../redux/feature/api/customerApi";
 
 const AddSale = () => {
   const navigate = useNavigate();
   const toast = useRef(null);
   const path = useParams();
-  const axiosPublic = useAxiosPublic();
+  const [setPost, { isSuccess, isError, error }] = useSetCustomerMutation();
 
-  const cardStas = path.status === "credit" ? "running" : path.status;
+  // const cardStas = path.status === "credit" ? "running" : path.status;
 
-  const showSuccess = () => {
-    toast.current.show({
-      severity: "success",
-      summary: "Success",
-      detail: `Your ${path.status.toUpperCase()} sale has been added.`,
-      life: 3000,
-    });
-  };
-  const showError = (data) => {
-    toast.current.show({
-      severity: "error",
-      summary: "Error",
-      detail: `${data}`,
-      life: 3000,
-    });
-  };
   const postData = (data) => {
-    axiosPublic
-      .post(`/customer?leadId=${data?.leadsId}&status=${path.status}`, data)
-      .then((res) => {
-        showSuccess();
-        // setTimeout(() => {
-        //   navigate(`/customer/${cardStas}`);
-        // }, 3000);
-        console.log(res);
-      })
-      .catch((err) => {
-        showError(err?.response?.data);
-        console.log(err);
-      });
+    setPost({ leadsId: data?.leadsId, status: path.status, data });
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.current.show({
+        severity: "success",
+        summary: "Success",
+        detail: `Your ${path.status.toUpperCase()} sale has been added.`,
+        life: 3000,
+      });
+      // setTimeout(() => {
+      //   navigate(`/customer/${cardStas}`);
+      // }, 3000);
+    }
+  }, [isSuccess, navigate, path]);
+  useEffect(() => {
+    if (isError) {
+      toast.current.show({
+        severity: "error",
+        summary: "Error",
+        detail: `${error}`,
+        life: 3000,
+      });
+    }
+  }, [isError, error]);
 
   return (
     <>

@@ -1,18 +1,18 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Toast } from "primereact/toast";
-import useAxiosPublic from "../../hooks/useAxiosPublic";
 import { useNavigate } from "react-router-dom";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { Dropdown } from "primereact/dropdown";
 import { useSelector } from "react-redux";
+import { useSetUpdateDocumentMutation } from "../../redux/feature/api/customerApi";
 
 export default function UpdateDocument({ data, refetch }) {
   const [visible, setVisible] = useState(false);
   const toast = useRef(null);
   const { name } = useSelector((state) => state.userStore);
+  const [setPost, { isSuccess, isError }] = useSetUpdateDocumentMutation();
   const navigate = useNavigate();
-  const axiosPublic = useAxiosPublic();
 
   const [status, setStatus] = useState(null);
   const cities = [
@@ -40,32 +40,33 @@ export default function UpdateDocument({ data, refetch }) {
       docStatus: sts,
       staff: name,
     };
-
-    axiosPublic
-      .patch(`/document/update/${card}`, backData)
-      .then((res) => {
-        refetch();
-        setTimeout(() => {
-          navigate(`/documents`);
-        }, 2000);
-        console.log(res);
-        toast.current.show({
-          severity: "success",
-          summary: "Status",
-          detail: `Updated ${message}.`,
-        });
-        setVisible(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.current.show({
-          severity: "error",
-          summary: "Status",
-          detail: `Error ${message}.`,
-        });
-        setVisible(false);
-      });
+    setPost({ card, backData });
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      refetch();
+      setTimeout(() => {
+        navigate(`/documents`);
+      }, 2000);
+      toast.current.show({
+        severity: "success",
+        summary: "Status",
+        detail: `Updated ${message}.`,
+      });
+      setVisible(false);
+    }
+  }, [isSuccess, navigate, message]);
+  useEffect(() => {
+    if (isError) {
+      toast.current.show({
+        severity: "error",
+        summary: "Status",
+        detail: `Error ${message}.`,
+      });
+      setVisible(false);
+    }
+  }, [isError, message]);
 
   return (
     <div className="card flex justify-content-center">

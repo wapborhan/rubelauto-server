@@ -1,16 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-// import SocialSignIn from "../signin/SocialSignIn";
-import useAxiosPublic from "../../hooks/useAxiosPublic";
 import { useDispatch } from "react-redux";
 import { createUser } from "../../redux/feature/user/userSlice";
-
-// import { useDispatch, useSelector } from "react-redux";
-// import { createUser } from "../../redux/feature/user/userSlice";
-// import { useEffect } from "react";
+import { useSetUserMutation } from "../../redux/feature/api/userApi";
+import { useEffect } from "react";
 
 const SignUp = () => {
-  const axiosPublic = useAxiosPublic();
   const {
     handleSubmit,
     register,
@@ -19,6 +14,7 @@ const SignUp = () => {
   } = useForm();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [setUser, { isSuccess, isError, error }] = useSetUserMutation();
 
   const onSubmit = ({ name, email, photoURL, password }) => {
     dispatch(createUser({ name, email, photoURL, password }));
@@ -35,23 +31,20 @@ const SignUp = () => {
       userType: "user",
       isUpdated: false,
     };
-    // console.log(userInfo);
-    axiosPublic
-      .post("/user", userInfo)
-      .then((res) => {
-        if (res.status === 200) {
-          reset();
-          navigate("/profile/edit");
-        }
-      })
-      .catch((error) => console.error(error));
+    setUser(userInfo);
   };
 
-  // useEffect(() => {
-  //   if (!isLoading && email) {
-  //     navigate("/");
-  //   }
-  // }, [isLoading, email, navigate]);
+  useEffect(() => {
+    if (isSuccess) {
+      reset();
+      navigate("/profile/edit");
+    }
+  }, [isSuccess, navigate, reset]);
+  useEffect(() => {
+    if (isError) {
+      console.log(error);
+    }
+  }, [isError, error]);
 
   return (
     <div className="flex items-center min-h-screen p-4 bg-gray-100 lg:justify-center">
@@ -158,18 +151,6 @@ const SignUp = () => {
                 Sign Up
               </button>
             </div>
-            {/* <div className="flex flex-col space-y-5">
-              <span className="flex items-center justify-center space-x-2">
-                <span className="h-px bg-gray-400 w-14"></span>
-                <span className="font-normal text-gray-500">
-                  or Sign Up with
-                </span>
-                <span className="h-px bg-gray-400 w-14"></span>
-              </span>
-              <div className="flex flex-col space-y-4">
-                <SocialSignIn />
-              </div>
-            </div> */}
           </form>
         </div>
         <div className="p-4 py-6 text-white bg-blue-500 md:w-80 md:flex-shrink-0 md:flex md:flex-col md:items-center md:justify-evenly">

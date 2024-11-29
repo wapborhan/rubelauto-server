@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FilterMatchMode } from "primereact/api";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
@@ -9,15 +9,18 @@ import ExportCSV from "../../components/shared/exportButton/ExportCSV";
 import GlobalFilter from "../../components/shared/GlobalFilter";
 import ProductDelete from "./ProductDelete";
 import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
-import useAxiosPublic from "../../hooks/useAxiosPublic";
 import { Toast } from "primereact/toast";
-import { useGetproductQuery } from "../../redux/feature/api/productApi";
+import {
+  useGetproductQuery,
+  useSetDeleteProductMutation,
+} from "../../redux/feature/api/productApi";
 
 export default function ViewProduct() {
   const dt = useRef(null);
   const toast = useRef(null);
-  const axiosPublic = useAxiosPublic();
   const { data: product, isLoading, refetch } = useGetproductQuery();
+  const [setPost, { isSuccess, isError, error }] =
+    useSetDeleteProductMutation();
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   });
@@ -45,7 +48,7 @@ export default function ViewProduct() {
       icon: "pi pi-exclamation-triangle",
       acceptLabel: "Confirm",
       rejectLabel: "Cancel",
-      accept: () => performDelete(id),
+      accept: () => setPost(id),
       reject: () =>
         toast.current.show({
           severity: "warn",
@@ -56,29 +59,28 @@ export default function ViewProduct() {
     });
   };
 
-  const performDelete = (id) => {
-    axiosPublic
-      .delete(`/product/${id}`)
-      .then((res) => {
-        if (res.status === 200) {
-          refetch();
-          toast.current.show({
-            severity: "success",
-            summary: "Success",
-            detail: `Product ${id} deleted successfully.`,
-            life: 3000,
-          });
-        }
-      })
-      .catch((err) => {
-        toast.current.show({
-          severity: "error",
-          summary: "Error",
-          detail: `Failed to delete product ${id}.`,
-          life: 3000,
-        });
+  useEffect(() => {
+    if (isSuccess) {
+      refetch();
+      toast.current.show({
+        severity: "success",
+        summary: "Product",
+        detail: `Deleted successfully.`,
+        life: 3000,
       });
-  };
+    }
+  }, [isSuccess]);
+
+  useEffect(() => {
+    if (isError) {
+      toast.current.show({
+        severity: "error",
+        summary: "Error",
+        detail: `Failed to delete product.`,
+        life: 3000,
+      });
+    }
+  }, [isError]);
 
   const brandImageTemplate = (rowData) => {
     return (
