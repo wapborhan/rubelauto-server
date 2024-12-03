@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import moment from "moment";
 import { useLocation } from "react-router-dom";
-import { useGetSingleStaffQuery } from "../../redux/feature/api/staffApi";
+import { useGetUserByEmailQuery } from "../../redux/feature/api/userApi";
 
 const StaffDetails = () => {
   const location = useLocation();
@@ -12,7 +12,7 @@ const StaffDetails = () => {
     data: singlestaff,
     refetch,
     isLoading,
-  } = useGetSingleStaffQuery(email);
+  } = useGetUserByEmailQuery(email);
 
   useEffect(() => {
     refetch();

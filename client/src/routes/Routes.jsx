@@ -223,6 +223,10 @@ const routes = createBrowserRouter([
             path: "view",
             element: <All.ViewStaff />,
           },
+          {
+            path: "edit/:email",
+            element: <All.EditStaff />,
+          },
         ],
       },
       // Profile

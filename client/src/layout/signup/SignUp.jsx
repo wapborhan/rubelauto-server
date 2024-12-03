@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createUser } from "../../redux/feature/user/userSlice";
 import { useSetUserMutation } from "../../redux/feature/api/userApi";
 import { useEffect } from "react";
@@ -15,6 +15,13 @@ const SignUp = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [setUser, { isSuccess, isError, error }] = useSetUserMutation();
+  const { email, name } = useSelector((state) => state.userStore);
+
+  useEffect(() => {
+    if (name && email) {
+      navigate("/dashboard");
+    }
+  }, [navigate, email, name]);
 
   const onSubmit = ({ name, email, photoURL, password }) => {
     dispatch(createUser({ name, email, photoURL, password }));

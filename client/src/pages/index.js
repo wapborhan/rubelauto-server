@@ -41,6 +41,7 @@ import ViewShowroom from "./showroom/ViewShowroom";
 //
 import ViewStaff from "./staff/ViewStaff";
 import StaffDetails from "./staff/StaffDetails";
+import EditStaff from "./staff/EditStaff";
 //
 import Profile from "./profile/Profile";
 import Settings from "./profile/Settings";
@@ -78,6 +79,7 @@ export {
   ViewPurchase,
   AddSale,
   ViewStaff,
+  EditStaff,
   StaffDetails,
   Profile,
   Settings,

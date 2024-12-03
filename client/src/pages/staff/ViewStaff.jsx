@@ -3,10 +3,10 @@ import { Tag } from "primereact/tag";
 import { DataTable } from "primereact/datatable";
 import { Column } from "jspdf-autotable";
 import moment from "moment";
-import { useGetStaffQuery } from "../../redux/feature/api/staffApi";
+import { useGetUsersQuery } from "../../redux/feature/api/userApi";
 
 const ViewStaff = () => {
-  const { data: staff, isLoading } = useGetStaffQuery();
+  const { data: staff, isLoading } = useGetUsersQuery();
 
   const renderHeader = () => {
     return (
@@ -40,7 +40,7 @@ const ViewStaff = () => {
           Show
         </NavLink>
         <NavLink
-          to={`/profile/${rowData?._id}`}
+          to={`/staff/edit/${rowData?.email}`}
           className="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline"
         >
           Edit

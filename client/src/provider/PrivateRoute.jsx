@@ -1,14 +1,14 @@
-import { useContext, useEffect, useRef } from "react";
-import { AuthContext } from "../provider/AuthProvider";
+import { useEffect } from "react";
 import { Navigate, useLocation, useNavigate } from "react-router";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 
 const PrivateRoute = ({ children }) => {
-  const { mainUser, loading } = useContext(AuthContext);
   const location = useLocation();
   const navigate = useNavigate();
-  const { isUpdated, userType } = useSelector((state) => state.userStore);
+  const { email, isUpdated, userType, isLoading } = useSelector(
+    (state) => state.userStore
+  );
 
   useEffect(() => {
     if (
@@ -20,15 +20,15 @@ const PrivateRoute = ({ children }) => {
     }
   }, [userType, isUpdated, navigate, location.pathname]);
 
-  if (mainUser) {
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (email) {
     return children;
   }
 
-  if (loading) {
-    return children;
-  }
-
-  return <Navigate to="/signin" state={location.pathname} replace></Navigate>;
+  return <Navigate to="/signin" state={{ from: location.pathname }} replace />;
 };
 
 export default PrivateRoute;

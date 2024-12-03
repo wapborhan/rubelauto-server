@@ -1,12 +1,12 @@
 import { useRef } from "react";
 import { Toast } from "primereact/toast";
 import { useSelector } from "react-redux";
-import { useGetStaffQuery } from "../../redux/feature/api/staffApi";
+import { useGetUsersQuery } from "../../redux/feature/api/userApi";
 
 const Settings = () => {
   const toast = useRef(null);
   const { name, email, photo } = useSelector((state) => state.userStore);
-  const { data: users } = useGetStaffQuery();
+  const { data: users } = useGetUsersQuery();
 
   return (
     <div className="addlead">

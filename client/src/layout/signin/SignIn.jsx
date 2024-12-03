@@ -1,14 +1,26 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useRouteError,
+} from "react-router-dom";
+import { useEffect, useState } from "react";
 import { Button } from "primereact/button";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../redux/feature/user/userSlice";
 
 const SignIn = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { email, name } = useSelector((state) => state.userStore);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (name && email) {
+      navigate("/dashboard");
+    }
+  }, [navigate, email, name]);
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -19,9 +31,13 @@ const SignIn = () => {
 
     const result = await dispatch(loginUser({ email, password }));
     if (result) {
-      navigate(location?.state ? location?.state : "/dashboard");
+      navigate(location?.state?.from || "/dashboard");
+    } else {
+      setLoading(false);
     }
   };
+
+  console.log(location?.state?.from);
 
   return (
     <div className="flex items-center min-h-screen p-4 bg-gray-100 lg:justify-center">
