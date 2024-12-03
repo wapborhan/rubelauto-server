@@ -21,13 +21,11 @@ app.use(
         "https://www.pagespeed-mod.com",
         "https://www.google-analytics.com",
         "https://www.googletagmanager.com",
-        "https://vercel.live",
       ],
       connectSrc: [
         "'self'",
         process.env.CLIENT,
         "https://identitytoolkit.googleapis.com",
-        "https://vercel.live",
       ],
     },
   })
