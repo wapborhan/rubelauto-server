@@ -66,3 +66,53 @@ exports.singleUser = async (req, res, next) => {
     });
   }
 };
+
+exports.updateUser = async (req, res, next) => {
+  try {
+    const email = req.query.email;
+    const updateData = req.body;
+    const {
+      name,
+      photo,
+      mobile,
+      showRoom,
+      designation,
+      address,
+      bloodGroup,
+      isUpdated,
+    } = updateData;
+
+    const data = await Users.findOneAndUpdate(
+      { email: email },
+      {
+        $set: {
+          name: name,
+          photo: photo,
+          mobile: mobile,
+          showRoom: showRoom,
+          designation: designation,
+          address: address,
+          bloodGroup: bloodGroup,
+          isUpdated: isUpdated,
+        },
+      },
+      { new: true }
+    );
+
+    console.log(data);
+
+    res.status(200).json({
+      success: true,
+      status: 200,
+      message: "Users Found",
+      data: data,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      status: 500,
+      message: error.message,
+      data: {},
+    });
+  }
+};

@@ -14,6 +14,7 @@ export default function ViewLead() {
   const dt = useRef(null);
   const tooltipRef = useRef(null);
   const { data: leads, isLoading } = useGetLeadQuery();
+  console.log(leads);
 
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },

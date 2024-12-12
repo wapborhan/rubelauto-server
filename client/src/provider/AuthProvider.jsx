@@ -26,7 +26,7 @@ const AuthProvider = ({ children }) => {
             bloodGroup: user?.data?.bloodGroup,
             address: user?.data?.address,
             userType: user?.data?.userType,
-            isUpdated: false,
+            isUpdated: user?.data?.isUpdated,
             isLoading: false,
           })
         );

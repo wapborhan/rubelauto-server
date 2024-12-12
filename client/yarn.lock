@@ -2356,6 +2356,11 @@ globalthis@^1.0.3, globalthis@^1.0.4:
     define-properties "^1.2.1"
     gopd "^1.0.1"
 
+goober@^2.1.10:
+  version "2.1.16"
+  resolved "https://registry.yarnpkg.com/goober/-/goober-2.1.16.tgz#7d548eb9b83ff0988d102be71f271ca8f9c82a95"
+  integrity sha512-erjk19y1U33+XAMe1VTvIONHYoSqE4iS7BYUZfHaqeohLmnC0FdxEh7rQU+6MZ4OajItzjZFSRtVANrQwNq6/g==
+
 gopd@^1.0.1:
   version "1.0.1"
   resolved "https://registry.npmjs.org/gopd/-/gopd-1.0.1.tgz"
@@ -3239,6 +3244,13 @@ react-hook-form@^7.53.1:
   resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.53.1.tgz#3f2cd1ed2b3af99416a4ac674da2d526625add67"
   integrity sha512-6aiQeBda4zjcuaugWvim9WsGqisoUk+etmFEsSUMm451/Ic8L/UAb7sRtMj3V+Hdzm6mMjU1VhiSzYUZeBm0Vg==
 
+react-hot-toast@^2.4.1:
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/react-hot-toast/-/react-hot-toast-2.4.1.tgz#df04295eda8a7b12c4f968e54a61c8d36f4c0994"
+  integrity sha512-j8z+cQbWIM5LY37pR6uZR6D4LfseplqnuAO4co4u8917hBUvXlEqyP1ZzqVLcqoyUesZZv/ImreoCeHVDpE5pQ==
+  dependencies:
+    goober "^2.1.10"
+
 react-is@^16.13.1, react-is@^16.7.0:
   version "16.13.1"
   resolved "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
@@ -3698,6 +3710,11 @@ svg-pathdata@^6.0.3:
   version "6.0.3"
   resolved "https://registry.yarnpkg.com/svg-pathdata/-/svg-pathdata-6.0.3.tgz#80b0e0283b652ccbafb69ad4f8f73e8d3fbf2cac"
   integrity sha512-qsjeeq5YjBZ5eMdFuUa4ZosMLxgr5RZ+F+Y1OrDhuOCEInRMA3x74XdBtggJcj9kOeInz0WE+LgCPDkZFlBYJw==
+
+sweetalert2@^11.14.5:
+  version "11.14.5"
+  resolved "https://registry.yarnpkg.com/sweetalert2/-/sweetalert2-11.14.5.tgz#a3adf9d8c6c8eb8eacfd57e2261503f2181abb8d"
+  integrity sha512-8MWk5uc/r6bWhiJWkUXyEuApfXAhSCZT8FFX7pZXL7YwaPxq+9Ynhi2dUzWkOFn9jvLjKj22CXuccZ+IHcnjvQ==
 
 tabbable@^6.0.0:
   version "6.2.0"

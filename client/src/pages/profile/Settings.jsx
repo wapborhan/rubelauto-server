@@ -107,7 +107,7 @@ const Settings = () => {
                     </div>
                     <div className="message">
                       <a
-                        href={`https://api.whatsapp.com/send?phone=+8801907093959&text=Hello Admin, i am ${name}, staff on Rubel Auto, Please Active my Account`}
+                        href={`https://api.whatsapp.com/send?phone=8801907093959&text=Hello Admin, i am ${name}, staff on Rubel Auto, Please Active my Account`}
                         className="blantershow-chat flex gap-2 border-2 rounded-full py-2 px-5 cursor-pointer hover:bg-green-600 hover:text-white  transition-all"
                         title="Show Chat"
                       >

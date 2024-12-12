@@ -39,14 +39,14 @@ const EditStaff = () => {
       bloodGroup: bloodGroup?.code,
       isUpdated: true,
     };
-    // setUser({email,userInfo});
+    setUser({ email, userInfo });
     console.log(userInfo);
   };
 
   useEffect(() => {
     if (isSuccess) {
       reset();
-      navigate("/staff");
+      // navigate("/staff");
     }
   }, [isSuccess, navigate, reset]);
   useEffect(() => {
@@ -72,7 +72,6 @@ const EditStaff = () => {
                   defaultValue={user?.data?.name}
                   {...register("name", { required: true })}
                   name="name"
-                  autoFocus
                   className="px-4 py-2 transition duration-300 border border-gray-300 rounded focus:border-transparent focus:outline-none focus:ring-4 focus:ring-blue-200"
                 />
                 {errors.name && (
@@ -85,7 +84,7 @@ const EditStaff = () => {
                 </label>
                 <input
                   type="text"
-                  defaultValue={user?.data?.photoURL}
+                  defaultValue={user?.data?.photo}
                   {...register("photoURL", { required: true })}
                   name="photoURL"
                   className="px-4 py-2 transition duration-300 border border-gray-300 rounded focus:border-transparent focus:outline-none focus:ring-4 focus:ring-blue-200"

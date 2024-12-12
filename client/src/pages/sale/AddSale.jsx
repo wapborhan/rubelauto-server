@@ -13,7 +13,7 @@ const AddSale = () => {
   // const cardStas = path.status === "credit" ? "running" : path.status;
 
   const postData = (data) => {
-    setPost({ leadsId: data?.leadsId, status: path.status, data });
+    setPost({ leadsId: data?.leadsId, status: path?.status, data });
   };
 
   useEffect(() => {
@@ -30,11 +30,13 @@ const AddSale = () => {
     }
   }, [isSuccess, navigate, path]);
   useEffect(() => {
+    console.log(error);
+
     if (isError) {
       toast.current.show({
         severity: "error",
         summary: "Error",
-        detail: `${error}`,
+        detail: `${error?.data}`,
         life: 3000,
       });
     }

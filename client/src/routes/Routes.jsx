@@ -5,6 +5,8 @@ import Root from "../layout/Root";
 import SignIn from "../layout/signin/SignIn";
 import SignUp from "../layout/signup/SignUp";
 import PrivateRoute from "../provider/PrivateRoute";
+import AuthLay from "../layout/AuthLay";
+import ForgotPassword from "../layout/gorgot-password/ForgotPassword";
 
 const routes = createBrowserRouter([
   {
@@ -13,12 +15,22 @@ const routes = createBrowserRouter([
     errorElement: "Error",
   },
   {
-    path: "/signin",
-    element: <SignIn />,
-  },
-  {
-    path: "/signup",
-    element: <SignUp />,
+    path: "/auth",
+    element: <AuthLay />,
+    children: [
+      {
+        path: "signin",
+        element: <SignIn />,
+      },
+      {
+        path: "signup",
+        element: <SignUp />,
+      },
+      {
+        path: "forgot-password",
+        element: <ForgotPassword />,
+      },
+    ],
   },
   {
     path: "/",
