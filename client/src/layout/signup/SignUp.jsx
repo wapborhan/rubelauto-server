@@ -54,7 +54,7 @@ const SignUp = () => {
   }, [isError, error]);
 
   return (
-    <div className="flex flex-col overflow-hidden bg-white rounded-md shadow-lg max md:flex-row md:flex-1 lg:max-w-screen-md z-10">
+    <div className="flex flex-col overflow-hidden bg-white rounded-md shadow-lg max md:flex-row md:flex-1 lg:max-w-screen-lg z-10">
       <div className="p-5 bg-white md:flex-1">
         <h3 className="my-4 text-2xl font-semibold text-gray-700">
           Create Account
@@ -157,16 +157,21 @@ const SignUp = () => {
           </div>
         </form>
       </div>
-      <div className="p-4 py-6 text-white bg-blue-500 md:w-80 md:flex-shrink-0 md:flex md:flex-col md:items-center md:justify-evenly">
+      <div className="p-4 py-6 text-white bg-blue-500 md:w-6/12 md:flex-shrink-0 md:flex md:flex-col md:items-center md:justify-evenly">
         <div className="my-3 text-4xl font-bold tracking-wider text-center">
           <Link to="/">
             {/* <img src="https://i.ibb.co/1LV8nQP/logo.png" alt="" /> */}
             Rubel Auto
           </Link>
         </div>
-        <p className="mt-6 font-normal text-center text-gray-300 md:mt-0">
-          With the power of K-WD, you can now focus only on functionaries for
-          your digital products, while leaving the UI design on us!
+        <p className="mt-6 p-3 font-normal text-justify text-gray-300 md:mt-0">
+          <b>Rubel Auto</b> is a trusted dealer of Runner Automobiles PLC. We
+          offer a wide range of high-quality products, catering to both
+          wholesale and retail customers. With a commitment to reliability and
+          customer satisfaction,
+          <b> Rubel Auto</b> provides genuine motorcycle and easybike parts to
+          meet all your needs. Whether you’re an individual rider or a business,
+          we ensure top-notch service and competitive pricing.
         </p>
         <p className="flex flex-col items-center justify-center mt-10 text-center">
           <span>Do You have an account?</span>

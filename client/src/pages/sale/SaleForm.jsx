@@ -117,6 +117,9 @@ const SaleForm = ({ status, postData }) => {
   const filteredDistricts = model
     ? stock?.data?.filter((district) => district.modelCode === model.sku)
     : [];
+
+  const { village, union, upazila } = customerInfo?.address || {};
+  const address = `${village}, ${union}, ${upazila}`;
   return (
     <div className="addsale">
       <Toast ref={toast}></Toast>
@@ -236,7 +239,7 @@ const SaleForm = ({ status, postData }) => {
                     type="text"
                     placeholder="Address"
                     className="input input-bordered w-full"
-                    value={customerInfo?.address}
+                    value={customerInfo && address}
                     disabled
                   />
                 </div>
@@ -276,21 +279,6 @@ const SaleForm = ({ status, postData }) => {
                     disabled={!productType}
                     required={true}
                   />
-                  {/* <Dropdown
-                    value={model}
-                    onChange={(e) => {
-                      const { value } = e;
-                      const { cashPrice } = e.target.value;
-                      setModel(value);
-                      setPriceSale(cashPrice || null);
-                    }}
-                    options={filteredModel}
-                    optionLabel="modelName"
-                    placeholder="Select Model"
-                    className="w-full md:w-14rem border-2"
-                    disabled={!productType}
-                    required={true}
-                  /> */}
                 </div>
                 <div className="form-control w-full">
                   <label className="label">

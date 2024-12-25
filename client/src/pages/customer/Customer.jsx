@@ -15,6 +15,8 @@ import { useGetCustomerQuery } from "../../redux/feature/api/customerApi";
 
 export default function Customer() {
   const path = useParams();
+  console.log(path?.status);
+
   const tooltipRef = useRef(null);
   const dt = useRef(null);
   const { showRoom } = useSelector((state) => state.userStore);
@@ -23,7 +25,7 @@ export default function Customer() {
     refetch,
     isPending,
   } = useGetCustomerQuery({
-    path: "running",
+    path: path?.status,
     showRoom,
   });
   const [filters, setFilters] = useState({
@@ -117,10 +119,11 @@ export default function Customer() {
     customers ? customers?.data?.length : 0
   } Customers.`;
 
-  return (
-    <div className="card w-full mx-auto">
-      <Tooltip ref={tooltipRef} target=".custom-tooltip" className="text-sm" />
+  console.log(customers);
 
+  return (
+    <div className="card w-full mx-auto ">
+      <Tooltip ref={tooltipRef} target=".custom-tooltip" className="text-sm" />
       <DataTable
         ref={dt}
         dataKey="_id"

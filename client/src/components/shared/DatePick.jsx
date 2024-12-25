@@ -128,7 +128,7 @@ const DatePick = ({
       // ]}
       selected={dateValue}
       onChange={(date) => setDateValue(date)}
-      dateFormat="dd-MMM-yyyy"
+      dateFormat="dd-MM-yyyy"
       required={requir}
     />
   );

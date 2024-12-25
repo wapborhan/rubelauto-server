@@ -56,7 +56,7 @@ export default function UpdateDocument({ data, refetch }) {
       });
       setVisible(false);
     }
-  }, [isSuccess, navigate, message]);
+  }, [isSuccess, navigate, message, refetch]);
   useEffect(() => {
     if (isError) {
       toast.current.show({
@@ -94,7 +94,7 @@ export default function UpdateDocument({ data, refetch }) {
             optionLabel="name"
             placeholder="Select Status"
             className="w-6/12 md:w-14rem  mx-auto"
-          />{" "}
+          />
           <Button
             onClick={() => handleSubmit(data?.cardno)}
             label="Update"

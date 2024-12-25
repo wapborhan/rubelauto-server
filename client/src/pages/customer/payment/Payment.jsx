@@ -1,5 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
+import DatePick from "../../../components/shared/DatePick";
 import { Dropdown } from "primereact/dropdown";
 import { InputTextarea } from "primereact/inputtextarea";
 import { Toast } from "primereact/toast";
@@ -14,6 +15,7 @@ import {
 const Payment = () => {
   const toast = useRef(null);
   const [selectedType, setSelectedType] = useState(null);
+  const [date, setDate] = useState(new Date());
   const [coments, setComents] = useState(undefined);
   const today = new Date();
   const navigate = useNavigate();
@@ -62,7 +64,7 @@ const Payment = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const form = e.target;
-    const date = today;
+    // const date = today;
     const amount = form.amount.value;
     const voucher = form.voucher.value;
     const receiver = name;
@@ -109,12 +111,19 @@ const Payment = () => {
                   <label className="label">
                     <span className="label-text font-bold">Date</span>
                   </label>
-                  <input
+                  {/* <input
                     type="text"
                     name="date"
                     placeholder={today}
                     className="input input-bordered w-full"
                     disabled
+                  /> */}
+                  <DatePick
+                    dateValue={date}
+                    setDateValue={setDate}
+                    iconShow={false}
+                    endDate={9999}
+                    required
                   />
                 </div>
                 <div className="form-control w-full">

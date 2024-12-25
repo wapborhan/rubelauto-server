@@ -27,6 +27,7 @@ app.use(
         process.env.CLIENT,
         "https://identitytoolkit.googleapis.com",
       ],
+      imgSrc: ["*"],
     },
   })
 );

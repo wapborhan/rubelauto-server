@@ -6,13 +6,14 @@ import { Toast } from "primereact/toast";
 import { useGetproductQuery } from "../../redux/feature/api/productApi";
 import { useGetShowroomQuery } from "../../redux/feature/api/showroomApi";
 import { useSetPurchaseMutation } from "../../redux/feature/api/purchaseApi";
+import { useNavigate } from "react-router-dom";
 
 const AddPurchase = () => {
   const toast = useRef(null);
   const { data: product } = useGetproductQuery();
   const { data: allShowroom } = useGetShowroomQuery();
   const [setPost, { isSuccess, isError, error }] = useSetPurchaseMutation();
-
+  const navigate = useNavigate();
   //
   const [receivedDate, setReceivedDate] = useState(new Date());
   const [productInfo, setProductInfo] = useState(null);
@@ -64,14 +65,16 @@ const AddPurchase = () => {
         detail: "Product adde success.",
         life: 3000,
       });
+      navigate("/purchase/view");
     }
-  }, [isSuccess]);
+  }, [isSuccess, navigate]);
+
   useEffect(() => {
     if (isError) {
       toast.current.show({
         severity: "success",
         summary: "Success",
-        detail: error,
+        detail: error?.data,
         life: 3000,
       });
     }
