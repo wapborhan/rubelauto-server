@@ -1,6 +1,8 @@
 import { useParams } from "react-router-dom";
 import { useGetSingleSupplierQuery } from "../../redux/feature/api/supplierApi";
 import Loading from "../../components/shared/Loading";
+import ViewSuplier from "./ViewSuplier";
+import SupplierDetailPur from "./SupplierDetailPur";
 
 const SuplierDetails = () => {
   const { id } = useParams();
@@ -35,38 +37,44 @@ const SuplierDetails = () => {
 
       <fieldset className="mb-4 !p-10">
         <legend>Suplier Info</legend>
-        <div className="lead my-5 grid gap-5 grid-cols-3 w-full justify-between">
-          <div className="custdetail">
-            <h3 className="mb-5">Suplier Details</h3>
-            <ul className="w-full space-y-2">
-              <li>
-                <img src={bssLogoUrl} alt={bssName} />
-              </li>
-              <li>
-                <span className="font-bold">Business Name:</span>
-                {"  "}
-                {bssName}
-              </li>
-              <li>
-                <span className="font-bold">Employee Name:</span>
-                {empName}
-              </li>
-              <li>
-                <span className="font-bold">Mobile:</span>
-                {mobile}
-              </li>
-              <li>
-                <span className="font-bold">Email:</span>
-                {email}
-              </li>
-              <li>
-                <span className="font-bold">Address:</span>
-                {address}
-              </li>
-            </ul>
+        <h3 className="mb-5">Suplier Details</h3>
+        <div className="supplier my-5 grid grid-cols-4 gap-5">
+          <div className="image">
+            <img src={bssLogoUrl} alt={bssName} />
+          </div>
+          <div className="info">
+            <div className="flex items-center justify-between gap-2 w-full">
+              <span className="font-bold">Business Name:</span>
+              {bssName}
+            </div>
+            <div className="flex items-center justify-between gap-2 w-full">
+              <span className="font-bold">Employee Name:</span>
+              {empName}
+            </div>
+          </div>
+          <div className="info">
+            <div className="flex items-center justify-between gap-2 w-full">
+              <span className="font-bold">Mobile:</span>
+              {mobile}
+            </div>
+            <div className="flex items-center justify-between gap-2 w-full">
+              <span className="font-bold">Email:</span>
+              {email}
+            </div>
+          </div>
+          <div className="info">
+            <div className="flex items-center justify-between gap-2 w-full">
+              <span className="font-bold">Address:</span>
+              {address}
+            </div>{" "}
+            <div className="flex items-center justify-between gap-2 w-full">
+              <span className="font-bold">Due:</span>
+              12000
+            </div>
           </div>
         </div>
       </fieldset>
+      <SupplierDetailPur />
     </>
   );
 };
