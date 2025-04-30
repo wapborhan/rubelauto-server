@@ -12,10 +12,11 @@ import GlobalFilter from "../../components/shared/GlobalFilter";
 import SeizedBack from "./seized/SeizedBack";
 import { useSelector } from "react-redux";
 import { useGetCustomerQuery } from "../../redux/feature/api/customerApi";
+import { ColumnGroup } from "primereact/columngroup";
+import { Row } from "jspdf-autotable";
 
 export default function Customer() {
   const path = useParams();
-  console.log(path?.status);
 
   const tooltipRef = useRef(null);
   const dt = useRef(null);
@@ -109,17 +110,123 @@ export default function Customer() {
       </div>
     );
   };
+
+  const accountTemplate = (rowData) => {
+    const totalPrice =
+      rowData?.accountInfo?.saleprice + rowData?.accountInfo?.hireprice;
+    const totalDue =
+      totalPrice -
+      rowData?.accountInfo?.dpamount -
+      rowData?.accountInfo?.totalInstallmentAmount;
+
+    return <div className="flex gap-3 justify-center">{totalDue}</div>;
+  };
+
+  const installmentTemplate = (rowData) => {
+    const saleDate = new Date(rowData?.saledate);
+
+    const currentDate = new Date();
+
+    let monthDifference =
+      (currentDate.getFullYear() - saleDate.getFullYear()) * 12;
+    monthDifference -= saleDate.getMonth();
+    monthDifference += currentDate.getMonth();
+
+    if (currentDate.getDate() < saleDate.getDate()) {
+      monthDifference--;
+    }
+
+    const daysDifference = Math.floor(
+      (currentDate - saleDate) / (1000 * 60 * 60 * 24)
+    );
+    if (daysDifference > 30) {
+      monthDifference++;
+    }
+
+    const needPaidAmount = monthDifference * rowData?.accountInfo?.insamount;
+    const installmentDue =
+      needPaidAmount - rowData?.accountInfo?.totalInstallmentAmount;
+
+    return <div className="flex gap-3 justify-center">{installmentDue}</div>;
+  };
+
   const tabID = (data, props) => {
     return props.rowIndex + 1;
   };
 
   const header = renderHeader();
 
-  const footer = `In total there are ${
-    customers ? customers?.data?.length : 0
-  } Customers.`;
+  const contractTotal = () => {
+    let total = 0;
 
-  console.log(customers);
+    for (let sale of customers?.data) {
+      console.log(sale?.accountInfo);
+
+      const totalPrice =
+        sale?.accountInfo?.saleprice + sale?.accountInfo?.hireprice;
+      const totalDue =
+        totalPrice -
+        sale?.accountInfo?.dpamount -
+        sale?.accountInfo?.totalInstallmentAmount;
+
+      total += totalDue;
+    }
+
+    return total;
+  };
+
+  const thisYearTotal = () => {
+    let total = 0;
+
+    for (let sale of customers?.data) {
+      console.log(sale?.accountInfo);
+
+      const saleDate = new Date(sale?.saledate);
+
+      const currentDate = new Date();
+
+      let monthDifference =
+        (currentDate.getFullYear() - saleDate.getFullYear()) * 12;
+      monthDifference -= saleDate.getMonth();
+      monthDifference += currentDate.getMonth();
+
+      if (currentDate.getDate() < saleDate.getDate()) {
+        monthDifference--;
+      }
+
+      const daysDifference = Math.floor(
+        (currentDate - saleDate) / (1000 * 60 * 60 * 24)
+      );
+      if (daysDifference > 30) {
+        monthDifference++;
+      }
+
+      const needPaidAmount = monthDifference * sale?.accountInfo?.insamount;
+      const installmentDue =
+        needPaidAmount - sale?.accountInfo?.totalInstallmentAmount;
+
+      total += installmentDue;
+    }
+    return total;
+  };
+  const customerTotal = () => {
+    return customers ? customers?.data?.length : 0;
+  };
+
+  const footerGroup = (
+    <ColumnGroup>
+      <Row>
+        <Column footer={customerTotal} />
+        <Column
+          footer="Totals Due :"
+          colSpan={5}
+          footerStyle={{ textAlign: "right" }}
+        />
+        <Column footer={contractTotal} />
+        <Column footer={thisYearTotal} />
+      </Row>
+    </ColumnGroup>
+  );
 
   return (
     <div className="card w-full mx-auto ">
@@ -129,10 +236,10 @@ export default function Customer() {
         dataKey="_id"
         value={customers?.data}
         header={header}
-        footer={footer}
+        footerColumnGroup={footerGroup}
         loading={isPending}
         filters={filters}
-        globalFilterFields={["customerInfo.name"]}
+        globalFilterFields={["customerInfo.name", "cardno"]}
         stripedRows
         paginator
         rows={10}
@@ -168,12 +275,17 @@ export default function Customer() {
         <Column
           field="productInfo.models"
           header="Model"
-          style={{ minWidth: "8rem" }}
+          style={{ minWidth: "12rem" }}
         />
         <Column
-          field="productInfo.engine"
-          header="Engine No."
-          style={{ minWidth: "8rem" }}
+          header="Contract Due"
+          body={accountTemplate}
+          style={{ minWidth: "5rem" }}
+        />
+        <Column
+          header="Installment Due"
+          body={installmentTemplate}
+          style={{ minWidth: "5rem" }}
         />
         <Column field="showRoom" header="Showroom" />
         <Column

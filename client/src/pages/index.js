@@ -23,7 +23,9 @@ import ViewProduct from "./product/ViewProduct";
 import EditProduct from "./product/EditProduct";
 //
 import AddPurchase from "./purchase/AddPurchase";
+import PartsPurchase from "./purchase/PartsPurchase";
 import ViewPurchase from "./purchase/ViewPurchase";
+import PartsViewPurchase from "./purchase/PartsViewPurchase";
 //
 import AddSale from "./sale/AddSale";
 //
@@ -76,7 +78,9 @@ export {
   ViewProduct,
   EditProduct,
   AddPurchase,
+  PartsPurchase,
   ViewPurchase,
+  PartsViewPurchase,
   AddSale,
   ViewStaff,
   EditStaff,

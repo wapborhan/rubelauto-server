@@ -81,6 +81,10 @@ const routes = createBrowserRouter([
             path: "supplier/view",
             element: <All.ViewSuplier />,
           },
+          {
+            path: "supplier/parts/view",
+            element: <All.ViewSuplier />,
+          },
 
           {
             path: "supplier/view/:id",
@@ -119,8 +123,16 @@ const routes = createBrowserRouter([
             element: <All.AddPurchase />,
           },
           {
+            path: "parts/add",
+            element: <All.PartsPurchase />,
+          },
+          {
             path: "view",
             element: <All.ViewPurchase />,
+          },
+          {
+            path: "parts/view",
+            element: <All.PartsViewPurchase />,
           },
         ],
       },

@@ -1,13 +1,17 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Toast } from "primereact/toast";
 import {
   useGetSingleSupplierQuery,
   useSetUpdateSupplierMutation,
 } from "../../redux/feature/api/supplierApi";
+import { Dropdown } from "primereact/dropdown";
+import useProdType from "../../hooks/data/useProdType";
 
 const UpdateSuplier = () => {
   const { id } = useParams();
+  const [proTypeList] = useProdType();
+  const [prodType, setProdType] = useState(null);
   const { data: singleSuplier } = useGetSingleSupplierQuery(id);
   const toast = useRef(null);
   const navigate = useNavigate();
@@ -29,6 +33,7 @@ const UpdateSuplier = () => {
       bssLogoUrl,
       bssName,
       empName,
+      prodType: prodType?.name,
       email,
       mobile,
       address,
@@ -124,6 +129,26 @@ const UpdateSuplier = () => {
               </div>
 
               <div className="third flex gap-5 lg:flex-nowrap flex-wrap justify-between">
+                <div className="form-control w-full">
+                  <label className="label">
+                    <span className="label-text font-bold">Business Type</span>
+                  </label>
+                  <input
+                    type="text"
+                    defaultValue={singleSuplier?.data?.prodType}
+                    disabled
+                    className="rounded-md px-3 py-1 text-white !bg-slate-200"
+                  />
+                  <Dropdown
+                    value={prodType}
+                    onChange={(e) => setProdType(e.value)}
+                    options={proTypeList}
+                    optionLabel="name"
+                    placeholder="Business Type"
+                    className="w-full md:w-14rem border-2"
+                    // required
+                  />
+                </div>
                 <div className="form-control w-full">
                   <label className="label">
                     <span className="label-text font-bold">Email</span>

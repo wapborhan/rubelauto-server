@@ -1,11 +1,15 @@
 import { Toast } from "primereact/toast";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSetSupplierMutation } from "../../redux/feature/api/supplierApi";
+import { Dropdown } from "primereact/dropdown";
+import useProdType from "../../hooks/data/useProdType";
 
 const AddSuplier = () => {
   const toast = useRef(null);
   const [setPost, { isSuccess, isError, error }] = useSetSupplierMutation();
+  const [proTypeList] = useProdType();
+  const [prodType, setProdType] = useState(null);
   const navigate = useNavigate();
   const today = new Date();
 
@@ -23,6 +27,7 @@ const AddSuplier = () => {
     const inputData = {
       bssLogoUrl,
       bssName,
+      prodType: prodType?.name,
       empName,
       email,
       mobile,
@@ -42,7 +47,7 @@ const AddSuplier = () => {
       });
       setTimeout(() => {
         navigate("/contact/supplier/view");
-      }, 3000);
+      }, 1000);
     }
   }, [isSuccess, navigate]);
 
@@ -57,7 +62,7 @@ const AddSuplier = () => {
   }, [isError, error]);
 
   return (
-    <div className="addlead">
+    <div className="addsupplier">
       <Toast
         ref={toast}
         pt={{
@@ -117,6 +122,20 @@ const AddSuplier = () => {
               </div>
 
               <div className="third flex gap-5 lg:flex-nowrap flex-wrap justify-between">
+                <div className="form-control w-full">
+                  <label className="label">
+                    <span className="label-text font-bold">Business Type</span>
+                  </label>
+                  <Dropdown
+                    value={prodType}
+                    onChange={(e) => setProdType(e.value)}
+                    options={proTypeList}
+                    optionLabel="name"
+                    placeholder="Business Type"
+                    className="w-full md:w-14rem border-2"
+                    // required
+                  />
+                </div>
                 <div className="form-control w-full">
                   <label className="label">
                     <span className="label-text font-bold">Email</span>

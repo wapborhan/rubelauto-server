@@ -95,6 +95,24 @@ export const menuData = [
     path: "/documents",
   },
   {
+    label: "Parts",
+    icon: "pi-wrench",
+    subMenu: [
+      {
+        label: "Parts Suppliers",
+        path: "/contact/supplier/parts/view",
+      },
+      {
+        label: "Add Purchase",
+        path: "/purchase/parts/add",
+      },
+      {
+        label: "View Purchase",
+        path: "/purchase/parts/view",
+      },
+    ],
+  },
+  {
     label: "Acounts",
     icon: "pi-user",
     subMenu: [

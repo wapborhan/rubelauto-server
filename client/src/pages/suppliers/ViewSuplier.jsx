@@ -3,17 +3,30 @@ import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import { Tag } from "primereact/tag";
-import { useRef, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { NavLink, useLocation } from "react-router-dom";
 import { Tooltip } from "primereact/tooltip";
 import GlobalFilter from "../../components/shared/GlobalFilter";
 import ExportButtons from "../../components/shared/exportButton/ExportButtons";
 import { useGetSupplierQuery } from "../../redux/feature/api/supplierApi";
 
 function ViewSuplier() {
+  const { pathname } = useLocation();
   const dt = useRef(null);
   const tooltipRef = useRef(null);
-  const { data: allSuplier, isLoading } = useGetSupplierQuery();
+  const { data: supplier, isLoading } = useGetSupplierQuery();
+  const [allSuplier, setAllSupplier] = useState([]);
+
+  useEffect(() => {
+    if (pathname === "/contact/supplier/parts/view") {
+      const filterSupplier = supplier?.data?.filter(
+        (item) => item.prodType === "Parts"
+      );
+      setAllSupplier(filterSupplier);
+    } else {
+      setAllSupplier(supplier?.data);
+    }
+  }, [pathname, supplier]);
 
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -24,24 +37,27 @@ function ViewSuplier() {
       <div className="flex lg:flex-nowrap flex-wrap gap-5 lg:justify-between justify-center">
         <GlobalFilter setFilters={setFilters} filters={filters} />
         <div className="flex align-items-center  justify-between gap-2">
-          <ExportButtons state={allSuplier?.data} dt={dt} />
+          <ExportButtons state={allSuplier} dt={dt} />
         </div>
       </div>
     );
   };
 
   const statusBodyTemplate = (rowData) => {
-    return <Tag value={rowData.status} severity={getSeverity(rowData)} />;
+    return <Tag value={rowData.prodType} severity={getSeverity(rowData)} />;
   };
   const getSeverity = (rowData) => {
-    switch (rowData.status) {
-      case "Hot":
+    switch (rowData.prodType) {
+      case "Motorcycle":
         return "success";
 
-      case "Warm":
+      case "Parts":
         return "danger";
 
-      case "Cold":
+      case "Easybike":
+        return "warning";
+
+      case "LPG":
         return "info";
 
       default:
@@ -87,11 +103,11 @@ function ViewSuplier() {
       <DataTable
         ref={dt}
         dataKey="_id"
-        value={allSuplier?.data}
+        value={allSuplier}
         header={header}
         loading={isLoading}
         filters={filters}
-        globalFilterFields={["name"]}
+        globalFilterFields={["bssName", "prodType"]}
         paginator
         rows={10}
         rowsPerPageOptions={[10, 25, 50, 100]}
@@ -104,25 +120,28 @@ function ViewSuplier() {
           filterPlaceholder="Search"
           // style={{ minWidth: "8rem" }}
         />
-        {/* <Column
-          field="status"
-          header="Status"
-          showFilterMenu={false}
-          filterPlaceholder="Search"
-          body={statusBodyTemplate}
-          // style={{ minWidth: "8rem" }}
-          className="capitalize"
-        /> */}
+        {pathname === "/contact/supplier/parts/view" ? null : (
+          <Column
+            field="status"
+            header="Status"
+            showFilterMenu={false}
+            filterPlaceholder="Search"
+            body={statusBodyTemplate}
+            // style={{ minWidth: "8rem" }}
+            className="capitalize"
+          />
+        )}
+
         <Column
           field="bssName"
-          header="Bussiness Name"
+          header="Supplier"
           showFilterMenu={false}
           filterPlaceholder="Search"
           style={{ minWidth: "8rem" }}
         />
         <Column
           field="empName"
-          header="Father"
+          header="Employee"
           showFilterMenu={false}
           filterPlaceholder="Search"
           style={{ minWidth: "8rem" }}

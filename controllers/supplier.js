@@ -72,7 +72,7 @@ exports.updateSupplier = async (req, res, next) => {
     const suplierData = req.body;
     const id = req.params.id;
 
-    const { bssLogoUrl, bssName, empName, email, mobile, address } =
+    const { bssLogoUrl, bssName, empName, prodType, email, mobile, address } =
       suplierData;
 
     const updatedLead = await Supliers.findOneAndUpdate(
@@ -82,6 +82,7 @@ exports.updateSupplier = async (req, res, next) => {
           bssLogoUrl: bssLogoUrl,
           bssName: bssName,
           empName: empName,
+          prodType: prodType,
           email: email,
           mobile: mobile,
           address: address,

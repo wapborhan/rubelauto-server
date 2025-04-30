@@ -1,5 +1,6 @@
 //
 const Customer = require("../models/Customers");
+const Installment = require("../models/Installment");
 const Leads = require("../models/Leads");
 const Showroom = require("../models/Showroom");
 const Stocks = require("../models/Stocks");
@@ -92,13 +93,42 @@ exports.allCustomer = async (req, res, next) => {
       cursor = { cardStatus: cusData, showRoom: showroom };
     }
 
-    const data = await Customer.find(cursor);
+    const customers = await Customer.find(cursor);
+
+    // Initialize an array to hold the updated customer data with installment information
+    const updatedCustomerData = [];
+
+    // Fetch installment data for each customer based on cardno
+    for (let customer of customers) {
+      const customerInstallments = await Installment.find({
+        cardNo: customer.cardno,
+      });
+      let totalInstallmentAmount = 0;
+      if (customerInstallments.length > 0) {
+        totalInstallmentAmount = customerInstallments.reduce(
+          (sum, installment) => {
+            // Ensure the amount is a number before adding
+            return sum + (parseFloat(installment.amount) || 0);
+          },
+          0
+        );
+      }
+      // Add the installment data to the customer object
+      updatedCustomerData.push({
+        ...customer.toObject(),
+        accountInfo: {
+          ...customer.accountInfo,
+          totalInstallmentAmount,
+        },
+        // installments: customerInstallments,
+      });
+    }
 
     res.status(200).json({
       success: true,
       status: 200,
       message: "All Customer",
-      data: data,
+      data: updatedCustomerData,
     });
   } catch (error) {
     res.status(500).json({
