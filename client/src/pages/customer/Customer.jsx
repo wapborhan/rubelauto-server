@@ -1,232 +1,83 @@
-import moment from "moment";
 import { FilterMatchMode } from "primereact/api";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { Tooltip } from "primereact/tooltip";
 import { useEffect, useRef, useState } from "react";
-import { NavLink, useParams } from "react-router-dom";
-import ExportCSV from "../../components/shared/exportButton/ExportCSV";
-import ExportExcel from "../../components/shared/exportButton/ExportExcel";
-import ExportPDF from "../../components/shared/exportButton/ExportPDF";
-import GlobalFilter from "../../components/shared/GlobalFilter";
-import SeizedBack from "./seized/SeizedBack";
+import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useGetCustomerQuery } from "../../redux/feature/api/customerApi";
-import { ColumnGroup } from "primereact/columngroup";
-import { Row } from "jspdf-autotable";
+import {
+  saleDateTemplate,
+  verifiedBodyTemplate,
+  accountTemplate,
+  installmentTemplate,
+} from "./customerTableTemplates";
+import { renderHeader, footerGroup } from "./customerTableHeaderFooter";
 
 export default function Customer() {
-  const path = useParams();
-
   const tooltipRef = useRef(null);
   const dt = useRef(null);
+  const { status } = useParams();
+  const path = status || "running";
+
   const { showRoom } = useSelector((state) => state.userStore);
   const {
     data: customers,
     refetch,
     isPending,
-  } = useGetCustomerQuery({
-    path: path?.status,
-    showRoom,
-  });
+  } = useGetCustomerQuery({ path, showRoom });
+
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   });
+  const [fromDate, setFromDate] = useState(null);
+  const [toDate, setToDate] = useState(null);
+  const [instFromDay, setInstFromDay] = useState(null);
+  const [instToDay, setInstToDay] = useState(null);
 
   useEffect(() => {
     refetch();
     tooltipRef.current && tooltipRef.current.updateTargetEvents();
   }, [path.status, refetch, customers]);
 
-  const renderHeader = () => {
-    return (
-      <div className="flex lg:flex-nowrap flex-wrap justify-between">
-        <GlobalFilter setFilters={setFilters} filters={filters} />
-
-        <div className="flex align-items-center  justify-between gap-2">
-          <ExportCSV dt={dt} />
-          <ExportExcel product={customers?.data} />
-          <ExportPDF product={customers?.data} />
-        </div>
-      </div>
-    );
-  };
-
-  const saleDateTemplate = (rowData) => {
-    return <span>{moment(rowData.saledate).format("DD-MMM-YYYY")}</span>;
-  };
-
-  const verifiedBodyTemplate = (rowData) => {
-    return (
-      <div className="flex gap-3 justify-center">
-        {path.status === "cash" ? (
-          ""
-        ) : (
-          <NavLink
-            to={`/customer/view/${rowData?.cardno}`}
-            className="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline custom-tooltip cursor-pointer"
-            data-pr-tooltip="Details"
-            data-pr-position="top"
-          >
-            <i className="pi pi-eye"></i>
-          </NavLink>
-        )}
-        {path.status === "running" ? (
-          <>
-            <NavLink
-              to={`/customer/payment/${rowData?.cardno}`}
-              className="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline custom-tooltip cursor-pointer"
-              data-pr-tooltip="Payment"
-              data-pr-position="top"
-            >
-              <i className="pi pi-money-bill"></i>
-            </NavLink>
-            <NavLink
-              to={`/customer/seized/${rowData?.cardno}`}
-              className="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline custom-tooltip cursor-pointer"
-              data-pr-tooltip="Seized"
-              data-pr-position="top"
-            >
-              <i className="pi pi-lock"></i>
-            </NavLink>
-          </>
-        ) : (
-          ""
-        )}
-
-        {path.status === "cash" || path.status === "running" ? (
-          <NavLink
-            to={`/customer/paid/${rowData?.cardno}`}
-            className="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline custom-tooltip cursor-pointer"
-            data-pr-tooltip="Paid"
-            data-pr-position="top"
-          >
-            <i className="pi pi-times-circle"></i>
-          </NavLink>
-        ) : (
-          ""
-        )}
-        {path.status === "seized" ? <SeizedBack data={rowData} /> : ""}
-      </div>
-    );
-  };
-
-  const accountTemplate = (rowData) => {
-    const totalPrice =
-      rowData?.accountInfo?.saleprice + rowData?.accountInfo?.hireprice;
-    const totalDue =
-      totalPrice -
-      rowData?.accountInfo?.dpamount -
-      rowData?.accountInfo?.totalInstallmentAmount;
-
-    return <div className="flex gap-3 justify-center">{totalDue}</div>;
-  };
-
-  const installmentTemplate = (rowData) => {
-    const saleDate = new Date(rowData?.saledate);
-
-    const currentDate = new Date();
-
-    let monthDifference =
-      (currentDate.getFullYear() - saleDate.getFullYear()) * 12;
-    monthDifference -= saleDate.getMonth();
-    monthDifference += currentDate.getMonth();
-
-    if (currentDate.getDate() < saleDate.getDate()) {
-      monthDifference--;
-    }
-
-    const daysDifference = Math.floor(
-      (currentDate - saleDate) / (1000 * 60 * 60 * 24)
-    );
-    if (daysDifference > 30) {
-      monthDifference++;
-    }
-
-    const needPaidAmount = monthDifference * rowData?.accountInfo?.insamount;
-    const installmentDue =
-      needPaidAmount - rowData?.accountInfo?.totalInstallmentAmount;
-
-    return <div className="flex gap-3 justify-center">{installmentDue}</div>;
-  };
-
   const tabID = (data, props) => {
     return props.rowIndex + 1;
   };
 
-  const header = renderHeader();
+  const filteredData = customers?.data?.filter((item) => {
+    const saleDate = new Date(item.saledate);
+    const installmentDate = new Date(item?.accountInfo?.insdate);
 
-  const contractTotal = () => {
-    let total = 0;
+    // Sale Date Range
+    if (fromDate && saleDate < new Date(fromDate)) return false;
+    if (toDate && saleDate > new Date(toDate)) return false;
 
-    for (let sale of customers?.data) {
-      console.log(sale?.accountInfo);
-
-      const totalPrice =
-        sale?.accountInfo?.saleprice + sale?.accountInfo?.hireprice;
-      const totalDue =
-        totalPrice -
-        sale?.accountInfo?.dpamount -
-        sale?.accountInfo?.totalInstallmentAmount;
-
-      total += totalDue;
+    // Installment Day Number Filter (1–31)
+    if (instFromDay || instToDay) {
+      const day = installmentDate.getDate();
+      const from = instFromDay || 1;
+      const to = instToDay || 31;
+      if (day < from || day > to) return false;
     }
 
-    return total;
-  };
+    return true;
+  });
 
-  const thisYearTotal = () => {
-    let total = 0;
-
-    for (let sale of customers?.data) {
-      console.log(sale?.accountInfo);
-
-      const saleDate = new Date(sale?.saledate);
-
-      const currentDate = new Date();
-
-      let monthDifference =
-        (currentDate.getFullYear() - saleDate.getFullYear()) * 12;
-      monthDifference -= saleDate.getMonth();
-      monthDifference += currentDate.getMonth();
-
-      if (currentDate.getDate() < saleDate.getDate()) {
-        monthDifference--;
-      }
-
-      const daysDifference = Math.floor(
-        (currentDate - saleDate) / (1000 * 60 * 60 * 24)
-      );
-      if (daysDifference > 30) {
-        monthDifference++;
-      }
-
-      const needPaidAmount = monthDifference * sale?.accountInfo?.insamount;
-      const installmentDue =
-        needPaidAmount - sale?.accountInfo?.totalInstallmentAmount;
-
-      total += installmentDue;
-    }
-    return total;
-  };
-  const customerTotal = () => {
-    return customers ? customers?.data?.length : 0;
-  };
-
-  const footerGroup = (
-    <ColumnGroup>
-      <Row>
-        <Column footer={customerTotal} />
-        <Column
-          footer="Totals Due :"
-          colSpan={5}
-          footerStyle={{ textAlign: "right" }}
-        />
-        <Column footer={contractTotal} />
-        <Column footer={thisYearTotal} />
-      </Row>
-    </ColumnGroup>
+  const header = renderHeader(
+    filters,
+    setFilters,
+    customers,
+    dt,
+    fromDate,
+    setFromDate,
+    toDate,
+    setToDate,
+    instFromDay,
+    setInstFromDay,
+    instToDay,
+    setInstToDay
   );
+  const footer = footerGroup(filteredData);
 
   return (
     <div className="card w-full mx-auto ">
@@ -234,9 +85,9 @@ export default function Customer() {
       <DataTable
         ref={dt}
         dataKey="_id"
-        value={customers?.data}
+        value={filteredData}
         header={header}
-        footerColumnGroup={footerGroup}
+        footerColumnGroup={footer}
         loading={isPending}
         filters={filters}
         globalFilterFields={["customerInfo.name", "cardno"]}
@@ -250,18 +101,15 @@ export default function Customer() {
         <Column
           header="Sale date"
           style={{ minWidth: "8.5rem" }}
-          body={saleDateTemplate}
+          // body={saleDateTemplate}
+          body={(rowData) => saleDateTemplate(rowData)}
         />
         <Column
           field="cardno"
           header="Card No."
           style={{ minWidth: "7.5rem" }}
         />
-        {/* <Column
-    field="productCond"
-    header="Condition"
-    // style={{ minWidth: "8rem" }}
-  /> */}
+
         <Column
           field="customerInfo.name"
           header="Customer"
@@ -279,20 +127,18 @@ export default function Customer() {
         />
         <Column
           header="Contract Due"
-          body={accountTemplate}
+          body={(rowData) => accountTemplate(rowData)}
           style={{ minWidth: "5rem" }}
         />
         <Column
           header="Installment Due"
-          body={installmentTemplate}
+          body={(rowData) => installmentTemplate(rowData)}
           style={{ minWidth: "5rem" }}
         />
         <Column field="showRoom" header="Showroom" />
         <Column
           header="Action"
-          dataType="boolean"
-          // style={{ minWidth: "6rem" }}
-          body={verifiedBodyTemplate}
+          body={(rowData) => verifiedBodyTemplate(rowData, path)}
         />
       </DataTable>
     </div>

@@ -12,7 +12,7 @@ const Dashboard = () => {
           Showroom: <span className="font-bold">{showRoom}</span>
         </h1>
       </div>
-      <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-6 w-full mx-auto ">
+      <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-6 w-full mx-auto ">
         <AllSRCards />
       </div>
       <div className="mt-8">
