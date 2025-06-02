@@ -110,8 +110,7 @@ legend {
 input[type="text"],
 input[type="number"],
 input[type="time"],
-textarea,
-.p-dropdown {
+textarea {
   background: #ffc0c045;
   color: #000 !important;
   box-shadow: 0 0 20px -2px #acacac69 !important;

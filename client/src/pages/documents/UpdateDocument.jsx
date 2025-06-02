@@ -71,7 +71,11 @@ export default function UpdateDocument({ data, refetch }) {
   return (
     <div className="card flex justify-content-center">
       <Toast ref={toast}></Toast>
-      <Button icon="pi pi-user" onClick={() => setVisible(true)} />
+      <Button
+        icon="pi pi-user"
+        onClick={() => setVisible(true)}
+        className="!px-3 !py-2 justify-items-center w-full"
+      />
       <Dialog
         header="Update Documents Status"
         visible={visible}

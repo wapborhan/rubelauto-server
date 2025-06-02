@@ -77,10 +77,10 @@ export default function Customer() {
     instToDay,
     setInstToDay
   );
-  const footer = footerGroup(filteredData);
+  const footer = footerGroup(filteredData, path);
 
   return (
-    <div className="card w-full mx-auto ">
+    <div className="card w-fulls mx-auto ">
       <Tooltip ref={tooltipRef} target=".custom-tooltip" className="text-sm" />
       <DataTable
         ref={dt}

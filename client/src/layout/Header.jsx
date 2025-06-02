@@ -126,7 +126,7 @@ const Header = (props) => {
         <div className="account btn-circle w-12 flex justify-center items-center h-12 ">
           <Button
             // icon="pi pi-user"
-            className="ml-1"
+            className="ml-1 !p-0"
             onClick={(event) => menuRight.current.toggle(event)}
             aria-controls="popup_menu_right"
             aria-haspopup

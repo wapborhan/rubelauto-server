@@ -7,9 +7,11 @@ export const saleDateTemplate = (rowData) => {
 };
 
 export const verifiedBodyTemplate = (rowData, path) => {
+  console.log(path);
+
   return (
     <div className="flex gap-3 justify-center">
-      {path.status === "cash" ? (
+      {path === "cash" ? (
         ""
       ) : (
         <NavLink
@@ -21,7 +23,7 @@ export const verifiedBodyTemplate = (rowData, path) => {
           <i className="pi pi-eye"></i>
         </NavLink>
       )}
-      {path.status === "running" ? (
+      {path === "running" ? (
         <>
           <NavLink
             to={`/customer/payment/${rowData?.cardno}`}
@@ -44,7 +46,7 @@ export const verifiedBodyTemplate = (rowData, path) => {
         ""
       )}
 
-      {(path.status === "cash" || path.status === "running") && (
+      {(path === "cash" || path === "running") && (
         <NavLink
           to={`/customer/paid/${rowData?.cardno}`}
           className="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline custom-tooltip cursor-pointer"
@@ -54,7 +56,7 @@ export const verifiedBodyTemplate = (rowData, path) => {
           <i className="pi pi-times-circle"></i>
         </NavLink>
       )}
-      {path.status === "seized" && <SeizedBack data={rowData} />}
+      {path === "seized" && <SeizedBack data={rowData} />}
     </div>
   );
 };

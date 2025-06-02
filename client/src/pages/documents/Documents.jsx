@@ -88,7 +88,7 @@ const Documents = () => {
       <div className="flex gap-3 justify-center">
         <NavLink
           to={`/customer/view/${rowData?.cardno}`}
-          className="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline custom-tooltip cursor-pointer"
+          className="text-white flex custom-tooltip cursor-pointer !px-2 !py-1 items-center justify-center w-full bg-red-500 rounded-md"
           data-pr-tooltip="Details"
           data-pr-position="top"
         >
@@ -128,7 +128,7 @@ const Documents = () => {
         stripedRows
         paginator
         rows={10}
-        rowsPerPageOptions={[10, 25, 50, 100]}
+        // rowsPerPageOptions={[10, 25, 50, 100]}
         emptyMessage="No paid customers found."
       >
         <Column body={tabID} header="SL" />
