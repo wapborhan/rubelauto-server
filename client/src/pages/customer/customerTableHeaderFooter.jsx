@@ -8,6 +8,7 @@ import { Column } from "primereact/column";
 import { Calendar } from "primereact/calendar";
 import "primereact/resources/primereact.css";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
+import { Dropdown } from "primereact/dropdown";
 
 // Header
 export const renderHeader = (
@@ -22,13 +23,24 @@ export const renderHeader = (
   instFromDay,
   setInstFromDay,
   instToDay,
-  setInstToDay
+  setInstToDay,
+  showRoomFilter,
+  setShowRoomFilter,
+  uniqueShowRooms
 ) => {
   return (
     <div className=" lg:flex-nowrap flex-wrap justify-between">
       {" "}
       <div className="flex justify-between items-center gap-2">
         <GlobalFilter setFilters={setFilters} filters={filters} />{" "}
+        <Dropdown
+          value={showRoomFilter}
+          options={uniqueShowRooms.map((sr) => ({ label: sr, value: sr }))}
+          placeholder="Select Showroom"
+          onChange={(e) => setShowRoomFilter(e.value)}
+          showClear
+          className="w-52"
+        />
         <div className="flex align-items-center  justify-between gap-2">
           <ExportCSV dt={dt} />
           <ExportExcel product={customers?.data} />

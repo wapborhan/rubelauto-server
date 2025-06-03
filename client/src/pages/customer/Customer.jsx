@@ -34,6 +34,7 @@ export default function Customer() {
   const [toDate, setToDate] = useState(null);
   const [instFromDay, setInstFromDay] = useState(null);
   const [instToDay, setInstToDay] = useState(null);
+  const [showRoomFilter, setShowRoomFilter] = useState(null);
 
   useEffect(() => {
     refetch();
@@ -43,6 +44,10 @@ export default function Customer() {
   const tabID = (data, props) => {
     return props.rowIndex + 1;
   };
+
+  const uniqueShowRooms = [
+    ...new Set(customers?.data?.map((c) => c.showRoom)),
+  ].filter(Boolean);
 
   const filteredData = customers?.data?.filter((item) => {
     const saleDate = new Date(item.saledate);
@@ -59,7 +64,7 @@ export default function Customer() {
       const to = instToDay || 31;
       if (day < from || day > to) return false;
     }
-
+    if (showRoomFilter && item.showRoom !== showRoomFilter) return false;
     return true;
   });
 
@@ -75,7 +80,10 @@ export default function Customer() {
     instFromDay,
     setInstFromDay,
     instToDay,
-    setInstToDay
+    setInstToDay,
+    showRoomFilter,
+    setShowRoomFilter,
+    uniqueShowRooms
   );
   const footer = footerGroup(filteredData, path);
 
@@ -94,7 +102,7 @@ export default function Customer() {
         stripedRows
         paginator
         rows={10}
-        rowsPerPageOptions={[10, 25, 50, 100]}
+        // rowsPerPageOptions={[10, 25, 50, 100]}
         emptyMessage="No customers found."
       >
         <Column body={tabID} header="SL" />
