@@ -27,7 +27,7 @@ const Root = () => {
           />
         </div>
         <div id="content-wrapper" className="flex flex-col w-full">
-          <div id="content w-full relative">
+          <div id="content w-full relative" className="content">
             <Header
               collapsed={collapsed}
               setBroken={setBroken}

@@ -11,6 +11,7 @@ import {
   verifiedBodyTemplate,
   accountTemplate,
   installmentTemplate,
+  tabID,
 } from "./customerTableTemplates";
 import { renderHeader, footerGroup } from "./customerTableHeaderFooter";
 
@@ -40,10 +41,6 @@ export default function Customer() {
     refetch();
     tooltipRef.current && tooltipRef.current.updateTargetEvents();
   }, [path.status, refetch, customers]);
-
-  const tabID = (data, props) => {
-    return props.rowIndex + 1;
-  };
 
   const uniqueShowRooms = [
     ...new Set(customers?.data?.map((c) => c.showRoom)),
@@ -109,7 +106,6 @@ export default function Customer() {
         <Column
           header="Sale date"
           style={{ minWidth: "8.5rem" }}
-          // body={saleDateTemplate}
           body={(rowData) => saleDateTemplate(rowData)}
         />
         <Column
