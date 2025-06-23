@@ -25,16 +25,16 @@ exports.createCustomer = async (req, res, next) => {
     }
 
     // Engine & Chassis Existing Check
-    const existingEngine = await Customer.findOne({
-      "productInfo.engine": productInfo?.engine,
-    });
-    const existingChassis = await Customer.findOne({
-      "productInfo.chassis": productInfo?.chassis,
-    });
+    // const existingEngine = await Customer.findOne({
+    //   "productInfo.engine": productInfo?.engine,
+    // });
+    // const existingChassis = await Customer.findOne({
+    //   "productInfo.chassis": productInfo?.chassis,
+    // });
 
-    if (existingEngine && existingChassis) {
-      return res.status(409).json("Engine No and Chassis No already exists");
-    }
+    // if (existingEngine && existingChassis) {
+    //   return res.status(409).json("Engine No and Chassis No already exists");
+    // }
 
     const stockData = await Stocks.findOne({ engine: engine });
     if (!stockData) {

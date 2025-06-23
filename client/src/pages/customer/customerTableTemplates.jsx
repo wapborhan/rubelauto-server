@@ -92,11 +92,23 @@ export const installmentTemplate = (rowData) => {
     monthDifference++;
   }
 
-  const needPaidAmount = monthDifference * rowData?.accountInfo?.insamount;
-  const installmentDue =
-    needPaidAmount - rowData?.accountInfo?.totalInstallmentAmount;
+  const insAmount = rowData?.accountInfo?.insamount || 0;
+  const totalInstallmentPaid =
+    rowData?.accountInfo?.totalInstallmentAmount || 0;
+  const dpAmount = rowData?.accountInfo?.dpamount || 0;
+  const salePrice = rowData?.accountInfo?.saleprice || 0;
+  const hirePrice = rowData?.accountInfo?.hireprice || 0;
 
-  return <div className="flex gap-3 justify-center">{installmentDue}</div>;
+  const totalPrice = salePrice + hirePrice;
+  const totalDue = totalPrice - dpAmount - totalInstallmentPaid;
+
+  const needPaidAmount = monthDifference * insAmount;
+  const installmentDue = needPaidAmount - totalInstallmentPaid;
+
+  // Compare and take the lower value
+  const payableAmount = Math.min(totalDue, installmentDue);
+
+  return <div className="flex gap-3 justify-center">{payableAmount}</div>;
 };
 
 export const tabID = (data, props) => {
