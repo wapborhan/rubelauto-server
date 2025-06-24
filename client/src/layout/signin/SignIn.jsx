@@ -49,13 +49,7 @@ const SignIn = () => {
           </Link>
         </div>
         <p className="mt-6 p-3 font-normal text-justify text-gray-300 md:mt-0">
-          <b>Rubel Auto</b> is a trusted dealer of Runner Automobiles PLC. We
-          offer a wide range of high-quality products, catering to both
-          wholesale and retail customers. With a commitment to reliability and
-          customer satisfaction,
-          <b> Rubel Auto</b> provides genuine motorcycle and easybike parts to
-          meet all your needs. Whether you’re an individual rider or a business,
-          we ensure top-notch service and competitive pricing.
+          <b>Rubel Auto</b> is a trusted dealer of Runner Automobiles PLC.
         </p>
 
         <p className="flex flex-col items-center justify-center mt-10 text-center">
@@ -79,7 +73,6 @@ const SignIn = () => {
               name="email"
               placeholder="email"
               autoFocus
-              defaultValue="test@gmail.com"
               className="px-4 py-2 transition duration-300 border border-gray-300 rounded focus:border-transparent focus:outline-none focus:ring-4 focus:ring-blue-200"
             />
           </div>
@@ -102,7 +95,6 @@ const SignIn = () => {
               type="password"
               name="password"
               placeholder="password"
-              defaultValue="Abc@123"
               className="px-4 py-2 transition duration-300 border border-gray-300 rounded focus:border-transparent focus:outline-none focus:ring-4 focus:ring-blue-200"
             />
           </div>{" "}
