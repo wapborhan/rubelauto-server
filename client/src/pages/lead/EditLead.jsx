@@ -3,7 +3,7 @@ import useDivision from "../../hooks/data/useDivision";
 import SearchAbleDropDown from "../../components/shared/SearchAbleDropDown";
 import useDistrict from "../../hooks/data/useDistrict";
 import useUpazila from "../../hooks/data/useUpazila";
-import useUnion from "../../hooks/data/useUnion";
+import usePostCodes from "../../hooks/data/usePostCodes";
 import { useNavigate, useParams } from "react-router-dom";
 import { Toast } from "primereact/toast";
 import {
@@ -21,7 +21,7 @@ const EditLead = () => {
   const [divisions] = useDivision();
   const [districts] = useDistrict();
   const [upazilas] = useUpazila();
-  const [unions] = useUnion();
+  const [postcodes] = usePostCodes();
   // State
   const [division, setDivision] = useState();
   const [district, setDistrict] = useState();
@@ -41,7 +41,7 @@ const EditLead = () => {
     : [];
 
   const filteredUnions = upazilas
-    ? unions.filter((union) => union?.upazilla_id === upazila?.id)
+    ? postcodes.filter((union) => union?.upazilla_id === district?.id)
     : [];
   // Submit
   const handleSubmit = (e) => {
@@ -288,7 +288,7 @@ const EditLead = () => {
                     data={filteredUnions}
                     requir={false}
                     config={{
-                      optLabel: "name",
+                      optLabel: "postOffice",
                       placeHolder: "Unions",
                     }}
                     disable={!upazila}

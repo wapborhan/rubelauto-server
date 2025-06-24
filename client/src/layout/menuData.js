@@ -5,52 +5,52 @@ export const menuData = [
     path: "/dashboard",
   },
   {
-    label: "Contact",
+    label: "কন্টাক্ট",
     icon: "pi-users",
     subMenu: [
       {
-        label: "Add Lead",
+        label: "লিড যোগ করুন",
         path: "/contact/lead/add",
       },
       {
-        label: "Add Suppliers",
+        label: "সাপ্লায়ার যোগ করুন",
         path: "/contact/supplier/add",
       },
       {
-        label: "View Lead",
+        label: "লিড দেখুন",
         path: "/contact/lead/view",
       },
       {
-        label: "View Suppliers",
+        label: "সাপ্লায়ার দেখুন",
         path: "/contact/supplier/view",
       },
     ],
   },
 
   {
-    label: "Products",
+    label: "প্রোডাক্টস",
     icon: "pi-box",
     subMenu: [
       {
-        label: "Add Product",
+        label: "প্রোডাক্ট যোগ করুন",
         path: "/products/add",
       },
       {
-        label: "View Products",
+        label: "প্রোডাক্ট দেখুন",
         path: "/products/view",
       },
     ],
   },
   {
-    label: "Purchase",
+    label: "ক্রয়",
     icon: "pi-arrow-circle-up",
     subMenu: [
       {
-        label: "Add Purchase",
+        label: "ক্রয় করুন",
         path: "/purchase/add",
       },
       {
-        label: "View Purchase",
+        label: "সকল ক্রয় দেখুন",
         path: "/purchase/view",
       },
     ],

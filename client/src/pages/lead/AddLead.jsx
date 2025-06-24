@@ -1,24 +1,20 @@
 import { Dropdown } from "primereact/dropdown";
 import { useEffect, useRef, useState } from "react";
-import useDivision from "../../hooks/data/useDivision";
 import SearchAbleDropDown from "../../components/shared/SearchAbleDropDown";
-import useDistrict from "../../hooks/data/useDistrict";
-import useUpazila from "../../hooks/data/useUpazila";
-import useUnion from "../../hooks/data/useUnion";
+
 import { useNavigate } from "react-router-dom";
 import { Toast } from "primereact/toast";
 import { useSetLeadMutation } from "../../redux/feature/api/leadApi";
+import SubmitButton from "../../components/SubmitButton";
 
 const AddLead = () => {
   // Hooks
   const toast = useRef(null);
   const navigate = useNavigate();
-  const [divisions] = useDivision();
-  const [districts] = useDistrict();
-  const [upazilas] = useUpazila();
-  const [unions] = useUnion();
-  // State
-  const [division, setDivision] = useState();
+  const [districts, setDistricts] = useState([]);
+  const [upazilas, setUpazilas] = useState([]);
+  const [postcodes, setPostCodes] = useState([]);
+  // States
   const [district, setDistrict] = useState();
   const [upazila, setUpazila] = useState();
   const [union, setUnion] = useState();
@@ -27,17 +23,27 @@ const AddLead = () => {
   const stats = ["Cold", "Warm", "Hot"];
   const [setPost, { isSuccess, isError, error }] = useSetLeadMutation();
 
-  // Filter Wise Select
-  const filteredDistricts = divisions
-    ? districts.filter((district) => district?.division_id === division?.id)
-    : [];
+  useEffect(() => {
+    import("../../hooks/data/useDistrict").then((module) => {
+      setDistricts(module.default);
+    });
 
+    import("../../hooks/data/useUpazila").then((module) => {
+      setUpazilas(module.default);
+    });
+
+    import("../../hooks/data/usePostCodes").then((module) => {
+      setPostCodes(module.default);
+    });
+  }, []);
+
+  // Filter Wise Select
   const filteredUpazila = districts
     ? upazilas.filter((upazila) => upazila?.district_id === district?.id)
     : [];
 
   const filteredUnions = upazilas
-    ? unions.filter((union) => union?.upazilla_id === upazila?.id)
+    ? postcodes.filter((union) => union?.district_id === district?.id)
     : [];
   // Submit
   const handleSubmit = (e) => {
@@ -62,7 +68,6 @@ const AddLead = () => {
         union: union?.name,
         upazila: upazila?.name,
         district: district?.name,
-        division: division?.name,
       },
       number,
       location,
@@ -111,23 +116,23 @@ const AddLead = () => {
       <div className="back">{/* <BackToHomePage /> */}</div>
       <div className="sect  py-4 w-full mx-auto">
         <div className="content space-y-5">
-          <h2 className="text-center text-3xl mb-10">Add Customer</h2>
+          <h2 className="text-center text-3xl mb-10">গ্রাহকের তথ্য যোগ করুন</h2>
         </div>
         <fieldset className="mb-4">
-          <legend>Add Lead</legend>
+          <legend>লিড</legend>
           <form onSubmit={handleSubmit}>
             <div className="form space-y-5">
               <div className="frist flex gap-5 lg:flex-nowrap flex-wrap justify-between">
                 <div className="form-control  w-full">
                   <label className="label">
-                    <span className="label-text font-bold">Lead Status</span>
+                    <span className="label-text font-bold">লিড স্ট্যাটাস</span>
                   </label>
                   <Dropdown
                     value={status}
                     onChange={(e) => setStatus(e.value)}
                     options={stats}
                     // optionLabel="name"
-                    placeholder="Status"
+                    placeholder="স্ট্যাটাস সিলেক্ট করুন"
                     className="w-full md:w-14rem border-2"
                     required
                   />
@@ -135,12 +140,12 @@ const AddLead = () => {
 
                 <div className="form-control w-full">
                   <label className="label">
-                    <span className="label-text font-bold">Customer Name</span>
+                    <span className="label-text font-bold">গ্রাহকের নাম</span>
                   </label>
                   <input
                     type="text"
                     name="name"
-                    placeholder="Enter Customer Name"
+                    placeholder="গ্রাহকের নাম লিখুন"
                     className="input input-bordered w-full"
                     required
                   />
@@ -148,25 +153,25 @@ const AddLead = () => {
                 <div className="form-control w-full">
                   <label className="label">
                     <span className="label-text font-bold">
-                      Father/Husband Name
+                      পিতার/স্বামীর নাম
                     </span>
                   </label>
                   <input
                     type="text"
                     name="coname"
-                    placeholder="Enter Father/Husband Name"
+                    placeholder="পিতার/স্বামীর নাম লিখুন"
                     className="input input-bordered w-full"
                     required
                   />
                 </div>
                 <div className="form-control w-full">
                   <label className="label">
-                    <span className="label-text font-bold">NID</span>
+                    <span className="label-text font-bold">এনআইডি</span>
                   </label>
                   <input
                     type="number"
                     name="nid"
-                    placeholder="Enter Customer NID Number"
+                    placeholder="এনআইডি নম্বর লিখুন"
                     className="input input-bordered w-full"
                   />
                 </div>
@@ -174,41 +179,23 @@ const AddLead = () => {
               <div className="second flex gap-5 lg:flex-nowrap flex-wrap justify-between">
                 <div className="form-control w-full">
                   <label className="label">
-                    <span className="label-text font-bold">Division</span>
-                  </label>
-                  <SearchAbleDropDown
-                    state={division}
-                    setState={setDivision}
-                    data={divisions}
-                    requir={true}
-                    config={{
-                      optLabel: "name",
-                      placeHolder: "Division",
-                    }}
-                    // disable={!model}
-                  />
-                </div>
-                <div className="form-control w-full">
-                  <label className="label">
-                    <span className="label-text font-bold">District</span>
+                    <span className="label-text font-bold">জেলা</span>
                   </label>
                   <SearchAbleDropDown
                     state={district}
                     setState={setDistrict}
-                    data={filteredDistricts}
+                    data={districts}
                     requir={true}
                     config={{
                       optLabel: "name",
-                      placeHolder: "District",
+                      placeHolder: "জেলা",
                     }}
-                    disable={!division}
+                    // disable={!division}
                   />
                 </div>
                 <div className="form-control w-full">
                   <label className="label">
-                    <span className="label-text font-bold">
-                      Upozilla / Thena
-                    </span>
+                    <span className="label-text font-bold">উপজিলা / থানা</span>
                   </label>
                   <SearchAbleDropDown
                     state={upazila}
@@ -217,14 +204,14 @@ const AddLead = () => {
                     requir={true}
                     config={{
                       optLabel: "name",
-                      placeHolder: "Upozilla",
+                      placeHolder: "উপজিলা",
                     }}
                     disable={!district}
                   />
                 </div>
                 <div className="form-control w-full">
                   <label className="label">
-                    <span className="label-text font-bold">Unions</span>
+                    <span className="label-text font-bold">পোস্ট অফিস</span>
                   </label>
                   <SearchAbleDropDown
                     state={union}
@@ -232,20 +219,20 @@ const AddLead = () => {
                     data={filteredUnions}
                     requir={true}
                     config={{
-                      optLabel: "name",
-                      placeHolder: "Unions",
+                      optLabel: "postOffice",
+                      placeHolder: "পোস্ট অফিস",
                     }}
                     disable={!upazila}
                   />
                 </div>
                 <div className="form-control w-full">
                   <label className="label">
-                    <span className="label-text font-bold">Village</span>
+                    <span className="label-text font-bold">গ্রাম</span>
                   </label>
                   <input
                     type="text"
                     name="village"
-                    placeholder="Enter Customer Village"
+                    placeholder="গ্রামের নাম লিখুন"
                     className="input input-bordered w-full"
                     required
                   />
@@ -255,12 +242,14 @@ const AddLead = () => {
                 <div className="w-full flex gap-5 lg:flex-nowrap flex-wrap justify-between">
                   <div className="form-control w-full ">
                     <label className="label">
-                      <span className="label-text font-bold">Contact No.</span>
+                      <span className="label-text font-bold">
+                        যোগাযোগ নম্বর
+                      </span>
                     </label>
                     <input
                       type="text"
                       name="number"
-                      placeholder="Enter Mobile Number"
+                      placeholder="মোবাইল নম্বর লিখুন"
                       className="input input-bordered w-full"
                       required
                     />
@@ -268,13 +257,13 @@ const AddLead = () => {
                   <div className="form-control w-full ">
                     <label className="label">
                       <span className="label-text font-bold">
-                        Media & Number
+                        মিডিয়া ও নম্বর
                       </span>
                     </label>
                     <input
                       type="text"
                       name="media"
-                      placeholder="Enter Media name - Mobile No."
+                      placeholder="মিডিয়া নাম - মোবাইল নম্বর"
                       className="input input-bordered w-full"
                       required
                     />
@@ -282,23 +271,19 @@ const AddLead = () => {
                 </div>
                 <div className="form-control w-full">
                   <label className="label">
-                    <span className="label-text font-bold">Location Mark</span>
+                    <span className="label-text font-bold">লোকেশন মার্ক</span>
                   </label>
                   <input
                     type="text"
                     name="location"
-                    placeholder="Enter Customer Location Mark"
+                    placeholder="গ্রাহকের লোকেশন মার্ক লিখুন"
                     className="input input-bordered w-full"
                   />
                 </div>
               </div>
 
               <div className="submit">
-                <input
-                  type="submit"
-                  value="Add Customer"
-                  className="rounded-lg font-h2 mt-4 border-2-[#331A15] bg-[#D2B48C] w-full p-3 font-bold text-[18px] text-[#331A15] cursor-pointer"
-                />
+                <SubmitButton name="গ্রাহক যোগ করুন" />
               </div>
             </div>
           </form>

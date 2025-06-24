@@ -117,8 +117,9 @@ legend {
 input[type="text"],
 input[type="number"],
 input[type="time"],
-textarea {
-  background: #ffc0c045;
+textarea,
+.p-dropdown {
+  /* background: #ffc0c045; */
   color: #000 !important;
   box-shadow: 0 0 20px -2px #acacac69 !important;
   border: 1px solid #2d2d2d59 !important;
@@ -253,6 +254,10 @@ button.p-highlight {
 
 .info {
   @apply space-y-3;
+}
+
+.p-datatable .p-datatable-thead > tr > th > div {
+  @apply text-center justify-center;
 }
 
 @tailwind base;

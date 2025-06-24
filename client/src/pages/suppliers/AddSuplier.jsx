@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useSetSupplierMutation } from "../../redux/feature/api/supplierApi";
 import { Dropdown } from "primereact/dropdown";
 import useProdType from "../../hooks/data/useProdType";
+import SubmitButton from "../../components/SubmitButton";
 
 const AddSuplier = () => {
   const toast = useRef(null);
@@ -17,7 +18,7 @@ const AddSuplier = () => {
     e.preventDefault();
     const form = e.target;
 
-    const bssLogoUrl = form.bssLogoUrl.value;
+    // const bssLogoUrl = form.bssLogoUrl.value;
     const bssName = form.bssName.value;
     const empName = form.empName.value;
     const email = form.email.value;
@@ -25,7 +26,7 @@ const AddSuplier = () => {
     const address = form.address.value;
 
     const inputData = {
-      bssLogoUrl,
+      // bssLogoUrl,
       bssName,
       prodType: prodType?.name,
       empName,
@@ -74,14 +75,14 @@ const AddSuplier = () => {
       <div className="back">{/* <BackToHomePage /> */}</div>
       <div className="sect  py-4 w-full mx-auto">
         <div className="content space-y-5">
-          <h2 className="text-center text-3xl mb-10"> Add Suplier</h2>
+          <h2 className="text-center text-3xl mb-10">সাপ্লায়ার যোগ করুন</h2>
         </div>
         <fieldset className="mb-4">
-          <legend> Add Lead</legend>
+          <legend>সাপ্লায়ার</legend>
           <form onSubmit={handleSubmit}>
             <div className="form space-y-5">
               <div className="frist flex gap-5 lg:flex-nowrap flex-wrap justify-between">
-                <div className="form-control  w-full">
+                {/* <div className="form-control  w-full">
                   <label className="label">
                     <span className="label-text font-bold">
                       Business Logo Url
@@ -93,30 +94,47 @@ const AddSuplier = () => {
                     placeholder="Business Logo Url"
                     className="input input-bordered w-full"
                   />
+                </div> */}
+                <div className="form-control w-full">
+                  <label className="label">
+                    <span className="label-text font-bold">ব্যবসার ধরন</span>
+                  </label>
+                  <Dropdown
+                    value={prodType}
+                    onChange={(e) => setProdType(e.value)}
+                    options={proTypeList}
+                    optionLabel="name"
+                    placeholder="ব্যবসার ধরন"
+                    className="w-full md:w-14rem border-2"
+                    // required
+                  />
                 </div>
                 <div className="form-control  w-full">
                   <label className="label">
-                    <span className="label-text font-bold">Business Name</span>
+                    <span className="label-text font-bold">
+                      প্রতিষ্ঠানের নাম
+                    </span>
                   </label>
                   <input
                     type="text"
                     name="bssName"
-                    placeholder="Business Name"
+                    placeholder="প্রতিষ্ঠানের নাম"
                     className="input input-bordered w-full"
                     required
                   />
                 </div>
 
-                <div className="form-control w-full">
+                <div className="form-control w-full ">
                   <label className="label">
-                    <span className="label-text font-bold">Employee Name</span>
+                    <span className="label-text font-bold">
+                      প্রতিষ্ঠানের ঠিকানা
+                    </span>
                   </label>
                   <input
                     type="text"
-                    name="empName"
-                    placeholder="Employee Name"
+                    name="address"
+                    placeholder="প্রতিষ্ঠানের ঠিকানা"
                     className="input input-bordered w-full"
-                    required
                   />
                 </div>
               </div>
@@ -124,60 +142,47 @@ const AddSuplier = () => {
               <div className="third flex gap-5 lg:flex-nowrap flex-wrap justify-between">
                 <div className="form-control w-full">
                   <label className="label">
-                    <span className="label-text font-bold">Business Type</span>
-                  </label>
-                  <Dropdown
-                    value={prodType}
-                    onChange={(e) => setProdType(e.value)}
-                    options={proTypeList}
-                    optionLabel="name"
-                    placeholder="Business Type"
-                    className="w-full md:w-14rem border-2"
-                    // required
-                  />
-                </div>
-                <div className="form-control w-full">
-                  <label className="label">
-                    <span className="label-text font-bold">Email</span>
+                    <span className="label-text font-bold">কর্মচারীর নাম</span>
                   </label>
                   <input
                     type="text"
-                    name="email"
-                    placeholder="Email"
-                    className="input input-bordered w-full"
-                  />
-                </div>
-                <div className="form-control w-full">
-                  <label className="label">
-                    <span className="label-text font-bold">Mobile</span>
-                  </label>
-                  <input
-                    type="number"
-                    name="mobile"
-                    placeholder="Mobile Number"
+                    name="empName"
+                    placeholder="কর্মচারীর নাম"
                     className="input input-bordered w-full"
                     required
                   />
                 </div>
-                <div className="form-control w-full ">
+                <div className="form-control w-full">
                   <label className="label">
-                    <span className="label-text font-bold">Address</span>
+                    <span className="label-text font-bold">
+                      কর্মচারীর ইমেইল
+                    </span>
                   </label>
                   <input
                     type="text"
-                    name="address"
-                    placeholder="Address"
+                    name="email"
+                    placeholder=" কর্মচারীর ইমেইল"
                     className="input input-bordered w-full"
+                  />
+                </div>
+                <div className="form-control w-full">
+                  <label className="label">
+                    <span className="label-text font-bold">
+                      কর্মচারীর মোবাইল
+                    </span>
+                  </label>
+                  <input
+                    type="number"
+                    name="mobile"
+                    placeholder="কর্মচারীর মোবাইল নম্বর"
+                    className="input input-bordered w-full"
+                    required
                   />
                 </div>
               </div>
 
               <div className="submit">
-                <input
-                  type="submit"
-                  value="Add Suplier"
-                  className="rounded-lg font-h2 mt-4 border-2-[#331A15] bg-[#D2B48C] w-full p-3 font-bold text-[18px] text-[#331A15] cursor-pointer"
-                />
+                <SubmitButton name="সাপ্লায়ার যোগ করুন" />
               </div>
             </div>
           </form>

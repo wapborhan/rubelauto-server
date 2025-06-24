@@ -111,6 +111,41 @@ export const installmentTemplate = (rowData) => {
   return <div className="flex gap-3 justify-center">{payableAmount}</div>;
 };
 
+export const insTermTemplate = (rowData) => {
+  const term = rowData?.accountInfo?.term || 0;
+  const saleDate = new Date(rowData?.saledate);
+  const currentDate = new Date();
+
+  let monthDifference =
+    (currentDate.getFullYear() - saleDate.getFullYear()) * 12;
+  monthDifference -= saleDate.getMonth();
+  monthDifference += currentDate.getMonth();
+
+  if (currentDate.getDate() < saleDate.getDate()) {
+    monthDifference--;
+  }
+
+  const daysDifference = Math.floor(
+    (currentDate - saleDate) / (1000 * 60 * 60 * 24)
+  );
+
+  if (daysDifference > 30) {
+    monthDifference++;
+  }
+
+  // Conditional styling
+  const style =
+    monthDifference >= term
+      ? "bg-red-500 text-white text-black px-1 py-1 rounded"
+      : "";
+
+  return (
+    <div className={`flex gap-3 justify-center w-full ${style}`}>
+      {monthDifference}
+    </div>
+  );
+};
+
 export const tabID = (data, props) => {
   return props.rowIndex + 1;
 };

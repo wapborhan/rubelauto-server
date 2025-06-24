@@ -11,6 +11,7 @@ import {
   verifiedBodyTemplate,
   accountTemplate,
   installmentTemplate,
+  insTermTemplate,
   tabID,
 } from "./customerTableTemplates";
 import { renderHeader, footerGroup } from "./customerTableHeaderFooter";
@@ -65,6 +66,8 @@ export default function Customer() {
     return true;
   });
 
+  console.log(filteredData);
+
   const header = renderHeader(
     filters,
     setFilters,
@@ -85,7 +88,7 @@ export default function Customer() {
   const footer = footerGroup(filteredData, path);
 
   return (
-    <div className="card w-fulls mx-auto ">
+    <div className="card w-full mx-auto ">
       <Tooltip ref={tooltipRef} target=".custom-tooltip" className="text-sm" />
       <DataTable
         ref={dt}
@@ -100,48 +103,58 @@ export default function Customer() {
         paginator
         rows={10}
         // rowsPerPageOptions={[10, 25, 50, 100]}
-        emptyMessage="No customers found."
+        emptyMessage="কোনো কাস্টমার তথ্য নেই"
       >
-        <Column body={tabID} header="SL" />
+        <Column body={tabID} header="ক্রঃ" />
         <Column
-          header="Sale date"
+          header="বিক্রি তারিখ"
           style={{ minWidth: "8.5rem" }}
           body={(rowData) => saleDateTemplate(rowData)}
         />
-        <Column
-          field="cardno"
-          header="Card No."
-          style={{ minWidth: "7.5rem" }}
-        />
 
         <Column
+          field="cardno"
+          header="কার্ড নং"
+          style={{ minWidth: "7.5rem" }}
+        />
+        <Column
           field="customerInfo.name"
-          header="Customer"
+          header="নাম"
           style={{ minWidth: "10rem" }}
         />
         <Column
           field="customerInfo.number"
-          header="Number"
+          header="মোবাইল"
           // style={{ minWidth: "8rem" }}
         />
         <Column
           field="productInfo.models"
-          header="Model"
+          header="মডেল"
           style={{ minWidth: "12rem" }}
         />
+        {/* <Column
+          header="চুক্তি মাস"
+          style={{ minWidth: "2rem" }}
+          field="accountInfo.term"
+        /> */}
         <Column
-          header="Contract Due"
+          header="চুক্তির বকেয়া"
           body={(rowData) => accountTemplate(rowData)}
           style={{ minWidth: "5rem" }}
         />
         <Column
-          header="Installment Due"
+          header="মাস"
+          body={(rowData) => insTermTemplate(rowData)}
+          style={{ minWidth: "5rem" }}
+        />
+        <Column
+          header="কিস্তি বকেয়া"
           body={(rowData) => installmentTemplate(rowData)}
           style={{ minWidth: "5rem" }}
         />
-        <Column field="showRoom" header="Showroom" />
+        <Column field="showRoom" header="শোরুম" />
         <Column
-          header="Action"
+          header="মেনু"
           body={(rowData) => verifiedBodyTemplate(rowData, path)}
         />
       </DataTable>
