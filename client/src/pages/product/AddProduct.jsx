@@ -6,6 +6,7 @@ import { Toast } from "primereact/toast";
 import SearchAbleDropDown from "../../components/shared/SearchAbleDropDown";
 import { useGetSupplierQuery } from "../../redux/feature/api/supplierApi";
 import { useSetproductMutation } from "../../redux/feature/api/productApi";
+import SubmitButton from "../../components/SubmitButton";
 
 const AddProduct = () => {
   const toast = useRef(null);
@@ -78,17 +79,17 @@ const AddProduct = () => {
       <div className="back">{/* <BackToHomePage /> */}</div>
       <div className="sect  py-4 w-full mx-auto">
         <div className="content space-y-5">
-          <h2 className="text-center text-3xl mb-10">Add Product</h2>
+          <h2 className="text-center text-3xl mb-10">পণ্য যোগ করুন</h2>
         </div>
 
         <fieldset>
-          <legend>Add Product</legend>
+          <legend>পণ্য</legend>
           <form onSubmit={handleSubmit}>
             <div className="form space-y-5">
               <div className="frist flex gap-5 lg:flex-nowrap flex-wrap justify-between">
                 <div className="form-control w-full">
                   <label className="label">
-                    <span className="label-text font-bold">Supplier</span>
+                    <span className="label-text font-bold">সরবরাহকারী</span>
                   </label>
                   <SearchAbleDropDown
                     state={suplier}
@@ -97,21 +98,21 @@ const AddProduct = () => {
                     requir={true}
                     config={{
                       optLabel: "bssName",
-                      placeHolder: "Select Suplier",
+                      placeHolder: "সরবরাহকারী নির্বাচন করুন",
                     }}
                     // disable={!upazila}
                   />
                 </div>
                 <div className="form-control w-full">
                   <label className="label">
-                    <span className="label-text font-bold">Product Type</span>
+                    <span className="label-text font-bold">পণ্য ধরন</span>
                   </label>
                   <Dropdown
                     value={prodType}
                     onChange={(e) => setProdType(e.value)}
                     options={proTypeList}
                     optionLabel="name"
-                    placeholder="Product Type Code"
+                    placeholder="পণ্য ধরন কোড"
                     className="w-full md:w-14rem border-2"
                     // required
                   />
@@ -119,13 +120,13 @@ const AddProduct = () => {
                 <div className="form-control w-full">
                   <label className="label">
                     <span className="label-text font-bold">
-                      Product Model Image URL
+                      পণ্য মডেল ইমেজ URL
                     </span>
                   </label>
                   <input
                     type="text"
                     name="modelImg"
-                    placeholder="Enter Customer Village"
+                    placeholder="পণ্য মডেল ইমেজ URL"
                     className="input input-bordered w-full"
                   />
                 </div>
@@ -139,7 +140,7 @@ const AddProduct = () => {
                   <input
                     type="text"
                     name="sku"
-                    placeholder="Enter Product SKU"
+                    placeholder="Product SKU"
                     className="input input-bordered w-full"
                     required
                   />
@@ -147,36 +148,36 @@ const AddProduct = () => {
 
                 <div className="form-control w-full">
                   <label className="label">
-                    <span className="label-text font-bold">Product Name</span>
+                    <span className="label-text font-bold">পণ্য নাম</span>
                   </label>
                   <input
                     type="text"
                     name="modelName"
-                    placeholder="Enter Product Name"
+                    placeholder="পণ্য নাম"
                     className="input input-bordered w-full"
                     // required
                   />
                 </div>
                 <div className="form-control w-full">
                   <label className="label">
-                    <span className="label-text font-bold">Cash Price</span>
+                    <span className="label-text font-bold">নগদ মূল্য</span>
                   </label>
                   <input
                     type="number"
                     name="cashPrice"
-                    placeholder="Enter Product Price"
+                    placeholder="নগদ মূল্য"
                     className="input input-bordered w-full"
                     // required
                   />
                 </div>
                 <div className="form-control w-full">
                   <label className="label">
-                    <span className="label-text font-bold">Credit Price</span>
+                    <span className="label-text font-bold">কিস্তি মূল্য</span>
                   </label>
                   <input
                     type="number"
                     name="creditPrice"
-                    placeholder="Enter Product Price"
+                    placeholder="কিস্তি মূল্য"
                     className="input input-bordered w-full"
                     // required
                   />
@@ -184,11 +185,7 @@ const AddProduct = () => {
               </div>
 
               <div className="submit">
-                <input
-                  type="submit"
-                  value="Add Product"
-                  className="rounded-lg font-h2 mt-4 border-2-[#331A15] bg-[#D2B48C] w-full p-3 font-bold text-[18px] text-[#331A15] cursor-pointer"
-                />
+                <SubmitButton name="পণ্য যোগ করুন" />
               </div>
             </div>
           </form>

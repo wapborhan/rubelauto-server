@@ -82,13 +82,13 @@ export default function ViewProduct() {
     }
   }, [isError]);
 
-  const brandImageTemplate = (rowData) => {
-    return (
-      <div className="flex align-items-center gap-2">
-        <img src={rowData.brandImg} className="w-16" alt="" />
-      </div>
-    );
-  };
+  // const brandImageTemplate = (rowData) => {
+  //   return (
+  //     <div className="flex align-items-center gap-2">
+  //       <img src={rowData.brandImg} className="w-16" alt="" />
+  //     </div>
+  //   );
+  // };
   const modelImgTemplate = (rowData) => {
     return (
       <div className="flex align-items-center gap-2">
@@ -138,28 +138,28 @@ export default function ViewProduct() {
       >
         <Column
           body={tabID}
-          header="SL"
+          header="ক্রঃ"
           showFilterMenu={false}
           filterPlaceholder="Search"
           // style={{ minWidth: "8rem" }}
         />
-        <Column
+        {/* <Column
           header="Brand Image"
           filterField="brandImage"
           style={{ minWidth: "10rem" }}
           body={brandImageTemplate}
           showFilterMenu={false}
           filterPlaceholder="Name"
-        />
+        /> */}
         <Column
           field="brandName"
-          header="Brand Name"
+          header="সাপ্লায়ার নাম"
           showFilterMenu={false}
           filterPlaceholder="Search"
           style={{ minWidth: "8rem" }}
         />
         <Column
-          header="Model Image"
+          header="ছবি"
           filterField="modelImg"
           style={{ minWidth: "9rem" }}
           body={modelImgTemplate}
@@ -168,28 +168,28 @@ export default function ViewProduct() {
         />
         <Column
           field="modelName"
-          header="Model Name"
+          header="মডেল নাম"
           showFilterMenu={false}
           filterPlaceholder="Search"
           style={{ minWidth: "8rem" }}
         />
         <Column
           field="cashPrice"
-          header="Cash Price"
+          header="নগদ মূল্য"
           showFilterMenu={false}
           filterPlaceholder="Search"
           style={{ minWidth: "8rem" }}
         />
         <Column
           field="creditPrice"
-          header="Credit Price"
+          header="কিস্তি মূল্য"
           showFilterMenu={false}
           filterPlaceholder="Search"
           style={{ minWidth: "8rem" }}
         />
         <Column
           field="action"
-          header="Action"
+          header="মেনু"
           dataType="boolean"
           // style={{ minWidth: "6rem" }}
           body={verifiedBodyTemplate}

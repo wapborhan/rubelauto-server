@@ -275,6 +275,11 @@ const routes = createBrowserRouter([
       },
     ],
   },
+  {
+    path: "/memo",
+    element: <Root />,
+    children: [{ path: "", element: <All.Memo /> }],
+  },
 ]);
 
 export default routes;

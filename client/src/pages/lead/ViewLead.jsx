@@ -122,19 +122,19 @@ export default function ViewLead() {
         globalFilterFields={["name"]}
         paginator
         rows={10}
-        rowsPerPageOptions={[10, 25, 50, 100]}
+        // rowsPerPageOptions={[10, 25, 50, 100]}
         emptyMessage="No leads found."
       >
         <Column
           body={tabID}
-          header="SL"
+          header="ক্রঃ"
           showFilterMenu={false}
           filterPlaceholder="Search"
           // style={{ minWidth: "8rem" }}
         />
         <Column
           field="status"
-          header="Status"
+          header="স্ট্যাটাস"
           showFilterMenu={false}
           filterPlaceholder="Search"
           body={statusBodyTemplate}
@@ -143,28 +143,28 @@ export default function ViewLead() {
         />
         <Column
           field="name"
-          header="Name"
+          header="নাম"
           showFilterMenu={false}
           filterPlaceholder="Search"
           style={{ minWidth: "8rem" }}
         />
         <Column
           field="coname"
-          header="Father"
+          header="পিতার নাম"
           showFilterMenu={false}
           filterPlaceholder="Search"
           style={{ minWidth: "8rem" }}
         />
         <Column
           field="number"
-          header="Number"
+          header="নম্বর"
           showFilterMenu={false}
           filterPlaceholder="Search"
           style={{ minWidth: "8rem" }}
         />
         <Column
           field="address"
-          header="Address"
+          header="ঠিকানা"
           showFilterMenu={false}
           filterPlaceholder="Search"
           style={{ minWidth: "8rem" }}
@@ -172,7 +172,7 @@ export default function ViewLead() {
         />
         <Column
           field="verified"
-          header="Action"
+          header="মেনু"
           dataType="boolean"
           style={{ minWidth: "2rem" }}
           body={verifiedBodyTemplate}

@@ -115,7 +115,7 @@ function ViewSuplier() {
       >
         <Column
           body={tabID}
-          header="SL"
+          header="ক্রঃ"
           showFilterMenu={false}
           filterPlaceholder="Search"
           // style={{ minWidth: "8rem" }}
@@ -123,7 +123,7 @@ function ViewSuplier() {
         {pathname === "/contact/supplier/parts/view" ? null : (
           <Column
             field="status"
-            header="Status"
+            header="স্ট্যাটাস"
             showFilterMenu={false}
             filterPlaceholder="Search"
             body={statusBodyTemplate}
@@ -134,49 +134,49 @@ function ViewSuplier() {
 
         <Column
           field="bssName"
-          header="Supplier"
+          header="সরবরাহকারী"
           showFilterMenu={false}
           filterPlaceholder="Search"
           style={{ minWidth: "8rem" }}
         />
         <Column
           field="empName"
-          header="Employee"
+          header="কর্মচারী"
           showFilterMenu={false}
           filterPlaceholder="Search"
           style={{ minWidth: "8rem" }}
         />
         <Column
           field="mobile"
-          header="Number"
+          header="নম্বর"
           showFilterMenu={false}
           filterPlaceholder="Search"
           style={{ minWidth: "8rem" }}
         />
         <Column
           field="openingBalance"
-          header="Opening Balance"
+          header="ওপেনিং ব্যালান্স"
+          showFilterMenu={false}
+          filterPlaceholder="Search"
+          style={{ minWidth: "8rem" }}
+        />
+        <Column
+          field="purchase"
+          header="ক্রয়"
           showFilterMenu={false}
           filterPlaceholder="Search"
           style={{ minWidth: "8rem" }}
         />
         <Column
           field="openingBalance"
-          header="Purchase"
-          showFilterMenu={false}
-          filterPlaceholder="Search"
-          style={{ minWidth: "8rem" }}
-        />
-        <Column
-          field="openingBalance"
-          header="Due"
+          header="বাকি"
           showFilterMenu={false}
           filterPlaceholder="Search"
           style={{ minWidth: "8rem" }}
         />
         <Column
           field="verified"
-          header="Action"
+          header="মেনু"
           dataType="boolean"
           style={{ minWidth: "2rem" }}
           body={verifiedBodyTemplate}
