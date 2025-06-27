@@ -18,8 +18,8 @@ const MemoForm = ({ product, editId, handleChange, handleSave, resetForm }) => {
         className="border p-2 rounded"
       >
         <option value="">Select Model</option>
-        <option value="Model A">Model A</option>
-        <option value="Model B">Model B</option>
+        <option value="Pulser 150">Pulser 150</option>
+        <option value="Dayang 80">Dayang 80</option>
       </select>
       <select
         name="company"
@@ -28,8 +28,8 @@ const MemoForm = ({ product, editId, handleChange, handleSave, resetForm }) => {
         className="border p-2 rounded"
       >
         <option value="">Select Company</option>
-        <option value="Company X">Company X</option>
-        <option value="Company Y">Company Y</option>
+        <option value="CRLF">CRLF</option>
+        <option value="Rolon">Rolon</option>
       </select>
       <input
         type="number"

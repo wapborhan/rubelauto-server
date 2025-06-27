@@ -1,7 +1,6 @@
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Button } from "primereact/button";
-import FooterGroup from "./FooterGroup";
 import { Row } from "primereact/row";
 import { ColumnGroup } from "primereact/columngroup";
 import { InputText } from "primereact/inputtext";
@@ -47,7 +46,7 @@ const MemoTable = ({
             <InputText
               value={prevDue}
               onChange={(e) => setPrevDue(Number(e.target.value))}
-              className="p-inputtext-sm w-full"
+              className="p-inputtext-sm w-5/12"
             />
           }
         />
@@ -63,7 +62,7 @@ const MemoTable = ({
             <InputText
               value={paidAmount}
               onChange={(e) => setPaidAmount(Number(e.target.value))}
-              className="p-inputtext-sm w-full"
+              className="p-inputtext-sm w-5/12"
             />
           }
         />
@@ -79,7 +78,7 @@ const MemoTable = ({
             <InputText
               value={overallDiscount}
               onChange={(e) => setOverallDiscount(Number(e.target.value))}
-              className="p-inputtext-sm w-full"
+              className="p-inputtext-sm w-5/12"
             />
           }
         />
@@ -95,7 +94,7 @@ const MemoTable = ({
             <InputText
               value={transport}
               onChange={(e) => setTransport(Number(e.target.value))}
-              className="p-inputtext-sm w-full"
+              className="p-inputtext-sm w-5/12"
             />
           }
         />
@@ -117,12 +116,12 @@ const MemoTable = ({
   return (
     <DataTable
       value={memos}
-      paginator
+      // paginator
       rows={5}
       stripedRows
       footerColumnGroup={footerGroups}
     >
-      <Column field="name" header="Product Name" />
+      <Column field="name" header="Product Name" style={{ minWidth: "5rem" }} />
       <Column field="model" header="Model" />
       <Column field="company" header="Company" />
       <Column field="quantity" header="Qty" />
@@ -138,12 +137,18 @@ const MemoTable = ({
           <div className="flex gap-2">
             <Button
               icon="pi pi-pencil"
-              className="p-button-rounded p-button-info p-button-sm"
+              className="p-button-rounded p-button-info p-button-sm !py-2"
+              style={{
+                padding: "0.25rem !important",
+              }}
               onClick={() => handleEdit(rowData.id)}
             />
             <Button
               icon="pi pi-trash"
-              className="p-button-rounded p-button-danger p-button-sm"
+              className="p-button-rounded p-button-danger p-button-sm !py-2"
+              style={{
+                padding: "0.25rem !important",
+              }}
               onClick={() => handleDelete(rowData.id)}
             />
           </div>
