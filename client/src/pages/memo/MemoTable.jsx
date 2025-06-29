@@ -1,9 +1,9 @@
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { Button } from "primereact/button";
 import { Row } from "primereact/row";
 import { ColumnGroup } from "primereact/columngroup";
 import { InputText } from "primereact/inputtext";
+import PropTypes from "prop-types";
 
 const MemoTable = ({
   memos,
@@ -46,7 +46,7 @@ const MemoTable = ({
             <InputText
               value={prevDue}
               onChange={(e) => setPrevDue(Number(e.target.value))}
-              className="p-inputtext-sm w-5/12"
+              className="p-input text-sm w-5/12 p-2"
             />
           }
         />
@@ -62,7 +62,7 @@ const MemoTable = ({
             <InputText
               value={paidAmount}
               onChange={(e) => setPaidAmount(Number(e.target.value))}
-              className="p-inputtext-sm w-5/12"
+              className="p-input text-sm w-5/12"
             />
           }
         />
@@ -78,7 +78,7 @@ const MemoTable = ({
             <InputText
               value={overallDiscount}
               onChange={(e) => setOverallDiscount(Number(e.target.value))}
-              className="p-inputtext-sm w-5/12"
+              className="p-input text-sm w-5/12"
             />
           }
         />
@@ -94,7 +94,7 @@ const MemoTable = ({
             <InputText
               value={transport}
               onChange={(e) => setTransport(Number(e.target.value))}
-              className="p-inputtext-sm w-5/12"
+              className="p-input text-sm w-5/12"
             />
           }
         />
@@ -121,7 +121,12 @@ const MemoTable = ({
       stripedRows
       footerColumnGroup={footerGroups}
     >
-      <Column field="name" header="Product Name" style={{ minWidth: "5rem" }} />
+      <Column
+        field="description"
+        header="Product Name"
+        style={{ minWidth: "5rem" }}
+      />
+      <Column field="partNo" header="Part No" />
       <Column field="model" header="Model" />
       <Column field="company" header="Company" />
       <Column field="quantity" header="Qty" />
@@ -135,22 +140,18 @@ const MemoTable = ({
         header="Actions"
         body={(rowData) => (
           <div className="flex gap-2">
-            <Button
-              icon="pi pi-pencil"
-              className="p-button-rounded p-button-info p-button-sm !py-2"
-              style={{
-                padding: "0.25rem !important",
-              }}
+            <button
+              className="p-button-rounded p-button-info bg-green-500 p-button-sm !py-1 px-3 text-white rounded-md shadow-md"
               onClick={() => handleEdit(rowData.id)}
-            />
-            <Button
-              icon="pi pi-trash"
-              className="p-button-rounded p-button-danger p-button-sm !py-2"
-              style={{
-                padding: "0.25rem !important",
-              }}
+            >
+              <i className="pi pi-pencil text-sm"></i>
+            </button>{" "}
+            <button
+              className="p-button-rounded p-button-info bg-red-500 p-button-sm !py-1 px-3 text-white rounded-md shadow-md"
               onClick={() => handleDelete(rowData.id)}
-            />
+            >
+              <i className="pi pi-trash text-sm"></i>
+            </button>
           </div>
         )}
       />
@@ -158,4 +159,41 @@ const MemoTable = ({
   );
 };
 
+// ✅ PropTypes validation
+MemoTable.propTypes = {
+  memos: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+      description: PropTypes.string.isRequired,
+      partNo: PropTypes.string.isRequired,
+      model: PropTypes.string.isRequired,
+      company: PropTypes.string.isRequired,
+      quantity: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+        .isRequired,
+      rate: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+        .isRequired,
+      discount: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+        .isRequired,
+    })
+  ).isRequired,
+  calculateAmount: PropTypes.func.isRequired,
+  handleEdit: PropTypes.func.isRequired,
+  handleDelete: PropTypes.func.isRequired,
+  footerProps: PropTypes.shape({
+    totalAmount: PropTypes.func.isRequired,
+    prevDue: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+      .isRequired,
+    setPrevDue: PropTypes.func.isRequired,
+    paidAmount: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+      .isRequired,
+    setPaidAmount: PropTypes.func.isRequired,
+    overallDiscount: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+      .isRequired,
+    setOverallDiscount: PropTypes.func.isRequired,
+    transport: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+      .isRequired,
+    setTransport: PropTypes.func.isRequired,
+    grandTotal: PropTypes.func.isRequired,
+  }).isRequired,
+};
 export default MemoTable;

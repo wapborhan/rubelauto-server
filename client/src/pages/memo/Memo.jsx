@@ -7,11 +7,13 @@ import "primereact/resources/themes/lara-light-indigo/theme.css";
 import MemoForm from "./MemoForm";
 import MemoTable from "./MemoTable";
 import { exportExcel, exportPDF } from "./exportUtils";
+import { printMemo } from "./printMemo";
 
 const Memo = () => {
   const [product, setProduct] = useState({
     id: "",
-    name: "",
+    description: "",
+    partNo: "",
     model: "",
     company: "",
     quantity: 0,
@@ -43,7 +45,7 @@ const Memo = () => {
   };
 
   const handleSave = () => {
-    if (!product.name || !product.model || !product.company) {
+    if (!product.description || !product.model || !product.company) {
       alert("Please fill all fields");
       return;
     }
@@ -89,7 +91,8 @@ const Memo = () => {
   const resetForm = () => {
     setProduct({
       id: "",
-      name: "",
+      description: "",
+      partNo: "",
       model: "",
       company: "",
       quantity: 0,
@@ -175,6 +178,12 @@ const Memo = () => {
             icon="pi pi-file-pdf"
             className="p-button-danger"
             onClick={() => exportPDF(memos, calculateAmount, totals)}
+          />
+          <Button
+            label="Print Memo"
+            icon="pi pi-print"
+            className="p-button-warning"
+            onClick={() => printMemo(memos, calculateAmount, totals)}
           />
         </div>
         <MemoTable {...tableProps} />

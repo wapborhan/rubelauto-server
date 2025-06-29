@@ -3,7 +3,7 @@ import { Menu } from "primereact/menu";
 import { Badge } from "primereact/badge";
 import { useRef } from "react";
 import { Avatar } from "primereact/avatar";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logOutUser } from "../redux/feature/user/userSlice";
 
@@ -123,25 +123,28 @@ const Header = (props) => {
         <h2 id="nameTitle" className="text-center text-dark font-bold">
           Rubel Auto
         </h2>
-        <div className="account btn-circle w-12 flex justify-center items-center h-12 ">
-          <Button
-            // icon="pi pi-user"
-            className="ml-1 !p-0"
-            onClick={(event) => menuRight.current.toggle(event)}
-            aria-controls="popup_menu_right"
-            aria-haspopup
-          >
-            <img src={photo} alt="P" />
-          </Button>
+        <div className="flex items-center gap-3">
+          <NavLink to="/memo">Parts Memo</NavLink>
+          <div className="account btn-circle w-12 flex justify-center items-center h-12 ">
+            <Button
+              // icon="pi pi-user"
+              className="ml-1 !p-0"
+              onClick={(event) => menuRight.current.toggle(event)}
+              aria-controls="popup_menu_right"
+              aria-haspopup
+            >
+              <img src={photo} alt="P" />
+            </Button>
 
-          <Menu
-            model={items}
-            popup
-            ref={menuRight}
-            id="popup_menu_right"
-            className="mt-5"
-            popupAlignment="right"
-          />
+            <Menu
+              model={items}
+              popup
+              ref={menuRight}
+              id="popup_menu_right"
+              className="mt-5"
+              popupAlignment="right"
+            />
+          </div>
         </div>
       </nav>
     </>
