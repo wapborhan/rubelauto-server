@@ -23,8 +23,9 @@ export const exportPDF = (memos, calculateAmount, totals) => {
 
   const tableColumn = [
     "Product Name",
+    "Part No.",
     "Model",
-    "Company",
+    "Brand",
     "Qty",
     "Rate",
     "Disc (%)",
@@ -32,7 +33,8 @@ export const exportPDF = (memos, calculateAmount, totals) => {
   ];
 
   const tableRows = memos.map((item) => [
-    item.name,
+    item.description,
+    item.partNo,
     item.model,
     item.company,
     item.quantity,

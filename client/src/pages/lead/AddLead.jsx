@@ -53,7 +53,7 @@ const AddLead = () => {
     const name = form.name.value;
     const coname = form.coname.value;
     const nid = form.nid.value;
-    const village = form.village.value;
+    const address = form.address.value;
     const number = form.number.value;
     const location = form.location.value;
     const media = form.media.value;
@@ -63,12 +63,7 @@ const AddLead = () => {
       name,
       coname,
       nid,
-      address: {
-        village: village,
-        union: union?.name,
-        upazila: upazila?.name,
-        district: district?.name,
-      },
+      address,
       number,
       location,
       media,
@@ -179,6 +174,17 @@ const AddLead = () => {
               <div className="second flex gap-5 lg:flex-nowrap flex-wrap justify-between">
                 <div className="form-control w-full">
                   <label className="label">
+                    <span className="label-text font-bold">ঠিকানা</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="address"
+                    placeholder="ঠিকানা লিখুন"
+                    className="input input-bordered w-full"
+                  />
+                </div>
+                {/* <div className="form-control w-full">
+                  <label className="label">
                     <span className="label-text font-bold">জেলা</span>
                   </label>
                   <SearchAbleDropDown
@@ -193,7 +199,7 @@ const AddLead = () => {
                     // disable={!division}
                   />
                 </div>
-                <div className="form-control w-full">
+                 <div className="form-control w-full">
                   <label className="label">
                     <span className="label-text font-bold">উপজিলা / থানা</span>
                   </label>
@@ -236,7 +242,7 @@ const AddLead = () => {
                     className="input input-bordered w-full"
                     required
                   />
-                </div>
+                </div> */}
               </div>
               <div className="third flex gap-5 lg:flex-nowrap flex-wrap justify-between">
                 <div className="w-full flex gap-5 lg:flex-nowrap flex-wrap justify-between">

@@ -117,6 +117,7 @@ legend {
 input[type="text"],
 input[type="number"],
 input[type="time"],
+select,
 textarea,
 .p-dropdown {
   /* background: #ffc0c045; */
@@ -251,6 +252,13 @@ button.p-highlight {
     display: block;
   }
 } */
+
+.p-datatable-tfoot tr td {
+  padding: 0.5rem !important;
+}
+.p-datatable-tfoot tr td input {
+  padding: 0.4rem;
+}
 
 .info {
   @apply space-y-3;

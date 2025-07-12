@@ -24,9 +24,9 @@ const AddSale = () => {
         detail: `Your ${path.status.toUpperCase()} sale has been added.`,
         life: 3000,
       });
-      // setTimeout(() => {
-      //   navigate(`/customer/${cardStas}`);
-      // }, 3000);
+      setTimeout(() => {
+        navigate(`/customer/running`);
+      }, 3000);
     }
   }, [isSuccess, navigate, path]);
   useEffect(() => {

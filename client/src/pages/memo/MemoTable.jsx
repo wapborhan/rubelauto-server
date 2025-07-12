@@ -7,6 +7,7 @@ import PropTypes from "prop-types";
 
 const MemoTable = ({
   memos,
+  tabID,
   calculateAmount,
   handleEdit,
   handleDelete,
@@ -26,11 +27,11 @@ const MemoTable = ({
   } = footerProps;
 
   const footerGroups = (
-    <ColumnGroup>
+    <ColumnGroup className="bg-gray-100">
       <Row>
         <Column
           footer="Total Amount:"
-          colSpan={6}
+          colSpan={9}
           footerStyle={{ textAlign: "right" }}
         />
         <Column footer={totalAmount().toFixed(2)} />
@@ -38,7 +39,7 @@ const MemoTable = ({
       <Row>
         <Column
           footer="Previous Due:"
-          colSpan={6}
+          colSpan={9}
           footerStyle={{ textAlign: "right" }}
         />
         <Column
@@ -46,7 +47,7 @@ const MemoTable = ({
             <InputText
               value={prevDue}
               onChange={(e) => setPrevDue(Number(e.target.value))}
-              className="p-input text-sm w-5/12 p-2"
+              className="p-input text-sm w-full p-2"
             />
           }
         />
@@ -54,7 +55,7 @@ const MemoTable = ({
       <Row>
         <Column
           footer="Paid Amount:"
-          colSpan={6}
+          colSpan={9}
           footerStyle={{ textAlign: "right" }}
         />
         <Column
@@ -62,7 +63,7 @@ const MemoTable = ({
             <InputText
               value={paidAmount}
               onChange={(e) => setPaidAmount(Number(e.target.value))}
-              className="p-input text-sm w-5/12"
+              className="p-input text-sm w-full"
             />
           }
         />
@@ -70,7 +71,7 @@ const MemoTable = ({
       <Row>
         <Column
           footer="Overall Discount:"
-          colSpan={6}
+          colSpan={9}
           footerStyle={{ textAlign: "right" }}
         />
         <Column
@@ -78,7 +79,7 @@ const MemoTable = ({
             <InputText
               value={overallDiscount}
               onChange={(e) => setOverallDiscount(Number(e.target.value))}
-              className="p-input text-sm w-5/12"
+              className="p-input text-sm w-full"
             />
           }
         />
@@ -86,7 +87,7 @@ const MemoTable = ({
       <Row>
         <Column
           footer="Transport:"
-          colSpan={6}
+          colSpan={9}
           footerStyle={{ textAlign: "right" }}
         />
         <Column
@@ -94,7 +95,7 @@ const MemoTable = ({
             <InputText
               value={transport}
               onChange={(e) => setTransport(Number(e.target.value))}
-              className="p-input text-sm w-5/12"
+              className="p-input text-sm w-full"
             />
           }
         />
@@ -102,7 +103,7 @@ const MemoTable = ({
       <Row>
         <Column
           footer="Grand Total:"
-          colSpan={6}
+          colSpan={9}
           footerStyle={{ textAlign: "right", fontWeight: "bold" }}
         />
         <Column
@@ -121,20 +122,23 @@ const MemoTable = ({
       stripedRows
       footerColumnGroup={footerGroups}
     >
+      <Column header="SL" body={tabID} />
       <Column
         field="description"
         header="Product Name"
-        style={{ minWidth: "5rem" }}
+        style={{ minWidth: "20rem" }}
       />
       <Column field="partNo" header="Part No" />
       <Column field="model" header="Model" />
       <Column field="company" header="Company" />
       <Column field="quantity" header="Qty" />
+      <Column field="unitType" header="Type" />
       <Column field="rate" header="Rate" />
       <Column field="discount" header="Disc (%)" />
       <Column
         header="Amount"
         body={(rowData) => calculateAmount(rowData).toFixed(2)}
+        style={{ width: "1rem" }}
       />
       <Column
         header="Actions"

@@ -8,17 +8,20 @@ import MemoForm from "./MemoForm";
 import MemoTable from "./MemoTable";
 import { exportExcel, exportPDF } from "./exportUtils";
 import { printMemo } from "./printMemo";
+import { useSelector } from "react-redux";
 
 const Memo = () => {
+  const { name } = useSelector((state) => state.userStore);
   const [product, setProduct] = useState({
     id: "",
     description: "",
     partNo: "",
     model: "",
     company: "",
-    quantity: 0,
-    rate: 0,
-    discount: 0,
+    quantity: "",
+    unitType: "",
+    rate: "",
+    discount: "",
   });
   const [memos, setMemos] = useState([]);
   const [editId, setEditId] = useState(null);
@@ -44,27 +47,24 @@ const Memo = () => {
     }));
   };
 
-  const handleSave = () => {
-    if (!product.description || !product.model || !product.company) {
-      alert("Please fill all fields");
-      return;
-    }
-
+  const handleSave = (data) => {
     if (editId) {
       const updated = memos.map((item) =>
-        item.id === editId ? { ...product, id: editId } : item
+        item.id === editId ? { ...data, id: editId } : item
       );
       setMemos(updated);
       localStorage.setItem("memos", JSON.stringify(updated));
       setEditId(null);
     } else {
-      const newProduct = { ...product, id: Date.now().toString() };
+      const newProduct = { ...data, id: Date.now().toString() };
       const updated = [...memos, newProduct];
       setMemos(updated);
       localStorage.setItem("memos", JSON.stringify(updated));
     }
+  };
 
-    resetForm();
+  const resetEdit = () => {
+    setEditId(null);
   };
 
   const handleDelete = (id) => {
@@ -95,9 +95,10 @@ const Memo = () => {
       partNo: "",
       model: "",
       company: "",
-      quantity: 0,
-      rate: 0,
-      discount: 0,
+      quantity: "",
+      unitType: "",
+      rate: "",
+      discount: "",
     });
     setEditId(null);
   };
@@ -122,6 +123,10 @@ const Memo = () => {
     );
   };
 
+  const tabID = (data, props) => {
+    return props.rowIndex + 1;
+  };
+
   // Footer group for summary rows
   // Form props to pass down
   const formProps = {
@@ -136,6 +141,7 @@ const Memo = () => {
   const tableProps = {
     memos,
     calculateAmount,
+    tabID,
     handleEdit,
     handleDelete,
     footerProps: {
@@ -164,9 +170,14 @@ const Memo = () => {
     <div className="p-5 space-y-5">
       <h1 className="text-2xl font-bold">Memo Management</h1>
       <ConfirmDialog />
-      <MemoForm {...formProps} />
+      <MemoForm
+        onSave={handleSave}
+        editProduct={editId ? memos.find((m) => m.id === editId) : null}
+        resetEdit={resetEdit}
+      />
+
       <div className="card">
-        <div className="flex gap-2 mb-2">
+        <div className="flex flex-wrap gap-2 mb-2">
           <Button
             label="Export to Excel"
             icon="pi pi-file-excel"
@@ -183,7 +194,7 @@ const Memo = () => {
             label="Print Memo"
             icon="pi pi-print"
             className="p-button-warning"
-            onClick={() => printMemo(memos, calculateAmount, totals)}
+            onClick={() => printMemo(memos, calculateAmount, totals, name)}
           />
         </div>
         <MemoTable {...tableProps} />

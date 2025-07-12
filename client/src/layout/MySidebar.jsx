@@ -92,12 +92,13 @@ const MySidebar = (props) => {
       color: "#000",
     },
     subMenuContent: ({ level }) => ({
-      backgroundColor: level === 0
-        ? hexToRgba(
-          themes[theme].menu.menuContent,
-          hasImage && !collapsed ? 0.4 : 1,
-        )
-        : "transparent",
+      backgroundColor:
+        level === 0
+          ? hexToRgba(
+              themes[theme].menu.menuContent,
+              hasImage && !collapsed ? 0.4 : 1
+            )
+          : "transparent",
     }),
     button: {
       [`&.${menuClasses.disabled}`]: {
@@ -106,7 +107,7 @@ const MySidebar = (props) => {
       "&:hover": {
         backgroundColor: hexToRgba(
           themes[theme].menu.hover.backgroundColor,
-          hasImage ? 0.8 : 1,
+          hasImage ? 0.8 : 1
         ),
         color: themes[theme].menu.hover.color,
       },
@@ -123,21 +124,22 @@ const MySidebar = (props) => {
         className="h-[100vh]"
         breakPoint="sm"
         toggled={toggled}
-        onBackdropClick={() =>
-          setToggled(false)}
+        onBackdropClick={() => setToggled(false)}
         onBreakPoint={setBroken}
         backgroundColor={hexToRgba(
           themes[theme].sidebar.backgroundColor,
-          hasImage ? 0.9 : 1,
+          hasImage ? 0.9 : 1
         )}
         rootStyles={{
           color: themes[theme].sidebar.color,
         }}
       >
         <div
-          className={collapsed
-            ? "w-full p-2 mx-auto text-center space-y-4 border-b-2"
-            : "w-full p-5 mx-auto text-center space-y-4 border-b-2"}
+          className={
+            collapsed
+              ? "w-full p-2 mx-auto text-center space-y-4 border-b-2"
+              : "w-full p-5 mx-auto text-center space-y-4 border-b-2"
+          }
         >
           <div className={collapsed ? "w-13" : "w-28 mx-auto rounded-full"}>
             <img src={Logo} />
