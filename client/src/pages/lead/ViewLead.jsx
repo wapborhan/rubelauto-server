@@ -53,13 +53,11 @@ export default function ViewLead() {
     return props.rowIndex + 1;
   };
 
-  const addressTemplate = ({ address }) => {
-    return (
-      <span>
-        {`${address?.village}, ${address?.union}, ${address?.upazila}, ${address?.district}.`}
-      </span>
-    );
-  };
+  // const addressTemplate = (rowData) => {
+  //   console.log(rowData);
+
+  //   return <span>{`${rowData?.address}, `}</span>;
+  // };
 
   const verifiedBodyTemplate = (rowData) => {
     return (
@@ -168,7 +166,7 @@ export default function ViewLead() {
           showFilterMenu={false}
           filterPlaceholder="Search"
           style={{ minWidth: "8rem" }}
-          body={addressTemplate}
+          // body={addressTemplate}
         />
         <Column
           field="verified"

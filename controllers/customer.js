@@ -86,11 +86,12 @@ exports.allCustomer = async (req, res, next) => {
     const cusData = req.params.status;
     const { showroom } = req.query;
     let cursor;
+    console.log(showroom, cusData);
 
     if (showroom === "Head Office") {
       cursor = { "cardStatus.type": cusData };
     } else {
-      cursor = { cardStatus: cusData, showRoom: showroom };
+      cursor = { "cardStatus.type": cusData, showRoom: showroom };
     }
 
     const customers = await Customer.find(cursor);
