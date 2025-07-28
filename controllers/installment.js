@@ -8,11 +8,37 @@ exports.createInstallment = async (req, res, next) => {
     const { showroom, amount, type } = req.body;
 
     const filterShowroom = await Showroom.findOne({ name: showroom });
+
     if (!filterShowroom) {
       return res.status(404).json({
         success: false,
         status: 404,
-        message: "Showroom not found",
+        message: "শোরুম পাওয়া যায়নি",
+      });
+    }
+
+    const startOfDay = new Date(installment.date);
+    startOfDay.setHours(0, 0, 0, 0); // 00:00:00.000
+
+    const endOfDay = new Date(installment.date);
+    endOfDay.setHours(23, 59, 59, 999); // 23:59:59.999
+
+    const exsistingInstallment = await Installment.findOne({
+      voucher: installment.voucher,
+      date: {
+        $gte: startOfDay,
+        $lte: endOfDay,
+      },
+    });
+
+    console.log(exsistingInstallment);
+    console.log(installment.voucher, installment.date);
+
+    if (exsistingInstallment) {
+      return res.status(404).json({
+        success: false,
+        status: 404,
+        message: "এই কিস্তি ইতিমধ্যে আছে",
       });
     }
 
@@ -53,8 +79,6 @@ exports.createInstallment = async (req, res, next) => {
       }
     }
 
-    console.log(filterShowroom);
-
     // Save the new installment record
     const newInstallment = new Installment(installment);
     const data = await newInstallment.save();
@@ -64,7 +88,7 @@ exports.createInstallment = async (req, res, next) => {
     res.status(200).json({
       success: true,
       status: 200,
-      message: "Installment Created",
+      message: "সফলভাবে কিস্তি যুক্ত হয়েছে",
       data: data,
     });
   } catch (error) {

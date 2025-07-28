@@ -17,13 +17,15 @@ const Payment = () => {
   const [selectedType, setSelectedType] = useState(null);
   const [date, setDate] = useState(new Date());
   const [coments, setComents] = useState(undefined);
-  const today = new Date();
   const navigate = useNavigate();
   const { cardNo } = useParams();
   const { data: singleCustomer } = useGetSingleCustomerQuery(cardNo);
   const { name } = useSelector((state) => state.userStore);
   const { data: allAccounts, isLoading, error } = useGetAccountQuery();
-  const [setPost, { isSuccess, isError }] = useSetInstallmentMutation();
+  const [setPost, { data: insData, isSuccess, isError, error: insError }] =
+    useSetInstallmentMutation();
+
+  console.log(insData);
 
   useEffect(() => {
     if (isSuccess) {
@@ -43,11 +45,11 @@ const Payment = () => {
       toast.current.show({
         severity: "error",
         summary: "Error",
-        detail: "Installment Not Posted",
+        detail: insError?.data?.message || "Something went wrong",
         life: 3000,
       });
     }
-  }, [isError]);
+  }, [isError, insError]);
 
   if (isLoading) return <Loading />;
   if (error) return <p>Error fetching accounts: {error.message}</p>;
