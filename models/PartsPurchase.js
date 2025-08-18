@@ -13,6 +13,6 @@ const partsSchema = new Schema(
   { versionKey: false }
 );
 
-const Parts = model("partsPurchase", partsSchema);
+const PartsPurchase = model("partsPurchase", partsSchema);
 
-module.exports = Parts;
+module.exports = PartsPurchase;

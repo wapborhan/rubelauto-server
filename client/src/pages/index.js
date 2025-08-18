@@ -17,6 +17,7 @@ import AddSuplier from "./suppliers/AddSuplier";
 import ViewSuplier from "./suppliers/ViewSuplier";
 import UpdateSuplier from "./suppliers/UpdateSuplier";
 import SuplierDetails from "./suppliers/SuplierDetails";
+import SupplierPayment from "./suppliers/SupplierPayment";
 //
 import AddProduct from "./product/AddProduct";
 import ViewProduct from "./product/ViewProduct";
@@ -72,6 +73,7 @@ export {
   ViewSuplier,
   UpdateSuplier,
   SuplierDetails,
+  SupplierPayment,
   //
   LeadDetails,
   AddGuarantor,

@@ -74,7 +74,7 @@ const SuplierDetails = () => {
           </div>
         </div>
       </fieldset>
-      <SupplierDetailPur />
+      <SupplierDetailPur supplierId={id} />
     </>
   );
 };

@@ -2,7 +2,7 @@ export const printMemo = (memos, calculateAmount, totals, name) => {
   let html = `
     <html>
       <head>
-        <title>Memo List</title>
+        <title>Invoice</title>
         <style>
           body { font-family: Arial, sans-serif; padding: 0; position: relative; }
           h2 { text-align: center; }
@@ -15,8 +15,8 @@ export const printMemo = (memos, calculateAmount, totals, name) => {
           .customer, .chalan {flex: 1;min-width: 220px;}
           .customer h3,.chalan h3 {margin: 0px 0;font-size: 16px;color: #333;}
           .memoHead b {color: #000;}
-          .company{display:flex;justify-content:center;align-items:center;margin-bottom:15px;position: relative;}.companyInner{display:flex;gap:24px;align-items:center;flex-wrap:wrap;text-align:center;position: relative}.companyLogo{width:120px;aspect-ratio:1/1;object-fit:contain;position: absolute;left: 0;}.companyInfo h2{margin:0 0 8px;font-size:24px;font-weight:700;color:#222}.companyInfo p{margin:4px 0;font-size:14px;color:#555} 
-          .signatures {display: flex;justify-content: space-between; gap: 16px;flex-wrap: wrap;     position: absolute;    width: 100%;    bottom: -0;.signature-line {flex: 1;text-align: center;padding-top: 8px;border-top: 2px solid #000;font-weight: 500;color: #333;min-width: 150px;}
+          .company{display:flex;justify-content:center;align-items:center;margin-bottom:15px;position: relative;}.companyInner{display:flex;gap:24px;align-items:center;flex-wrap:wrap;text-align:center;position: relative}.companyLogo{width:120px;aspect-ratio:1/1;object-fit:contain;position: absolute;left: 0;}.companyInfo h2{margin:0 0 8px;font-size:30px;font-weight:700;color:#222}.companyInfo p{margin:4px 0;font-size:16px;color:#555} 
+          .signatures {display: flex;justify-content: space-between; gap: 16px;flex-wrap: wrap;     position: static;  padding-top: 90px;  width: 100%;    bottom: -0;.signature-line {flex: 1;text-align: center;padding-top: 8px;border-top: 2px solid #000;font-weight: 500;color: #333;min-width: 150px;}
         </style>
       </head>
       <body>
@@ -50,9 +50,9 @@ export const printMemo = (memos, calculateAmount, totals, name) => {
           </div>
         </div>
 
-        <h2 style="text-align:center; margin: 5px 0">Invoice</h2>
+        <h2 style="text-align:center; margin: 10px 0 10px 0">Invoice</h2>
 
-        <table style="margin-bottom: 25px; width: 100%;">
+        <table style="padding-bottom: 95px; width: 100%;">
           <thead>
             <tr>
              <th>Sl.</th>
@@ -112,11 +112,11 @@ export const printMemo = (memos, calculateAmount, totals, name) => {
     <div class="signature-line">Received By</div>
   </div>
 
-      <script>
-        window.onload = function() {
-          window.print();
-        };
-      </script>
+           <script>
+       window.onload = function() {
+         window.print();
+      };
+     </script>
     </body>
   </html>`;
 
@@ -124,4 +124,25 @@ export const printMemo = (memos, calculateAmount, totals, name) => {
   printWindow.document.open();
   printWindow.document.write(html);
   printWindow.document.close();
+
+  // Create an invisible iframe
+  // const iframe = document.createElement("iframe");
+  // iframe.style.position = "fixed";
+  // iframe.style.right = "0";
+  // iframe.style.bottom = "0";
+  // iframe.style.width = "0";
+  // iframe.style.height = "0";
+  // iframe.style.border = "0";
+  // document.body.appendChild(iframe);
+
+  // // Write to iframe and print
+  // iframe.contentDocument.open();
+  // iframe.contentDocument.write(html);
+  // iframe.contentDocument.close();
+
+  // iframe.onload = function () {
+  //   iframe.contentWindow.focus();
+  //   iframe.contentWindow.print();
+  //   setTimeout(() => document.body.removeChild(iframe), 1000); // Clean up after print
+  // };
 };

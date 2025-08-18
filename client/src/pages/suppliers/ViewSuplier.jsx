@@ -36,9 +36,13 @@ function ViewSuplier() {
     return (
       <div className="flex lg:flex-nowrap flex-wrap gap-5 lg:justify-between justify-center">
         <GlobalFilter setFilters={setFilters} filters={filters} />
-        <div className="flex align-items-center  justify-between gap-2">
-          <ExportButtons state={allSuplier} dt={dt} />
-        </div>
+        <NavLink
+          to={`/contact/supplier/add`}
+          className="px-6 py-3 bg-green-600 text-white rounded-md cursor-pointer"
+        >
+          <i className="pi pi-plus"></i>{" "}
+          <span className="ms-2">সাপ্লায়ার যুক্ত করুণ</span>
+        </NavLink>
       </div>
     );
   };
@@ -80,6 +84,14 @@ function ViewSuplier() {
           <i className="pi pi-eye"></i>
         </NavLink>
         <NavLink
+          to={`/contact/supplier/payment/${rowData?._id}`}
+          className="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline custom-tooltip cursor-pointer"
+          data-pr-tooltip="View"
+          data-pr-position="top"
+        >
+          <i className="pi pi-money-bill"></i>
+        </NavLink>
+        <NavLink
           to={`/contact/supplier/edit/${rowData?._id}`}
           className="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline custom-tooltip cursor-pointer"
           data-pr-tooltip="Edit"
@@ -110,7 +122,7 @@ function ViewSuplier() {
         globalFilterFields={["bssName", "prodType"]}
         paginator
         rows={10}
-        rowsPerPageOptions={[10, 25, 50, 100]}
+        // rowsPerPageOptions={[10, 25, 50, 100]}
         emptyMessage="No Suplier found."
       >
         <Column

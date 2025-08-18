@@ -95,19 +95,19 @@ export const menuData = [
     path: "/documents",
   },
   {
-    label: "Parts",
+    label: "পার্টস",
     icon: "pi-wrench",
     subMenu: [
       {
-        label: "Parts Suppliers",
+        label: "পার্টস সাপ্লালায়ার",
         path: "/contact/supplier/parts/view",
       },
       {
-        label: "Add Purchase",
+        label: "পার্টস কেনা",
         path: "/purchase/parts/add",
       },
       {
-        label: "View Purchase",
+        label: "কেনা পার্টসের তালিকা",
         path: "/purchase/parts/view",
       },
     ],

@@ -10,6 +10,7 @@ const showroomRouter = require("./showroom");
 const accountRouter = require("./account");
 const incomeRouter = require("./income");
 const costRouter = require("./cost");
+const partsRouter = require("./parts");
 
 const routers = [
   {
@@ -55,6 +56,10 @@ const routers = [
   {
     path: "/api/document",
     handler: documentRouter,
+  },
+  {
+    path: "/api/parts",
+    handler: partsRouter,
   },
   {
     path: "/api/user",

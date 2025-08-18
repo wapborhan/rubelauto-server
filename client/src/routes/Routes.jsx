@@ -94,6 +94,10 @@ const routes = createBrowserRouter([
             path: "supplier/edit/:id",
             element: <All.UpdateSuplier />,
           },
+          {
+            path: "supplier/payment/:id",
+            element: <All.SupplierPayment />,
+          },
         ],
       },
       // Product

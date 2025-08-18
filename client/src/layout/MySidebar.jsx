@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { NavLink, useLocation } from "react-router-dom";
 import { menuData } from "./menuData";
 import { Menu, MenuItem, Sidebar, SubMenu } from "react-pro-sidebar";
 import Logo from "../assets/images/logo/logo-squire.png";
@@ -55,6 +55,21 @@ const hexToRgba = (hex, alpha) => {
 const MySidebar = (props) => {
   const { collapsed, setBroken, setToggled, toggled } = props;
   const [openSubMenu, setOpenSubMenu] = useState(null);
+  const location = useLocation();
+
+  // open correct submenu when route matches
+  useEffect(() => {
+    menuData.forEach((item, index) => {
+      if (item.subMenu) {
+        const isMatch = item.subMenu.some(
+          (subItem) => location.pathname === subItem.path
+        );
+        if (isMatch) {
+          setOpenSubMenu(index);
+        }
+      }
+    });
+  }, [location.pathname]);
 
   const handleSubMenuClick = (index) => {
     setOpenSubMenu(openSubMenu === index ? null : index);
@@ -156,15 +171,19 @@ const MySidebar = (props) => {
                   key={index}
                   label={item.label}
                   icon={<i className={`pi ` + item.icon} />}
-                  defaultOpen={index === openSubMenu}
-                  onToggle={() => handleSubMenuClick(index)}
+                  // defaultOpen={index === openSubMenu}
+                  // onToggle={() => handleSubMenuClick(index)}
+                  open={openSubMenu === index} // control open with state
+                  onClick={() => handleSubMenuClick(index)} // set active menu
                 >
                   {item.subMenu.map((subItem, subIndex) => (
                     <MenuItem
                       key={subIndex}
                       component={<NavLink to={subItem.path} />}
                       icon={<i className="pi pi-circle"></i>}
-                      className="overflow-hidden"
+                      className={({ isActive }) =>
+                        isActive ? "bg-[#198754] text-white font-bold" : ""
+                      }
                     >
                       {subItem.label}
                     </MenuItem>
