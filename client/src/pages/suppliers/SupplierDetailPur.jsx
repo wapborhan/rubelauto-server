@@ -24,6 +24,15 @@ const SupplierDetailPur = ({ supplierId }) => {
           </tr>
         </thead>
         <tbody>
+          <tr className="text-center">
+            <td colSpan={2}>Opening Balance</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td className="border px-2 py-1 font-semibold">
+              {data?.supplier?.openingBalance.toFixed(2)}
+            </td>
+          </tr>
           {data.transactions.map((t, i) => (
             <tr key={i} className="text-center">
               <td className="border px-2 py-1">

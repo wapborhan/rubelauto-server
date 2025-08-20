@@ -7,7 +7,6 @@ import { useEffect, useRef, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { Tooltip } from "primereact/tooltip";
 import GlobalFilter from "../../components/shared/GlobalFilter";
-import ExportButtons from "../../components/shared/exportButton/ExportButtons";
 import { useGetSupplierQuery } from "../../redux/feature/api/supplierApi";
 
 function ViewSuplier() {
@@ -38,7 +37,7 @@ function ViewSuplier() {
         <GlobalFilter setFilters={setFilters} filters={filters} />
         <NavLink
           to={`/contact/supplier/add`}
-          className="px-6 py-3 bg-green-600 text-white rounded-md cursor-pointer"
+          className="px-6 py-3 bg-primary text-white rounded-md cursor-pointer"
         >
           <i className="pi pi-plus"></i>{" "}
           <span className="ms-2">সাপ্লায়ার যুক্ত করুণ</span>
@@ -46,6 +45,8 @@ function ViewSuplier() {
       </div>
     );
   };
+
+  console.log(supplier?.data);
 
   const statusBodyTemplate = (rowData) => {
     return <Tag value={rowData.prodType} severity={getSeverity(rowData)} />;
@@ -74,30 +75,30 @@ function ViewSuplier() {
 
   const verifiedBodyTemplate = (rowData) => {
     return (
-      <div className="flex gap-4">
+      <div className="flex gap-2">
         <NavLink
           to={`/contact/supplier/view/${rowData?._id}`}
-          className="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline custom-tooltip cursor-pointer"
+          className="text-white focus:outline-none focus:underline custom-tooltip cursor-pointer py-1 px-2 bg-primary rounded-md"
           data-pr-tooltip="View"
           data-pr-position="top"
         >
-          <i className="pi pi-eye"></i>
+          <i className="pi pi-eye text-[13px]"></i>
         </NavLink>
         <NavLink
           to={`/contact/supplier/payment/${rowData?._id}`}
-          className="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline custom-tooltip cursor-pointer"
+          className="text-white focus:outline-none focus:underline custom-tooltip cursor-pointer py-1 px-2 bg-primary rounded-md"
           data-pr-tooltip="View"
           data-pr-position="top"
         >
-          <i className="pi pi-money-bill"></i>
+          <i className="pi pi-money-bill  text-[13px]"></i>
         </NavLink>
         <NavLink
           to={`/contact/supplier/edit/${rowData?._id}`}
-          className="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline custom-tooltip cursor-pointer"
+          className="text-white focus:outline-none focus:underline custom-tooltip cursor-pointer py-1 px-2 bg-primary rounded-md"
           data-pr-tooltip="Edit"
           data-pr-position="top"
         >
-          <i className="pi pi-file-edit"></i>
+          <i className="pi pi-file-edit  text-[13px]"></i>
         </NavLink>
       </div>
     );
@@ -143,7 +144,6 @@ function ViewSuplier() {
             className="capitalize"
           />
         )}
-
         <Column
           field="bssName"
           header="সরবরাহকারী"
@@ -173,14 +173,21 @@ function ViewSuplier() {
           style={{ minWidth: "8rem" }}
         />
         <Column
-          field="purchase"
+          field="totalPurchase"
           header="ক্রয়"
           showFilterMenu={false}
           filterPlaceholder="Search"
           style={{ minWidth: "8rem" }}
         />
         <Column
-          field="openingBalance"
+          field="totalPayment"
+          header="পেমেন্ট"
+          showFilterMenu={false}
+          filterPlaceholder="Search"
+          style={{ minWidth: "8rem" }}
+        />
+        <Column
+          field="currentBalance"
           header="বাকি"
           showFilterMenu={false}
           filterPlaceholder="Search"
@@ -190,7 +197,7 @@ function ViewSuplier() {
           field="verified"
           header="মেনু"
           dataType="boolean"
-          style={{ minWidth: "2rem" }}
+          // style={{ minWidth: "1rem" }}
           body={verifiedBodyTemplate}
         />
       </DataTable>

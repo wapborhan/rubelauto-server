@@ -10,13 +10,13 @@ export const verifiedBodyTemplate = (rowData, path) => {
   console.log(path);
 
   return (
-    <div className="flex gap-3 justify-center">
+    <div className="flex gap-1 justify-center">
       {path === "cash" ? (
         ""
       ) : (
         <NavLink
           to={`/customer/view/${rowData?.cardno}`}
-          className="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline custom-tooltip cursor-pointer"
+          className="text-white focus:outline-none focus:underline custom-tooltip cursor-pointer  py-1 px-2 bg-primary rounded-md"
           data-pr-tooltip="Details"
           data-pr-position="top"
         >
@@ -27,7 +27,7 @@ export const verifiedBodyTemplate = (rowData, path) => {
         <>
           <NavLink
             to={`/customer/payment/${rowData?.cardno}`}
-            className="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline custom-tooltip cursor-pointer"
+            className="text-white focus:outline-none focus:underline custom-tooltip cursor-pointer  py-1 px-2 bg-primary rounded-md"
             data-pr-tooltip="Payment"
             data-pr-position="top"
           >
@@ -35,7 +35,7 @@ export const verifiedBodyTemplate = (rowData, path) => {
           </NavLink>
           <NavLink
             to={`/customer/seized/${rowData?.cardno}`}
-            className="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline custom-tooltip cursor-pointer"
+            className="text-white focus:outline-none focus:underline custom-tooltip cursor-pointer  py-1 px-2 bg-primary rounded-md"
             data-pr-tooltip="Seized"
             data-pr-position="top"
           >
@@ -49,7 +49,7 @@ export const verifiedBodyTemplate = (rowData, path) => {
       {(path === "cash" || path === "running") && (
         <NavLink
           to={`/customer/paid/${rowData?.cardno}`}
-          className="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline custom-tooltip cursor-pointer"
+          className="text-white focus:outline-none focus:underline custom-tooltip cursor-pointer  py-1 px-2 bg-primary rounded-md"
           data-pr-tooltip="Paid"
           data-pr-position="top"
         >

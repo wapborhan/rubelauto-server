@@ -1,6 +1,6 @@
 export const menuData = [
   {
-    label: "Dashboard",
+    label: "ড্যাশবোর্ড",
     icon: "pi-chart-bar",
     path: "/dashboard",
   },
@@ -75,7 +75,7 @@ export const menuData = [
   },
 
   {
-    label: "Customers",
+    label: "কাস্টমার",
     icon: "pi-user",
     subMenu: [
       {
@@ -101,6 +101,10 @@ export const menuData = [
       {
         label: "পার্টস সাপ্লালায়ার",
         path: "/contact/supplier/parts/view",
+      },
+      {
+        label: "পার্টস কাস্টমার",
+        path: "/parts/customer",
       },
       {
         label: "পার্টস কেনা",

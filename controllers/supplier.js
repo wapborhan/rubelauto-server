@@ -29,13 +29,47 @@ exports.createSupplier = async (req, res, next) => {
 
 exports.allSupplier = async (req, res, next) => {
   try {
-    const data = await Supliers.find({});
+    const suppliers = await Supliers.find({});
+
+    // Calculate totals for each supplier
+    const enrichedSuppliers = await Promise.all(
+      suppliers.map(async (supplier) => {
+        const supplierId = supplier._id.toString();
+
+        // Total Purchases
+        const purchasesAgg = await PartsPurchase.aggregate([
+          { $match: { supplierId } },
+          { $group: { _id: null, totalPurchase: { $sum: "$amount" } } },
+        ]);
+        const totalPurchase =
+          purchasesAgg.length > 0 ? purchasesAgg[0].totalPurchase : 0;
+
+        // Total Payments
+        const paymentsAgg = await SuplierPayment.aggregate([
+          { $match: { supplierId } },
+          { $group: { _id: null, totalPayment: { $sum: "$amount" } } },
+        ]);
+        const totalPayment =
+          paymentsAgg.length > 0 ? paymentsAgg[0].totalPayment : 0;
+
+        // Current Balance
+        const currentBalance =
+          (supplier.openingBalance || 0) + totalPurchase - totalPayment;
+
+        return {
+          ...supplier.toObject(),
+          totalPurchase,
+          totalPayment,
+          currentBalance,
+        };
+      })
+    );
 
     res.status(200).json({
       success: true,
       status: 200,
-      message: "Supplier Found",
-      data: data,
+      message: "Suppliers Found",
+      data: enrichedSuppliers,
     });
   } catch (error) {
     res.status(500).json({
@@ -52,13 +86,50 @@ exports.singleSupplier = async (req, res, next) => {
     const id = req.params.id;
     const filter = { _id: new ObjectId(id) };
 
-    const data = await Supliers.findOne(filter);
+    // Find supplier info
+    const supplier = await Supliers.findOne(filter);
+
+    if (!supplier) {
+      return res.status(404).json({
+        success: false,
+        status: 404,
+        message: "Supplier not found",
+        data: {},
+      });
+    }
+
+    // Total Purchases
+    const purchasesAgg = await PartsPurchase.aggregate([
+      { $match: { supplierId: id } },
+      { $group: { _id: null, totalPurchase: { $sum: "$amount" } } },
+    ]);
+
+    const totalPurchase =
+      purchasesAgg.length > 0 ? purchasesAgg[0].totalPurchase : 0;
+
+    // Total Payments
+    const paymentsAgg = await SuplierPayment.aggregate([
+      { $match: { supplierId: id } },
+      { $group: { _id: null, totalPayment: { $sum: "$amount" } } },
+    ]);
+
+    const totalPayment =
+      paymentsAgg.length > 0 ? paymentsAgg[0].totalPayment : 0;
+
+    // Current Balance = OpeningBalance + Purchases - Payments
+    const currentBalance =
+      (supplier.openingBalance || 0) + totalPurchase - totalPayment;
 
     res.status(200).json({
       success: true,
       status: 200,
       message: "Supplier Found",
-      data: data,
+      data: {
+        ...supplier.toObject(),
+        totalPurchase,
+        totalPayment,
+        currentBalance,
+      },
     });
   } catch (error) {
     res.status(500).json({

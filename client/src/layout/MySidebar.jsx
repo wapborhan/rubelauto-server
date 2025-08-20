@@ -3,6 +3,7 @@ import { NavLink, useLocation } from "react-router-dom";
 import { menuData } from "./menuData";
 import { Menu, MenuItem, Sidebar, SubMenu } from "react-pro-sidebar";
 import Logo from "../assets/images/logo/logo-squire.png";
+import { useSelector } from "react-redux";
 
 const themes = {
   light: {
@@ -55,11 +56,20 @@ const hexToRgba = (hex, alpha) => {
 const MySidebar = (props) => {
   const { collapsed, setBroken, setToggled, toggled } = props;
   const [openSubMenu, setOpenSubMenu] = useState(null);
+  const { showRoom } = useSelector((state) => state.userStore);
   const location = useLocation();
+
+  console.log(showRoom);
+
+  // filter menu items
+  const filteredMenu =
+    showRoom === "Parts"
+      ? menuData.filter((item) => ["পার্টস", "ড্যাশবোর্ড"].includes(item.label))
+      : menuData;
 
   // open correct submenu when route matches
   useEffect(() => {
-    menuData.forEach((item, index) => {
+    filteredMenu.forEach((item, index) => {
       if (item.subMenu) {
         const isMatch = item.subMenu.some(
           (subItem) => location.pathname === subItem.path
@@ -69,7 +79,7 @@ const MySidebar = (props) => {
         }
       }
     });
-  }, [location.pathname]);
+  }, [location.pathname, showRoom]);
 
   const handleSubMenuClick = (index) => {
     setOpenSubMenu(openSubMenu === index ? null : index);
@@ -164,17 +174,15 @@ const MySidebar = (props) => {
           menuItemStyles={menuItemStyles}
           className="sticky top-0 h-[80%] overflow-scroll"
         >
-          {menuData.map((item, index) => {
+          {filteredMenu.map((item, index) => {
             if (item.subMenu) {
               return (
                 <SubMenu
                   key={index}
                   label={item.label}
                   icon={<i className={`pi ` + item.icon} />}
-                  // defaultOpen={index === openSubMenu}
-                  // onToggle={() => handleSubMenuClick(index)}
-                  open={openSubMenu === index} // control open with state
-                  onClick={() => handleSubMenuClick(index)} // set active menu
+                  open={openSubMenu === index}
+                  onClick={() => handleSubMenuClick(index)}
                 >
                   {item.subMenu.map((subItem, subIndex) => (
                     <MenuItem

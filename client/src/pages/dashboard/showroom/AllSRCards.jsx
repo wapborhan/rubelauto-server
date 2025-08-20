@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import { useGetLeadQuery } from "../../redux/feature/api/leadApi";
-import { useGetPurchaseQuery } from "../../redux/feature/api/purchaseApi";
-import { useGetCustomerQuery } from "../../redux/feature/api/customerApi";
+import { useGetLeadQuery } from "../../../redux/feature/api/leadApi";
+import { useGetPurchaseQuery } from "../../../redux/feature/api/purchaseApi";
+import { useGetCustomerQuery } from "../../../redux/feature/api/customerApi";
 import { useSelector } from "react-redux";
 
 const AllSRCards = () => {

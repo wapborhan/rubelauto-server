@@ -1,8 +1,8 @@
-const { model, Schema } = require("mongoose");
+const { model, Schema, Types } = require("mongoose");
 
 const partsSchema = new Schema(
   {
-    supplierId: { type: String },
+    supplierId: { type: Types.ObjectId, ref: "supliers" },
     memoDate: { type: Date },
     MemoNo: { type: String },
     amount: { type: Number },

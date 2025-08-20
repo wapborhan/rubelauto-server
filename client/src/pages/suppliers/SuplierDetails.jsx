@@ -31,6 +31,9 @@ const SuplierDetails = () => {
     addedDate,
     // eslint-disable-next-line no-unsafe-optional-chaining
   } = singleSuplier?.data;
+
+  console.log(singleSuplier?.data);
+
   return (
     <>
       {/* <BackPage /> */}

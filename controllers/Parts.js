@@ -25,7 +25,7 @@ exports.createPartsStock = async (req, res, next) => {
 
 exports.partsPurchaseShow = async (req, res, next) => {
   try {
-    const data = await PartsPurchase.find();
+    const data = await PartsPurchase.find().populate("supplierId");
 
     res.status(200).json({
       success: true,

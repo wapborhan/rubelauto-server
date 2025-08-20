@@ -26,7 +26,7 @@ export default function Customer() {
   const {
     data: customers,
     refetch,
-    isPending,
+    isLoading,
   } = useGetCustomerQuery({ path, showRoom });
 
   const [filters, setFilters] = useState({
@@ -41,7 +41,7 @@ export default function Customer() {
   useEffect(() => {
     refetch();
     tooltipRef.current && tooltipRef.current.updateTargetEvents();
-  }, [path.status, refetch, customers]);
+  }, [path, refetch, customers]);
 
   const uniqueShowRooms = [
     ...new Set(customers?.data?.map((c) => c.showRoom)),
@@ -96,7 +96,7 @@ export default function Customer() {
         value={filteredData}
         header={header}
         footerColumnGroup={footer}
-        loading={isPending}
+        loading={isLoading}
         filters={filters}
         globalFilterFields={["customerInfo.name", "cardno"]}
         stripedRows

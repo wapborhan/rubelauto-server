@@ -92,6 +92,7 @@ nav#topbar {
   top: 0;
   z-index: 999;
 }
+
 #content-wrapper {
   background: #f8f9fa;
   overflow-y: scroll;
@@ -161,16 +162,16 @@ textarea,
   padding: 0 15px;
 }
 
-.p-datatable .p-datatable-tbody > tr > td,
-.p-datatable .p-datatable-thead > tr > th {
+.p-datatable .p-datatable-tbody>tr>td,
+.p-datatable .p-datatable-thead>tr>th {
   padding: 0.3rem 0.5rem !important;
 }
 
-.p-datatable .p-datatable-tbody > tr > td {
+.p-datatable .p-datatable-tbody>tr>td {
   padding: 0.5rem 1rem;
 }
 
-.p-datatable .p-datatable-thead > tr > th {
+.p-datatable .p-datatable-thead>tr>th {
   padding: 0.5rem 1rem;
 }
 
@@ -183,14 +184,18 @@ textarea,
     min-width: 6rem;
   }
 
-  .p-datatable .p-datatable-tbody > tr > td,
-  .p-datatable .p-datatable-thead > tr > th {
+  .p-datatable .p-datatable-tbody>tr>td,
+  .p-datatable .p-datatable-thead>tr>th {
     padding: 0.3rem 0.3rem !important;
   }
 }
 
 .p-tooltip-text {
   padding: 5px 10px;
+}
+
+.p-tooltip {
+  box-shadow: none;
 }
 
 input.p-dropdown-filter.p-inputtext.p-component {
@@ -256,6 +261,7 @@ button.p-highlight {
 .p-datatable-tfoot tr td {
   padding: 0.5rem !important;
 }
+
 .p-datatable-tfoot tr td input {
   padding: 0.4rem;
 }
@@ -264,7 +270,7 @@ button.p-highlight {
   @apply space-y-3;
 }
 
-.p-datatable .p-datatable-thead > tr > th > div {
+.p-datatable .p-datatable-thead>tr>th>div {
   @apply text-center justify-center;
 }
 

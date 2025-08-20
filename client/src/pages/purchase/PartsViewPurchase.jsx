@@ -21,6 +21,8 @@ const PartsViewPurchase = () => {
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   });
 
+  console.log(partsMemoList);
+
   const renderHeader = () => {
     return (
       <div className="flex lg:flex-nowrap flex-wrap gap-5 justify-between">
@@ -45,20 +47,6 @@ const PartsViewPurchase = () => {
     return (
       <div className="flex align-items-center gap-2">
         <span>{moment(rowData.receivedDate).format("DD-MMM-YYYY")}</span>
-      </div>
-    );
-  };
-  const supplierTemplate = (rowData) => {
-    // rowData?.supplierId
-    // console.log(allSuplier?.data);
-
-    const filterData = allSuplier?.data?.find(
-      (item) => item?._id === rowData?.supplierId
-    );
-    console.log(filterData);
-    return (
-      <div className="flex align-items-center gap-2">
-        <span>{filterData?.bssName}</span>
       </div>
     );
   };
@@ -121,9 +109,9 @@ const PartsViewPurchase = () => {
           filterPlaceholder="Name"
         />
         <Column
-          field="supplierId"
+          field="supplierId.bssName"
           header="Supplier"
-          body={supplierTemplate}
+          // body={supplierTemplate}
           showFilterMenu={false}
           filterPlaceholder="Search"
           style={{ minWidth: "8rem" }}

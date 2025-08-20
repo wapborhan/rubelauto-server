@@ -1,6 +1,8 @@
-import AllSRCards from "./AllSRCards";
-import Card from "./Card";
+import PartsDashboard from "./parts/PartsDashboard";
+import AllSRCards from "./showroom/AllSRCards";
+import Card from "./showroom/Card";
 import { useSelector } from "react-redux";
+import ShowroomDashboard from "./showroom/ShowroomDashboard";
 
 const Dashboard = () => {
   const { showRoom } = useSelector((state) => state.userStore);
@@ -12,12 +14,7 @@ const Dashboard = () => {
           Showroom: <span className="font-bold">{showRoom}</span>
         </h1>
       </div>
-      <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-6 w-full mx-auto ">
-        <AllSRCards />
-      </div>
-      <div className="mt-8">
-        <Card />
-      </div>
+      {showRoom === "Parts" ? <PartsDashboard /> : <ShowroomDashboard />}
     </div>
   );
 };
