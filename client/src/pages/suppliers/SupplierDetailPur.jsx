@@ -1,3 +1,4 @@
+import moment from "moment";
 import { useGetSupplierStatementQuery } from "../../redux/feature/api/supplierApi";
 
 const SupplierDetailPur = ({ supplierId }) => {
@@ -38,7 +39,8 @@ const SupplierDetailPur = ({ supplierId }) => {
           {data.transactions.map((t, i) => (
             <tr key={i} className="text-center">
               <td className="border px-2 py-1">
-                {new Date(t.date).toLocaleDateString()}
+                {moment(t.date).format("DD-MM-YYYY")}
+                {/* {new Date(t.date).toLocaleDateString()} */}
               </td>
               <td className="border px-2 py-1">{t.refNo || "-"}</td>
               <td className="border px-2 py-1">{t.description}</td>

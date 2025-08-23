@@ -29,6 +29,7 @@ const SuplierDetails = () => {
     address,
     openingBalance,
     addedDate,
+    currentBalance,
     // eslint-disable-next-line no-unsafe-optional-chaining
   } = singleSuplier?.data;
 
@@ -41,38 +42,38 @@ const SuplierDetails = () => {
       <fieldset className="mb-4 !p-10">
         <legend>Suplier Info</legend>
         <h3 className="mb-5">Suplier Details</h3>
-        <div className="supplier my-5 grid grid-cols-4 gap-5">
-          <div className="image">
+        <div className="supplier my-5 grid grid-cols-4 gap-5 border">
+          <div className="image border">
             <img src={bssLogoUrl} alt={bssName} />
           </div>
-          <div className="info">
-            <div className="flex items-center justify-between gap-2 w-full">
+          <div className="info border">
+            <div className="flex items-center justify-between gap-2 w-full ">
               <span className="font-bold">Business Name:</span>
               {bssName}
             </div>
-            <div className="flex items-center justify-between gap-2 w-full">
+            <div className="flex items-center justify-between gap-2 w-full ">
               <span className="font-bold">Employee Name:</span>
               {empName}
             </div>
           </div>
-          <div className="info">
-            <div className="flex items-center justify-between gap-2 w-full">
+          <div className="info border">
+            <div className="flex items-center justify-between gap-2 w-full ">
               <span className="font-bold">Mobile:</span>
               {mobile}
             </div>
-            <div className="flex items-center justify-between gap-2 w-full">
+            <div className="flex items-center justify-between gap-2 w-full ">
               <span className="font-bold">Email:</span>
               {email}
             </div>
           </div>
-          <div className="info">
-            <div className="flex items-center justify-between gap-2 w-full">
+          <div className="info border">
+            <div className="flex items-center justify-between gap-2 w-full ">
               <span className="font-bold">Address:</span>
               {address}
             </div>{" "}
-            <div className="flex items-center justify-between gap-2 w-full">
+            <div className="flex items-center justify-between gap-2 w-full ">
               <span className="font-bold">Due:</span>
-              12000
+              {currentBalance}
             </div>
           </div>
         </div>

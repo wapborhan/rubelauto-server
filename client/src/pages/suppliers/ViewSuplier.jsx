@@ -26,6 +26,7 @@ function ViewSuplier() {
       setAllSupplier(supplier?.data);
     }
     refetch();  
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, supplier]);
 
   const [filters, setFilters] = useState({
