@@ -49,6 +49,9 @@ exports.allSupplier = async (req, res, next) => {
           { $match: { supplierId } },
           { $group: { _id: null, totalPayment: { $sum: "$amount" } } },
         ]);
+
+        console.log(purchasesAgg);
+
         const totalPayment =
           paymentsAgg.length > 0 ? paymentsAgg[0].totalPayment : 0;
 
@@ -146,14 +149,21 @@ exports.updateSupplier = async (req, res, next) => {
     const suplierData = req.body;
     const id = req.params.id;
 
-    const { bssLogoUrl, bssName, empName, prodType, email, mobile, address } =
-      suplierData;
+    const {
+      openingBalance,
+      bssName,
+      empName,
+      prodType,
+      email,
+      mobile,
+      address,
+    } = suplierData;
 
     const updatedLead = await Supliers.findOneAndUpdate(
       { _id: new ObjectId(id) },
       {
         $set: {
-          bssLogoUrl: bssLogoUrl,
+          openingBalance: openingBalance,
           bssName: bssName,
           empName: empName,
           prodType: prodType,
@@ -229,6 +239,7 @@ exports.supplierStatement = async (req, res, next) => {
       return res.status(404).json({ message: "Supplier not found" });
 
     const purchases = await PartsPurchase.find({ supplierId: id }).lean();
+
     const payments = await SuplierPayment.find({ supplierId: id }).lean();
     // map purchases as debit
     const debitTx = purchases.map((p) => ({

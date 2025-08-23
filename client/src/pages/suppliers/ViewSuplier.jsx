@@ -13,7 +13,7 @@ function ViewSuplier() {
   const { pathname } = useLocation();
   const dt = useRef(null);
   const tooltipRef = useRef(null);
-  const { data: supplier, isLoading } = useGetSupplierQuery();
+  const { data: supplier, isLoading, refetch } = useGetSupplierQuery();
   const [allSuplier, setAllSupplier] = useState([]);
 
   useEffect(() => {
@@ -25,6 +25,7 @@ function ViewSuplier() {
     } else {
       setAllSupplier(supplier?.data);
     }
+    refetch();  
   }, [pathname, supplier]);
 
   const [filters, setFilters] = useState({
@@ -70,6 +71,7 @@ function ViewSuplier() {
     }
   };
   const tabID = (data, props) => {
+    // eslint-disable-next-line react/prop-types
     return props.rowIndex + 1;
   };
 
@@ -87,7 +89,7 @@ function ViewSuplier() {
         <NavLink
           to={`/contact/supplier/payment/${rowData?._id}`}
           className="text-white focus:outline-none focus:underline custom-tooltip cursor-pointer py-1 px-2 bg-primary rounded-md"
-          data-pr-tooltip="View"
+          data-pr-tooltip="Payment"
           data-pr-position="top"
         >
           <i className="pi pi-money-bill  text-[13px]"></i>

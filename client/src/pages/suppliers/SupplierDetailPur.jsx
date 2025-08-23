@@ -6,6 +6,8 @@ const SupplierDetailPur = ({ supplierId }) => {
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Faild to Load...</p>;
 
+  console.log(data);
+
   return (
     <div className="p-4">
       <h2 className="text-lg font-bold mb-3">

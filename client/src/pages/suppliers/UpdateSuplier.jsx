@@ -22,7 +22,7 @@ const UpdateSuplier = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const form = e.target;
-    const bssLogoUrl = form.bssLogoUrl.value;
+    const openingBalance = form.openingBalance.value;
     const bssName = form.bssName.value;
     const empName = form.empName.value;
     const email = form.email.value;
@@ -30,7 +30,7 @@ const UpdateSuplier = () => {
     const address = form.address.value;
 
     const inputData = {
-      bssLogoUrl,
+      openingBalance,
       bssName,
       empName,
       prodType: prodType?.name,
@@ -78,36 +78,38 @@ const UpdateSuplier = () => {
       <div className="back">{/* <BackToHomePage /> */}</div>
       <div className="sect  py-4 w-full mx-auto">
         <div className="content space-y-5">
-          <h2 className="text-center text-3xl mb-10">Update Supplier</h2>
+          <h2 className="text-center text-3xl mb-10">আপডেট সাপ্লালায়ার</h2>
         </div>
         <fieldset className="mb-4">
-          <legend>Update Lead</legend>
+          <legend>আপডেট</legend>
           <form onSubmit={handleSubmit}>
             <div className="form space-y-5">
               <div className="frist flex gap-5 lg:flex-nowrap flex-wrap justify-between">
                 <div className="form-control  w-full">
                   <label className="label">
                     <span className="label-text font-bold">
-                      Business Logo Url
+                      ওপেনিং ব্যালেন্স
                     </span>
                   </label>
                   <input
-                    type="text"
-                    name="bssLogoUrl"
-                    defaultValue={singleSuplier?.data?.bssLogoUrl}
-                    placeholder="Business Logo Url"
+                    type="number"
+                    name="openingBalance"
+                    defaultValue={singleSuplier?.data?.openingBalance}
+                    placeholder=" ওপেনিং ব্যালেন্স"
                     className="input input-bordered w-full"
                   />
                 </div>
                 <div className="form-control  w-full">
                   <label className="label">
-                    <span className="label-text font-bold">Business Name</span>
+                    <span className="label-text font-bold">
+                      সাপ্লালায়ার নাম
+                    </span>
                   </label>
                   <input
                     type="text"
                     name="bssName"
                     defaultValue={singleSuplier?.data?.bssName}
-                    placeholder="Business Name"
+                    placeholder="সাপ্লালায়ার নাম"
                     className="input input-bordered w-full"
                     required
                   />
@@ -115,13 +117,13 @@ const UpdateSuplier = () => {
 
                 <div className="form-control w-full">
                   <label className="label">
-                    <span className="label-text font-bold">Employee Name</span>
+                    <span className="label-text font-bold">কর্মচারীর নাম</span>
                   </label>
                   <input
                     type="text"
                     name="empName"
                     defaultValue={singleSuplier?.data?.empName}
-                    placeholder="Employee Name"
+                    placeholder="কর্মচারীর নাম"
                     className="input input-bordered w-full"
                     required
                   />
@@ -130,59 +132,58 @@ const UpdateSuplier = () => {
 
               <div className="third flex gap-5 lg:flex-nowrap flex-wrap justify-between">
                 <div className="form-control w-full">
-                  <label className="label">
-                    <span className="label-text font-bold">Business Type</span>
+                  <label className="label flex justify-between items-center">
+                    <span className="label-text font-bold">ব্যবসার ধরণ</span>
+                    <span className="font-bold text-white px-3 bg-primary rounded-full">
+                      {singleSuplier?.data?.prodType}
+                    </span>
                   </label>
-                  <input
-                    type="text"
-                    defaultValue={singleSuplier?.data?.prodType}
-                    disabled
-                    className="rounded-md px-3 py-1 text-white !bg-slate-200"
-                  />
                   <Dropdown
                     value={prodType}
                     onChange={(e) => setProdType(e.value)}
                     options={proTypeList}
                     optionLabel="name"
-                    placeholder="Business Type"
+                    placeholder="ব্যবসার ধরণ"
                     className="w-full md:w-14rem border-2"
                     // required
                   />
                 </div>
                 <div className="form-control w-full">
                   <label className="label">
-                    <span className="label-text font-bold">Email</span>
+                    <span className="label-text font-bold">ইমেইল</span>
                   </label>
                   <input
                     type="text"
                     name="email"
                     defaultValue={singleSuplier?.data?.email}
-                    placeholder="Email"
+                    placeholder="ইমেইল"
                     className="input input-bordered w-full"
                   />
                 </div>
                 <div className="form-control w-full">
                   <label className="label">
-                    <span className="label-text font-bold">Mobile</span>
+                    <span className="label-text font-bold">
+                      কর্মচারীর মোবাইল
+                    </span>
                   </label>
                   <input
                     type="number"
                     name="mobile"
                     defaultValue={singleSuplier?.data?.mobile}
-                    placeholder="Mobile Number"
+                    placeholder="কর্মচারীর মোবাইল"
                     className="input input-bordered w-full"
                     required
                   />
                 </div>
                 <div className="form-control w-full ">
                   <label className="label">
-                    <span className="label-text font-bold">Address</span>
+                    <span className="label-text font-bold">ঠিকানা</span>
                   </label>
                   <input
                     type="text"
                     name="address"
                     defaultValue={singleSuplier?.data?.address}
-                    placeholder="Address"
+                    placeholder="ঠিকানা"
                     className="input input-bordered w-full"
                   />
                 </div>
@@ -191,8 +192,8 @@ const UpdateSuplier = () => {
               <div className="submit">
                 <input
                   type="submit"
-                  value="Add Suplier"
-                  className="rounded-lg font-h2 mt-4 border-2-[#331A15] bg-[#D2B48C] w-full p-3 font-bold text-[18px] text-[#331A15] cursor-pointer"
+                  value="আপডেট সাপ্লালায়ার"
+                  className="rounded-lg font-h2 mt-4 border-2-[#331A15] bg-primary w-full p-3 font-bold text-[18px] text-white cursor-pointer"
                 />
               </div>
             </div>

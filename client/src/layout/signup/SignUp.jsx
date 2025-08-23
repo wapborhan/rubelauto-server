@@ -3,19 +3,27 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { createUser } from "../../redux/feature/user/userSlice";
 import { useSetUserMutation } from "../../redux/feature/api/userApi";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const SignUp = () => {
   const {
     handleSubmit,
     register,
     reset,
+    watch,
     formState: { errors },
   } = useForm();
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [setUser, { isSuccess, isError, error }] = useSetUserMutation();
   const { email, name } = useSelector((state) => state.userStore);
+
+  // 🔑 State for password visibility
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+
+  const password = watch("password");
 
   useEffect(() => {
     if (name && email) {
@@ -23,12 +31,12 @@ const SignUp = () => {
     }
   }, [navigate, email, name]);
 
-  const onSubmit = ({ name, email, photoURL, password }) => {
-    dispatch(createUser({ name, email, photoURL, password }));
+  const onSubmit = ({ name, email, password }) => {
+    dispatch(createUser({ name, email, password }));
     const userInfo = {
       joinDate: new Date(),
       name: name,
-      photo: photoURL,
+      photo: "",
       email: email,
       mobile: "",
       showRoom: "",
@@ -56,133 +64,169 @@ const SignUp = () => {
   return (
     <div className="flex flex-col overflow-hidden bg-white rounded-md shadow-lg max md:flex-row md:flex-1 lg:max-w-screen-lg z-10">
       <div className="p-5 bg-white md:flex-1">
-        <h3 className="my-4 text-2xl font-semibold text-gray-700">
-          Create Account
+        <h3 className="my-4 text-2xl text-center font-semibold text-gray-700">
+          একাউন্ট তৈরি করুণ
         </h3>
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col space-y-5"
         >
+          {/* Name */}
           <div className="flex flex-col space-y-1">
-            <label className="text-sm font-semibold text-gray-500">Name</label>
+            <div className="flex justify-between">
+              <label className="text-sm font-semibold text-gray-500">নাম</label>
+              {errors.name && <span className="text-red-600">নাম আবশ্যক</span>}
+            </div>
             <input
               type="text"
               {...register("name", { required: true })}
-              name="name"
-              autoFocus
-              className="px-4 py-2 transition duration-300 border border-gray-300 rounded focus:border-transparent focus:outline-none focus:ring-4 focus:ring-blue-200"
+              placeholder="আপনার নাম"
+              className="px-4 py-2 transition duration-300 border border-gray-300 rounded focus:ring-4 focus:ring-blue-200"
             />
-            {errors.name && (
-              <span className="text-red-600">Name is required</span>
-            )}
           </div>
+
+          {/* Email */}
           <div className="flex flex-col space-y-1">
-            <label className="text-sm font-semibold text-gray-500">
-              Photo URL
-            </label>
-            <input
-              type="text"
-              {...register("photoURL", { required: true })}
-              name="photoURL"
-              autoFocus
-              className="px-4 py-2 transition duration-300 border border-gray-300 rounded focus:border-transparent focus:outline-none focus:ring-4 focus:ring-blue-200"
-            />
-            {errors.photoURL && (
-              <span className="text-red-600">Photo URL is required</span>
-            )}
-          </div>
-          <div className="flex flex-col space-y-1">
-            <label className="text-sm font-semibold text-gray-500">
-              Email address
-            </label>
-            <input
-              type="email"
-              {...register("email", { required: true })}
-              name="email"
-              autoFocus
-              className="px-4 py-2 transition duration-300 border border-gray-300 rounded focus:border-transparent focus:outline-none focus:ring-4 focus:ring-blue-200"
-            />{" "}
-            {errors.email?.type === "required" && (
-              <p className="text-red-600">Email is required</p>
-            )}
-          </div>
-          <div className="flex flex-col space-y-1">
-            <div className="flex items-center justify-between">
-              <label
-                htmlFor="password"
-                className="text-sm font-semibold text-gray-500"
-              >
-                Password
+            <div className="flex justify-between">
+              <label className="text-sm font-semibold text-gray-500">
+                ইমেইল
               </label>
+              {errors.email && <p className="text-red-600">ইমেইল আবশ্যক</p>}
             </div>
             <input
-              type="password"
-              name="password"
-              {...register("password", {
-                required: true,
-                minLength: 6,
-                maxLength: 12,
-                pattern: /(?=.*[A-Z])(?=.*[!@#-$&*])(?=.*[0-9])(?=.*[a-z])/,
-              })}
-              placeholder="password"
-              className="px-4 py-2 transition duration-300 border border-gray-300 rounded focus:border-transparent focus:outline-none focus:ring-4 focus:ring-blue-200"
+              type="email"
+              placeholder="আপনার ইমেইল @domain.com"
+              {...register("email", { required: true })}
+              className="px-4 py-2 transition duration-300 border border-gray-300 rounded focus:ring-4 focus:ring-blue-200"
             />
-            {errors.password?.type === "required" && (
-              <p className="text-red-600">Password is required</p>
-            )}
-            {errors.password?.type === "minLength" && (
-              <p className="text-red-600">Password must be 6 characters</p>
-            )}
-            {errors.password?.type === "maxLength" && (
-              <p className="text-red-600">
-                Password must be less than 12 characters
-              </p>
-            )}
-            {errors.password?.type === "pattern" && (
-              <p className="text-red-600">
-                Password must have one Uppercase one lower case, one number and
-                one special character (!@#$&*).
-              </p>
-            )}
           </div>
+
+          {/* Password */}
+          <div className="flex flex-col space-y-1">
+            <div className="flex justify-between">
+              <label className="text-sm font-semibold text-gray-500">
+                পাসওয়ার্ড
+              </label>
+              {errors.password?.type === "required" && (
+                <p className="text-red-600">পাসওয়ার্ড আবশ্যক</p>
+              )}
+              {errors.password?.type === "minLength" && (
+                <p className="text-red-600">
+                  পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে
+                </p>
+              )}
+              {errors.password?.type === "maxLength" && (
+                <p className="text-red-600">
+                  পাসওয়ার্ড অবশ্যই ১৬ অক্ষরের কম হতে হবে
+                </p>
+              )}
+              {errors.password?.type === "pattern" && (
+                <p className="text-red-600">
+                  পাসওয়ার্ডে অবশ্যই বড় হাতের, ছোট হাতের, সংখ্যা এবং বিশেষ
+                  অক্ষর (!@#$&*) থাকতে হবে।
+                </p>
+              )}
+            </div>
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                {...register("password", {
+                  required: true,
+                  minLength: 6,
+                  maxLength: 16,
+                  pattern: /(?=.*[A-Z])(?=.*[!@#-$&*])(?=.*[0-9])(?=.*[a-z])/,
+                })}
+                placeholder="পাসওয়ার্ড"
+                className="w-full px-4 py-2 pr-10 transition duration-300 border border-gray-300 rounded focus:ring-4 focus:ring-blue-200"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500"
+              >
+                {showPassword ? (
+                  <i className="pi pi-eye-slash"></i>
+                ) : (
+                  <i className="pi pi-eye"></i>
+                )}
+              </button>
+            </div>
+          </div>
+
+          {/* Confirm Password */}
+          <div className="flex flex-col space-y-1">
+            <div className="flex justify-between">
+              <label className="text-sm font-semibold text-gray-500">
+                পাসওয়ার্ড নিশ্চিত করুন
+              </label>
+              {/* {watch("confirmPassword") &&
+                watch("confirmPassword") !== password && (
+                  <p className="text-red-600">পাসওয়ার্ড মিলছে না।</p>
+                )} */}
+
+              {errors.confirmPassword && (
+                <p className="text-red-600">{errors.confirmPassword.message}</p>
+              )}
+            </div>
+            <div className="relative">
+              <input
+                type={showConfirm ? "text" : "password"}
+                {...register("confirmPassword", {
+                  required: "আপনার পাসওয়ার্ড নিশ্চিত করুন",
+                  validate: (value) =>
+                    value === password || "পাসওয়ার্ড মিলছে না।",
+                })}
+                placeholder="পাসওয়ার্ড নিশ্চিত করুন"
+                className="w-full px-4 py-2 pr-10 transition duration-300 border border-gray-300 rounded focus:ring-4 focus:ring-blue-200"
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirm(!showConfirm)}
+                className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500"
+              >
+                {showPassword ? (
+                  <i className="pi pi-eye-slash"></i>
+                ) : (
+                  <i className="pi pi-eye"></i>
+                )}
+              </button>
+            </div>
+
+            {/* 🔴 Live password match error */}
+          </div>
+
+          {/* Submit */}
           <div>
             <button
               type="submit"
-              // disabled={disabled}
-              value="Login"
-              className="w-full px-4 py-2 text-lg font-semibold text-white transition-colors duration-300 bg-blue-500 rounded-md shadow hover:bg-blue-600 focus:outline-none focus:ring-blue-200 focus:ring-4"
+              className="w-full px-4 py-2 text-lg font-semibold text-white transition-colors duration-300 bg-blue-500 rounded-md shadow hover:bg-blue-600 focus:ring-4 focus:ring-blue-200"
             >
-              Sign Up
+              একাউন্ট তৈরি করুণ
             </button>
           </div>
         </form>
       </div>
+
+      {/* Right Side */}
       <div className="p-4 py-6 text-white bg-blue-500 md:w-6/12 md:flex-shrink-0 md:flex md:flex-col md:items-center md:justify-evenly">
         <div className="my-3 text-4xl font-bold tracking-wider text-center">
           <Link to="/">
-            {/* <img src="https://i.ibb.co/1LV8nQP/logo.png" alt="" /> */}
-            Rubel Auto
+            <img
+              src="/images/logo/logo-squire.png"
+              alt="Rubel Auto"
+              className="w-40 bg-white p-2 rounded-lg mx-auto"
+            />
           </Link>
         </div>
-        <p className="mt-6 p-3 font-normal text-justify text-gray-300 md:mt-0">
+        {/* <p className="mt-6 p-3 font-normal text-justify text-gray-300 md:mt-0">
           <b>Rubel Auto</b> is a trusted dealer of Runner Automobiles PLC.
-        </p>
+        </p> */}
         <p className="flex flex-col items-center justify-center mt-10 text-center">
-          <span>Do You have an account?</span>
+          <span>আপনার কি অ্যাকাউন্ট আছে?</span>
           <Link to="/auth/signin" className="underline">
-            Log In!
+            লগিন করুণ
           </Link>
         </p>
-        {/* <p className="mt-6 text-sm text-center text-gray-300">
-          Read our
-          <a href="#" className="underline">
-            terms
-          </a>
-          and
-          <a href="#" className="underline">
-            conditions
-          </a>
-        </p> */}
       </div>
     </div>
   );

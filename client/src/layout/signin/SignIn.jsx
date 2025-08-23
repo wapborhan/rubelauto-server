@@ -14,6 +14,7 @@ const SignIn = () => {
   const location = useLocation();
   const { email, name } = useSelector((state) => state.userStore);
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -40,68 +41,82 @@ const SignIn = () => {
   console.log(location?.state?.from);
 
   return (
-    <div className="flex flex-col overflow-hidden bg-white rounded-md shadow-lg max md:flex-row md:flex-1 lg:max-w-screen-lg z-10">
-      <div className="p-4 py-6 text-white bg-blue-500 md:w-6/12 md:flex-shrink-0 md:flex md:flex-col md:items-center md:justify-evenly">
+    <div className="flex flex-col overflow-hidden bg-white rounded-md shadow-lg max md:flex-row md:flex-1 lg:max-w-screen-lg z-10  mx-auto">
+      <div className="p-4 py-6 text-white bg-blue-500 md:w-6/12 md:flex-shrink-0 md:flex md:flex-col md:items-center md:justify-evenly lg:order-1 md:order-1 order-2">
         <div className="my-3 text-4xl font-bold tracking-wider text-center">
           <Link to="/">
-            {/* <img src="https://i.ibb.co/1LV8nQP/logo.png" alt="" /> */}
-            Rubel Auto
+            <img
+              src="/images/logo/logo-squire.png"
+              alt="Rubel Auto"
+              className="w-40 bg-white p-2 rounded-lg mx-auto"
+            />
           </Link>
         </div>
-        <p className="mt-6 p-3 font-normal text-justify text-gray-300 md:mt-0">
+        {/* <p className="mt-6 p-3 font-normal text-justify text-gray-300 md:mt-0">
           <b>Rubel Auto</b> is a trusted dealer of Runner Automobiles PLC.
-        </p>
+        </p> */}
 
         <p className="flex flex-col items-center justify-center mt-10 text-center">
-          <span>{"Don't"} have an account?</span>
+          <span>কোন অ্যাকাউন্ট নেই?</span>
           <Link to="/auth/signup" className="underline">
-            Get Started!
+            শুরু করুন
           </Link>
         </p>
       </div>
-      <div className="p-5 bg-white md:flex-1">
+      <div className="p-5 bg-white md:flex-1 lg:order-2 md:order-2 order-1">
         <h3 className="my-4 text-2xl font-semibold text-gray-700">
-          Account Login
+          অ্যাকাউন্ট লগইন
         </h3>
         <form onSubmit={handleLogin} className="flex flex-col space-y-5">
           <div className="flex flex-col space-y-1">
-            <label className="text-sm font-semibold text-gray-500">
-              Email address
-            </label>
+            <label className="text-sm font-semibold text-gray-500">ইমেইল</label>
             <input
               type="email"
               name="email"
-              placeholder="email"
+              placeholder="আপনার ইমেইল @domain.com"
               autoFocus
               className="px-4 py-2 transition duration-300 border border-gray-300 rounded focus:border-transparent focus:outline-none focus:ring-4 focus:ring-blue-200"
             />
           </div>
           <div className="flex flex-col space-y-1">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between relative">
               <label
                 htmlFor="password"
                 className="text-sm font-semibold text-gray-500"
               >
-                Password
+                পাসওয়ার্ড
               </label>
               <Link
                 to="/auth/forgot-password"
                 className="underline    text-[#198754]"
               >
-                Forgot Password?
+                পাসওয়ার্ড ভুলে গেছেন?
               </Link>
             </div>
-            <input
-              type="password"
-              name="password"
-              placeholder="password"
-              className="px-4 py-2 transition duration-300 border border-gray-300 rounded focus:border-transparent focus:outline-none focus:ring-4 focus:ring-blue-200"
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                placeholder="পাসওয়ার্ড"
+                className="px-4 py-2 transition duration-300 border border-gray-300 rounded focus:border-transparent focus:outline-none focus:ring-4 focus:ring-blue-200 w-full"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500 hover:text-gray-700"
+              >
+                {showPassword ? (
+                  <i className="pi pi-eye-slash"></i>
+                ) : (
+                  <i className="pi pi-eye"></i>
+                )}
+              </button>
+            </div>
           </div>{" "}
           <div className=" flex  justify-center gap-3">
             <Button
               type="submit"
-              label="Log in"
+              label="লগিন করুণ"
               icon="pi pi-check"
               loading={loading}
               // onClick={load}

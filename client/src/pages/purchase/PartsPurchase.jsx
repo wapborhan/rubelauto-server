@@ -26,6 +26,7 @@ const PartsPurchase = () => {
 
     const inputData = {
       supplierId: suplier?._id,
+      supplier: suplier?._id,
       memoDate,
       MemoNo,
       amount,

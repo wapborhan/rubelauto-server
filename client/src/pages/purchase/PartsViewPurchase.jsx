@@ -109,7 +109,7 @@ const PartsViewPurchase = () => {
           filterPlaceholder="Name"
         />
         <Column
-          field="supplierId.bssName"
+          field="supplier.bssName"
           header="Supplier"
           // body={supplierTemplate}
           showFilterMenu={false}

@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Outlet, useNavigation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Outlet, useLocation, useNavigation } from "react-router-dom";
 // import Footer from "./Footer";
 import MySidebar from "./MySidebar";
 
@@ -13,6 +13,22 @@ const Root = () => {
   const [broken, setBroken] = useState(false);
   const [toggled, setToggled] = useState(false);
   const { isLoading } = useSelector((state) => state.userStore);
+  const location = useLocation();
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    const timer = setTimeout(() => setLoading(false), 600);
+    return () => clearTimeout(timer);
+  }, [location]);
+
+  if (loading) {
+    return (
+      <div className="flex w-screen h-screen justify-center items-center ">
+        <Loading />
+      </div>
+    );
+  }
 
   return (
     <>

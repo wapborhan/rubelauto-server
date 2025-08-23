@@ -162,7 +162,7 @@ export const menuData = [
   //   ],
   // },
   {
-    label: "Staff",
+    label: "কর্মচারিবৃন্দ",
     icon: "pi-user-plus",
     path: "/staff/view",
   },
