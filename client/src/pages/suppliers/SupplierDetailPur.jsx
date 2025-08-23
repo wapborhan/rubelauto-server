@@ -10,12 +10,9 @@ const SupplierDetailPur = ({ supplierId }) => {
   console.log(data);
 
   return (
-    <div className="p-4">
-      <h2 className="text-lg font-bold mb-3">
-        {data.supplier.bssName} - Statement
-      </h2>
-
-      <table className="w-full border">
+    <fieldset className="mb-4 !pt-10 !pb-0 !px-0 ">
+      <legend>স্টেটমেন্ট</legend>
+      <table className="w-full border !rounded-b-md">
         <thead className="bg-gray-200">
           <tr>
             <th className="border px-2 py-1">Date</th>
@@ -56,7 +53,7 @@ const SupplierDetailPur = ({ supplierId }) => {
             </tr>
           ))}
         </tbody>
-        <tfoot className="bg-gray-100 font-bold">
+        <tfoot className="bg-gray-100 font-bold  !rounded-b-md">
           <tr>
             <td colSpan="3" className="border px-2 py-1 text-right">
               Totals
@@ -73,7 +70,7 @@ const SupplierDetailPur = ({ supplierId }) => {
           </tr>
         </tfoot>
       </table>
-    </div>
+    </fieldset>
   );
 };
 

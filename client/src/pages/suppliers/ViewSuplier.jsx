@@ -8,6 +8,7 @@ import { NavLink, useLocation } from "react-router-dom";
 import { Tooltip } from "primereact/tooltip";
 import GlobalFilter from "../../components/shared/GlobalFilter";
 import { useGetSupplierQuery } from "../../redux/feature/api/supplierApi";
+import { useSelector } from "react-redux";
 
 function ViewSuplier() {
   const { pathname } = useLocation();
@@ -15,6 +16,7 @@ function ViewSuplier() {
   const tooltipRef = useRef(null);
   const { data: supplier, isLoading, refetch } = useGetSupplierQuery();
   const [allSuplier, setAllSupplier] = useState([]);
+  const { showRoom } = useSelector((state) => state.userStore);
 
   useEffect(() => {
     if (pathname === "/contact/supplier/parts/view") {
@@ -25,8 +27,8 @@ function ViewSuplier() {
     } else {
       setAllSupplier(supplier?.data);
     }
-    refetch();  
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    refetch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, supplier]);
 
   const [filters, setFilters] = useState({
@@ -95,14 +97,16 @@ function ViewSuplier() {
         >
           <i className="pi pi-money-bill  text-[13px]"></i>
         </NavLink>
-        <NavLink
-          to={`/contact/supplier/edit/${rowData?._id}`}
-          className="text-white focus:outline-none focus:underline custom-tooltip cursor-pointer py-1 px-2 bg-primary rounded-md"
-          data-pr-tooltip="Edit"
-          data-pr-position="top"
-        >
-          <i className="pi pi-file-edit  text-[13px]"></i>
-        </NavLink>
+        {showRoom !== "Parts" && (
+          <NavLink
+            to={`/contact/supplier/edit/${rowData?._id}`}
+            className="text-white focus:outline-none focus:underline custom-tooltip cursor-pointer py-1 px-2 bg-primary rounded-md"
+            data-pr-tooltip="Edit"
+            data-pr-position="top"
+          >
+            <i className="pi pi-file-edit  text-[13px]"></i>
+          </NavLink>
+        )}
       </div>
     );
   };

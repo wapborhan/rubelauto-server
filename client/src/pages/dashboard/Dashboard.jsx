@@ -1,6 +1,4 @@
 import PartsDashboard from "./parts/PartsDashboard";
-import AllSRCards from "./showroom/AllSRCards";
-import Card from "./showroom/Card";
 import { useSelector } from "react-redux";
 import ShowroomDashboard from "./showroom/ShowroomDashboard";
 

@@ -28,8 +28,9 @@ const SuplierDetails = () => {
     mobile,
     address,
     openingBalance,
-    addedDate,
     currentBalance,
+    totalPurchase,
+    totalPayment,
     // eslint-disable-next-line no-unsafe-optional-chaining
   } = singleSuplier?.data;
 
@@ -40,39 +41,52 @@ const SuplierDetails = () => {
       {/* <BackPage /> */}
 
       <fieldset className="mb-4 !p-10">
-        <legend>Suplier Info</legend>
-        <h3 className="mb-5">Suplier Details</h3>
-        <div className="supplier my-5 grid grid-cols-4 gap-5 border">
-          <div className="image border">
-            <img src={bssLogoUrl} alt={bssName} />
+        <legend>সাপ্লায়ার তথ্য</legend>
+        <div className="supplier my-5 grid grid-cols-5 gap-5">
+          <div className="image flex items-center justify-center">
+            <img
+              src={bssLogoUrl}
+              alt={bssName}
+              className="w-full h-40 rounded-md border-8"
+            />
           </div>
-          <div className="info border">
-            <div className="flex items-center justify-between gap-2 w-full ">
-              <span className="font-bold">Business Name:</span>
+          <div className="infos space-y-2 col-span-3">
+            <div className="flex items-center justify-start gap-2 w-full ">
+              <span className="font-bold">সাপ্লালায়ার:</span>
               {bssName}
             </div>
-            <div className="flex items-center justify-between gap-2 w-full ">
-              <span className="font-bold">Employee Name:</span>
+            <div className="flex items-center justify-start gap-2 w-full ">
+              <span className="font-bold">ঠিকানা:</span>
+              {address}
+            </div>
+            <div className="flex items-center justify-start gap-2 w-full ">
+              <span className="font-bold">কর্মচারীর নাম:</span>
               {empName}
             </div>
-          </div>
-          <div className="info border">
-            <div className="flex items-center justify-between gap-2 w-full ">
-              <span className="font-bold">Mobile:</span>
+            <div className="flex items-center justify-start gap-2 w-full ">
+              <span className="font-bold">মোবাইল:</span>
               {mobile}
             </div>
-            <div className="flex items-center justify-between gap-2 w-full ">
+            <div className="flex items-center justify-start gap-2 w-full ">
               <span className="font-bold">Email:</span>
               {email}
             </div>
           </div>
-          <div className="info border">
-            <div className="flex items-center justify-between gap-2 w-full ">
-              <span className="font-bold">Address:</span>
-              {address}
-            </div>{" "}
-            <div className="flex items-center justify-between gap-2 w-full ">
-              <span className="font-bold">Due:</span>
+          <div className="infos space-y-2">
+            <div className="flex items-center justify-between gap-2 w-full">
+              <span className="font-bold">ওপেনিং ব্যালেন্স:</span>
+              {openingBalance}
+            </div>
+            <div className="flex items-center justify-between gap-2 w-full">
+              <span className="font-bold">ক্রয়:</span>
+              {totalPurchase}
+            </div>
+            <div className="flex items-center justify-between gap-2 w-full">
+              <span className="font-bold">পেমেন্ট:</span>
+              {totalPayment}
+            </div>
+            <div className="flex items-center justify-between gap-2 w-full">
+              <span className="font-bold">বাকি:</span>
               {currentBalance}
             </div>
           </div>

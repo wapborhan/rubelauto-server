@@ -185,6 +185,10 @@ const routes = createBrowserRouter([
           },
         ],
       },
+      {
+        path: "/parts/customer",
+        element: "Under Constraction",
+      },
       // Documents
       {
         path: "/documents",

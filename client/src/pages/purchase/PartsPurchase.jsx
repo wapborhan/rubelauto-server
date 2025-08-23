@@ -55,9 +55,9 @@ const PartsPurchase = () => {
   useEffect(() => {
     if (isError) {
       toast.current.show({
-        severity: "info",
-        summary: "Info",
-        detail: error || "Error adding Product.",
+        severity: "error",
+        summary: "Error",
+        detail: error?.data?.message || "Error adding Product.",
       });
     }
   }, [isError, error]);

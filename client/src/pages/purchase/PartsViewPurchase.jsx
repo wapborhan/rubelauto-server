@@ -5,23 +5,19 @@ import { Column } from "primereact/column";
 import ExportPDF from "../../components/shared/exportButton/ExportPDF";
 import ExportExcel from "../../components/shared/exportButton/ExportExcel";
 import ExportCSV from "../../components/shared/exportButton/ExportCSV";
-import useProdType from "../../hooks/data/useProdType";
 import moment from "moment";
 import GlobalFilter from "../../components/shared/GlobalFilter";
 import { useGetPartsPurchaseQuery } from "../../redux/feature/api/purchaseApi";
-import { useGetSupplierQuery } from "../../redux/feature/api/supplierApi";
 import { NavLink } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const PartsViewPurchase = () => {
   const dt = useRef(null);
   const { data: partsMemoList, isLoading } = useGetPartsPurchaseQuery();
-  const { data: allSuplier, isLoading: supLoading } = useGetSupplierQuery();
-  const [proTypeList] = useProdType();
+  const { showRoom } = useSelector((state) => state.userStore);
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   });
-
-  console.log(partsMemoList);
 
   const renderHeader = () => {
     return (
@@ -144,13 +140,15 @@ const PartsViewPurchase = () => {
           filterPlaceholder="Search"
           // style={{ minWidth: "8rem" }}
         />
-        <Column
-          field="verified"
-          header="মেনু"
-          dataType="boolean"
-          style={{ minWidth: "2rem" }}
-          body={verifiedBodyTemplate}
-        />
+        {showRoom !== "Parts" && (
+          <Column
+            field="verified"
+            header="মেনু"
+            dataType="boolean"
+            style={{ minWidth: "2rem" }}
+            body={verifiedBodyTemplate}
+          />
+        )}
       </DataTable>
     </div>
   );
