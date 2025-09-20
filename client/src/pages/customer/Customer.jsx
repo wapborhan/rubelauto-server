@@ -13,6 +13,7 @@ import {
   installmentTemplate,
   insTermTemplate,
   tabID,
+  rowClass,
 } from "./customerTableTemplates";
 import { renderHeader, footerGroup } from "./customerTableHeaderFooter";
 
@@ -66,8 +67,6 @@ export default function Customer() {
     return true;
   });
 
-  console.log(filteredData);
-
   const header = renderHeader(
     filters,
     setFilters,
@@ -102,6 +101,7 @@ export default function Customer() {
         stripedRows
         paginator
         rows={10}
+        rowClassName={rowClass}
         // rowsPerPageOptions={[10, 25, 50, 100]}
         emptyMessage="কোনো কাস্টমার তথ্য নেই"
       >

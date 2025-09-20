@@ -9,6 +9,9 @@ import { Tooltip } from "primereact/tooltip";
 import GlobalFilter from "../../components/shared/GlobalFilter";
 import { useGetSupplierQuery } from "../../redux/feature/api/supplierApi";
 import { useSelector } from "react-redux";
+import { Button } from "primereact/button";
+import { ColumnGroup } from "primereact/columngroup";
+import { Row } from "primereact/row";
 
 function ViewSuplier() {
   const { pathname } = useLocation();
@@ -17,6 +20,15 @@ function ViewSuplier() {
   const { data: supplier, isLoading, refetch } = useGetSupplierQuery();
   const [allSuplier, setAllSupplier] = useState([]);
   const { showRoom } = useSelector((state) => state.userStore);
+
+  const exportCSV = (selectionOnly) => {
+    dt.current.exportCSV({ selectionOnly });
+  };
+
+  const paginatorLeft = <Button type="button" icon="pi pi-refresh" text />;
+  const paginatorRight = (
+    <Button type="button" icon="pi pi-download" text onClick={exportCSV} />
+  );
 
   useEffect(() => {
     if (pathname === "/contact/supplier/parts/view") {
@@ -112,6 +124,20 @@ function ViewSuplier() {
   };
 
   const header = renderHeader();
+  const footerGroup = (
+    <ColumnGroup>
+      <Row>
+        <Column
+          footer="Totals:"
+          colSpan={5}
+          footerStyle={{ textAlign: "right" }}
+        />
+        <Column footer={"0"} />
+        <Column footer={"0"} />
+        <Column footer={"0"} />
+      </Row>
+    </ColumnGroup>
+  );
 
   return (
     <div className="card">
@@ -130,7 +156,15 @@ function ViewSuplier() {
         globalFilterFields={["bssName", "prodType"]}
         paginator
         rows={10}
+        stripedRows
         // rowsPerPageOptions={[10, 25, 50, 100]}
+        // paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
+        // currentPageReportTemplate="{first} to {last} of {totalRecords}"
+        paginatorLeft={paginatorLeft}
+        paginatorRight={paginatorRight}
+        // scrollable
+        // scrollHeight="480px"
+        footerColumnGroup={footerGroup}
         emptyMessage="No Suplier found."
       >
         <Column

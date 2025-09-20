@@ -80,17 +80,17 @@ const PartsPurchase = () => {
       <div className="back">{/* <BackToHomePage /> */}</div>
       <div className="sect  py-4 w-full mx-auto">
         <div className="content space-y-5">
-          <h2 className="text-center text-3xl mb-10">Purchase Parts</h2>
+          <h2 className="text-center text-3xl mb-10">পার্টস ক্রয়</h2>
         </div>
 
         <fieldset>
-          <legend>Purchase Parts</legend>
+          <legend>পার্টস ক্রয়</legend>
           <form onSubmit={handleSubmit}>
             <div className="form space-y-5">
               <div className="frist flex gap-5 lg:flex-nowrap flex-wrap justify-between">
                 <div className="form-control w-full">
                   <label className="label">
-                    <span className="label-text font-bold">Supplier</span>
+                    <span className="label-text font-bold">সাপ্লালায়ার</span>
                   </label>
                   <SearchAbleDropDown
                     state={suplier}
@@ -99,14 +99,14 @@ const PartsPurchase = () => {
                     requir={true}
                     config={{
                       optLabel: "bssName",
-                      placeHolder: "Select Suplier",
+                      placeHolder: "সিলেক্ট সাপ্লালায়ার",
                     }}
                     // disable={!upazila}
                   />
                 </div>
                 <div className="form-control w-full">
                   <label className="label">
-                    <span className="label-text font-bold">Memo Date</span>
+                    <span className="label-text font-bold">মেমো তারিখ</span>
                   </label>
                   <DatePick
                     dateValue={memoDate}
@@ -118,12 +118,12 @@ const PartsPurchase = () => {
                 </div>
                 <div className="form-control w-full">
                   <label className="label">
-                    <span className="label-text font-bold">Memo No</span>
+                    <span className="label-text font-bold">মেমো নম্বর</span>
                   </label>
                   <input
                     type="text"
                     name="MemoNo"
-                    placeholder="Enter Memo No"
+                    placeholder="মেমো নম্বর"
                     className="input input-bordered w-full"
                   />
                 </div>{" "}
@@ -131,7 +131,7 @@ const PartsPurchase = () => {
               <div className="second flex gap-5 lg:flex-nowrap flex-wrap justify-between">
                 <div className="form-control w-full">
                   <label className="label">
-                    <span className="label-text font-bold">Received Date</span>
+                    <span className="label-text font-bold">গ্রহন তারিখ</span>
                   </label>
                   <DatePick
                     dateValue={receiveDate}
@@ -143,23 +143,23 @@ const PartsPurchase = () => {
                 </div>
                 <div className="form-control w-full">
                   <label className="label">
-                    <span className="label-text font-bold">Transport</span>
+                    <span className="label-text font-bold">পরিবহন</span>
                   </label>
                   <input
                     type="text"
                     name="transport"
-                    placeholder="Enter Transport Name"
+                    placeholder="পরিবহন নাম"
                     className="input input-bordered w-full"
                   />
                 </div>{" "}
                 <div className="form-control w-full">
                   <label className="label">
-                    <span className="label-text font-bold">Amount</span>
+                    <span className="label-text font-bold">পরিমাণ</span>
                   </label>
                   <input
                     type="number"
                     name="amount"
-                    placeholder="Enter AMount"
+                    placeholder="পরিমাণ (টাকা)"
                     className="input input-bordered w-full"
                     // required
                   />
@@ -168,12 +168,12 @@ const PartsPurchase = () => {
               <div className="second flex gap-5 lg:flex-nowrap flex-wrap justify-between">
                 <div className="form-control w-full">
                   <label className="label">
-                    <span className="label-text font-bold">Notes</span>
+                    <span className="label-text font-bold">মন্তব্য</span>
                   </label>
                   <textarea
                     type="text"
                     name="notes"
-                    placeholder="Notes ..."
+                    placeholder="মন্তব্য ..."
                     className="input input-bordered w-full h-28"
                     // required
                   />
@@ -182,8 +182,8 @@ const PartsPurchase = () => {
               <div className="submit">
                 <input
                   type="submit"
-                  value="Add Product"
-                  className="rounded-lg font-h2 mt-4 border-2-[#331A15] bg-[#D2B48C] w-full p-3 font-bold text-[18px] text-[#331A15] cursor-pointer"
+                  value="ক্রয় করুন"
+                  className="rounded-lg font-h2 mt-4 border-2-[#331A15] bg-primary w-full p-3 font-bold text-[18px] text-white cursor-pointer"
                 />
               </div>
             </div>

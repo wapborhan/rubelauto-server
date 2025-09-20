@@ -92,13 +92,13 @@ const PartsViewPurchase = () => {
       >
         <Column
           body={tabID}
-          header="SL"
+          header="ক্রঃ"
           showFilterMenu={false}
           filterPlaceholder="Search"
           // style={{ minWidth: "8rem" }}
         />
         <Column
-          header="Memo Date"
+          header="মেমো তারিখ"
           style={{ minWidth: "9rem" }}
           body={memoDateTemplate}
           showFilterMenu={false}
@@ -106,7 +106,7 @@ const PartsViewPurchase = () => {
         />
         <Column
           field="supplier.bssName"
-          header="Supplier"
+          header="সাপ্লালায়ার"
           // body={supplierTemplate}
           showFilterMenu={false}
           filterPlaceholder="Search"
@@ -114,13 +114,13 @@ const PartsViewPurchase = () => {
         />
         <Column
           field="MemoNo"
-          header="Mome NO."
+          header="মেমো নম্বর"
           showFilterMenu={false}
           filterPlaceholder="Search"
           style={{ minWidth: "8rem" }}
         />
         <Column
-          header="Received Date"
+          header="গ্রহন তারিখ"
           style={{ minWidth: "9rem" }}
           body={recDateTemplate}
           showFilterMenu={false}
@@ -128,14 +128,14 @@ const PartsViewPurchase = () => {
         />
         <Column
           field="transport"
-          header="Transport"
+          header="পরিবহন"
           showFilterMenu={false}
           filterPlaceholder="Search"
           // style={{ minWidth: "8rem" }}
         />
         <Column
           field="amount"
-          header="Amount"
+          header="পরিমাণ"
           showFilterMenu={false}
           filterPlaceholder="Search"
           // style={{ minWidth: "8rem" }}

@@ -140,10 +140,37 @@ export const insTermTemplate = (rowData) => {
       : "";
 
   return (
-    <div className={`flex gap-3 justify-center w-full ${style}`}>
-      {monthDifference}
-    </div>
+    // <div className={`flex gap-3 justify-center w-full ${style}`}>
+    <div className={`flex gap-3 justify-center w-full `}>{monthDifference}</div>
   );
+};
+
+export const rowClass = (data) => {
+  const term = data?.accountInfo?.term || 0;
+  const saleDate = new Date(data?.saledate);
+  const currentDate = new Date();
+
+  let monthDifference =
+    (currentDate.getFullYear() - saleDate.getFullYear()) * 12;
+  monthDifference -= saleDate.getMonth();
+  monthDifference += currentDate.getMonth();
+
+  if (currentDate.getDate() < saleDate.getDate()) {
+    monthDifference--;
+  }
+
+  const daysDifference = Math.floor(
+    (currentDate - saleDate) / (1000 * 60 * 60 * 24)
+  );
+
+  if (daysDifference > 30) {
+    monthDifference++;
+  }
+  const style =
+    monthDifference >= term
+      ? "!bg-red-700 text-white text-black px-1 py-1 rounded"
+      : "";
+  return style;
 };
 
 export const tabID = (data, props) => {

@@ -187,7 +187,8 @@ const routes = createBrowserRouter([
       },
       {
         path: "/parts/customer",
-        element: "Under Constraction",
+        element:
+          "Under Constraction দোকানের নাম,ঠিকানা,মালিকের নাম,মোবাইল নাম্বার,খাতার পেজ নাম্বার,openingBalance,",
       },
       // Documents
       {
